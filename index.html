@@ -6,7 +6,7 @@
 <title>Соционика без клише</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap">
 <style>
 /* layout: сайт-справочник — шапка с навигацией, одна колонка до 1080px; бумага серии в светлой теме, графит в тёмной */
 :root{
@@ -875,6 +875,62 @@ select.lvbtn{appearance:none;-webkit-appearance:none;padding-right:26px;backgrou
 .qzpick button b{font-size:15px} .qzpick button span{color:var(--mut)}
 .qzpick button:hover{box-shadow:inset 0 0 0 1.5px var(--fg)}
 .qzpick .qzskip{background:none;box-shadow:inset 0 0 0 1px var(--line);align-items:center;font-weight:600}
+
+/* ===== v4: язык знаков аспектов (notes/design_system.md) ===== */
+:root{
+ --bg:#eff1ee; --card:#ffffff; --s2:#f3f4f1; --surface:#ffffff; --fg:#1b1e24; --mut:#5d626b; --line:#dadde0; --ink:#1b1e24; --inkfg:#f6f7f5;
+ --lime:#1b1e24; --inkfix:#f6f7f5;
+ --display:"Unbounded","Arial Black",system-ui,sans-serif; --sans:"Golos Text","Helvetica Neue",Arial,system-ui,sans-serif; --serif:var(--sans); --mono:var(--sans);
+ --shw:none; --r-lg:20px; --r-md:14px; --r-sm:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#14161a; --card:#1d2026; --s2:#262a31; --surface:#1d2026; --fg:#eceef0; --mut:#a3a9b2; --line:#333841; --ink:#eceef0; --inkfg:#14161a; --lime:#eceef0; --inkfix:#14161a } }
+:root[data-theme="dark"]{ --bg:#14161a; --card:#1d2026; --s2:#262a31; --surface:#1d2026; --fg:#eceef0; --mut:#a3a9b2; --line:#333841; --ink:#eceef0; --inkfg:#14161a; --lime:#eceef0; --inkfix:#14161a }
+body{font-family:var(--sans);font-size:17px;line-height:1.62;letter-spacing:0}
+h1,h2,.brand,.wdg .num,.stats4 .num,.pzres,.big-rel{font-family:var(--display)}
+h1{font-weight:600;letter-spacing:-.025em;line-height:1.05;font-size:clamp(30px,4.8vw,54px)}
+h2{font-weight:600;letter-spacing:-.015em;line-height:1.2;font-size:clamp(20px,2.3vw,27px)}
+h3,details.fold>summary .st{font-family:var(--sans);font-weight:700;letter-spacing:-.01em}
+details.fold>summary .st{font-family:var(--display)!important;font-weight:600;font-size:clamp(18px,2vw,23px)!important}
+.brand{font-weight:600;font-size:16px;letter-spacing:-.02em}
+.lead,.analogy,.fnlead{font-family:var(--sans);font-weight:400;letter-spacing:0}
+/* метки: обычный регистр, тихо, без подложек */
+.kicker,.sheet>.kicker:first-child,.hero .kicker:first-child,.sheet>details.fold>summary>.kicker,.wdg .kicker,.lbl,.blkbar .blkt,.ptab th,.ch th,.wdg .wrow,.lay{text-transform:none!important;letter-spacing:0!important}
+.kicker,.sheet>.kicker:first-child,.hero .kicker:first-child,.sheet>details.fold>summary>.kicker{display:block;background:none!important;padding:0!important;border-radius:0;font-size:14px;font-weight:500;color:var(--mut)!important;margin-bottom:6px}
+.wdg.inv .kicker,.homehero .kicker{background:none!important;padding:0!important;color:var(--inkfg)!important;opacity:.7!important;font-size:14px}
+.lay{font-size:11.5px;font-weight:600;padding:1px 7px;opacity:.8}
+.ptab th,.ch th{font-size:13.5px;font-weight:600}
+/* поверхности: без теней, иерархия скруглений */
+.sheet,.hero,.stage,.wdg,.tc,.quads>div,a.doc,.acard,.rk a,nav.main,.layers button,.crumb a,#aichat{box-shadow:none!important}
+.sheet,.hero,.stage,.wdg{border-radius:var(--r-lg)}
+nav.main{background:transparent;padding:0;gap:4px}
+nav.main a{background:var(--card);border-radius:999px}
+nav.main a[aria-current="page"]{background:var(--ink);color:var(--inkfg)}
+.layers button{background:var(--card)}
+.crumb a{background:none;padding:0;text-decoration:underline;text-underline-offset:3px}
+.wdg.inv{background:var(--ink)}
+.chip.asp{border-radius:999px}
+.acard,.rk a{border-radius:var(--r-lg)!important}
+.quads>div{border-radius:var(--r-lg)}
+.pr,.vc,.panel,.card,.toy,.mcell,.dct{border-radius:var(--r-md)}
+#aifab{box-shadow:0 6px 18px rgba(27,30,36,.25)}
+#aichat{box-shadow:0 0 0 1px var(--line),0 24px 60px rgba(27,30,36,.18)!important}
+/* знак как графика */
+.glyphs{position:relative;width:200px;height:200px;flex:none}
+.glyphs .g1,.glyphs .g2{position:absolute;display:block}
+.glyphs .g1{inset:0}
+.glyphs .g2{width:46%;height:46%;right:-6%;bottom:-6%}
+.glyphs svg{width:100%;height:100%;display:block}
+.hero.b8{display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+@media (max-width:560px){ .glyphs{width:120px;height:120px;margin:0 0 4px} .hero.b8{grid-template-columns:1fr} .hero.b8 .glyphs{order:-1} h1{font-size:32px} }
+
+.homehero h1{font-size:clamp(34px,4.6vw,60px)!important;overflow-wrap:anywhere}
+.glyph8{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.glyph8 a{display:grid;grid-template-columns:44px 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;background:var(--card);border-radius:var(--r-md);padding:12px 14px;text-decoration:none;color:var(--fg)}
+.glyph8 a:hover{box-shadow:inset 0 0 0 2px var(--c)!important}
+.glyph8 .gg{grid-row:span 2;width:44px;height:44px} .glyph8 .gg svg{width:100%;height:100%;display:block}
+.glyph8 b{font-family:var(--display);font-weight:600;color:var(--c);font-size:17px;line-height:1.1}
+.glyph8 span:last-child{font-size:13.5px;color:var(--mut)}
+@media (max-width:560px){ .glyph8{gap:8px} .glyph8 a{padding:10px 12px;grid-template-columns:34px 1fr} .glyph8 .gg{width:34px;height:34px} }
 </style>
 
 <header class="top"><div class="in">
@@ -923,7 +979,7 @@ function home(){
   return `<div class="bento" style="margin-top:20px">
   <div class="wdg inv b8 homehero"><div class="kicker">Соционика без шаблонов</div><h1>Шестнадцать типов</h1><p class="lead" style="color:var(--inkfg)">Выбери тип, чтобы увидеть всё, что о нём есть: модель А, каждую функцию по месту и параметрам, болевую, признаки Рейнина и отношения со всеми остальными. Или открой <a href="#relations">отношения</a>, чтобы сравнить любую пару.</p>
     <p class="sm" style="color:var(--inkfg);opacity:.7">У всех 16 типов одинаковая глубина: модель, все восемь функций по параметрам, болевая, пути, признаки Рейнина и отношения.</p></div>
-  <div class="b4 stats4">${[['16','типов','4 квадры по 4'],['8','аспектов','каждый — на 8 местах'],['4D','максимум','опыт, нормы, ситуация, время'],['16','видов отношений','от дуальности до конфликта']].map(([n,l,d]) => `<div class="wdg st"><div class="num">${n}</div><div class="stl">${l}</div><div class="sm">${d}</div></div>`).join('')}</div>
+  <div class="b4 glyph8">${AORD.map(a => `<a href="#aspect-${a.toLowerCase()}" style="--c:var(--${a})"><span class="gg">${D.bigs[a]}</span><b>${D.ab[a]}</b><span>${D.tag[a]}</span></a>`).join('')}</div>
   </div>
   <div class="quads" style="margin-top:20px">${q}</div>
   <div class="sheet"><div class="kicker">Тип — это не весь человек</div><h2>Почему люди одного типа не похожи</h2>
@@ -1594,18 +1650,18 @@ function typePage(k){
   return `<div class="crumb"><a href="#home">Типы</a> / ${t.q}</div>
   <div class="bento">
   <div class="hero b8"><div>
-    <div class="kicker">${t.q} · ${t.rat?'рационал':'иррационал'} · ${t.ru}</div>
+    <div class="kicker">${t.ru}, ${t.rat?'рационал':'иррационал'}, квадра ${t.q}</div>
     <h1>${t.name}</h1>
     <p class="analogy" data-layer="2">${P[0]}</p>
     <div class="meta"><span class="chip asp" style="--c:var(--${ba})">${D.syms[ba]} ведущая ${D.ab[ba]}</span><span class="chip asp" style="--c:var(--${t.m[1]})">${D.syms[t.m[1]]} творческая ${D.ab[t.m[1]]}</span><a class="chip" href="#pair-${k.toLowerCase()}-${t.dual.toLowerCase()}">дуал: ${T[t.dual].name}</a></div>
-  </div></div>
-  <a class="wdg inv b4" href="#fn-3"><div class="kicker">Самое уязвимое · болевая</div><div class="num">${D.ab[pa]}</div><div class="sm">${D.colname[pa]} «${D.tag[pa]}» · 1D · только опыт</div><div class="wtx">${t.lens[pa] ? t.lens[pa][0] : ''}</div><span class="go">разбор →</span></a>
-  <a class="wdg b4" href="#fn-0"><div class="kicker">Ведущая · ${D.colname[ba]}</div><div class="num" style="color:var(--${ba})">4D</div><div class="pbar">${[0,1,2,3].map(()=>`<i style="background:var(--${ba})"></i>`).join('')}</div><div class="sm">опыт, нормы, ситуация, время</div><div class="wrow"><span>Где ему лучше всего</span></div><div class="wtx" data-layer="2">${P[2]}</div></a>
-  <div class="sheet b8 rs2" style="margin-top:0"><div class="kicker">Профиль · модель А</div><h2>Восемь функций одним взглядом</h2>
+  </div><div class="glyphs" aria-hidden="true"><span class="g1">${D.bigs[ba]}</span><span class="g2">${D.bigs[t.m[1]]}</span></div></div>
+  <a class="wdg inv b4" href="#fn-3"><div class="kicker">Болевая функция, самое уязвимое</div><div class="num">${D.ab[pa]}</div><div class="sm">${D.colname[pa]} «${D.tag[pa]}» · 1D · только опыт</div><div class="wtx">${t.lens[pa] ? t.lens[pa][0] : ''}</div><span class="go">Открыть разбор болевой</span></a>
+  <a class="wdg b4" href="#fn-0"><div class="kicker">Ведущая: ${D.colname[ba].toLowerCase()}</div><div class="num" style="color:var(--${ba})">4D</div><div class="pbar">${[0,1,2,3].map(()=>`<i style="background:var(--${ba})"></i>`).join('')}</div><div class="sm">опыт, нормы, ситуация, время</div><div class="wrow"><span>Где ему лучше всего</span></div><div class="wtx" data-layer="2">${P[2]}</div></a>
+  <div class="sheet b8 rs2" style="margin-top:0"><div class="kicker">Профиль по модели А</div><h2>Восемь функций одним взглядом</h2>
   <p class="sm">${lay(0)}Сильные функции выше, слабые ниже; закрашены ценные — те, что человек хочет получать и давать.</p>
   <div class="prof">${profileSvg(t)}</div>
   <div class="mrow">${t.m.map((a,i) => `<a class="mcell${VALUED[i]?' v':''}" href="#fn-${i}"><div class="p">${i+1} · ${D.posn[i].slice(0,4)}.</div><div class="a" style="color:var(--${a})">${D.syms[a]}${D.ab[a]}</div><div class="t"><span data-layer="1">${D.dim[i]}D</span></div></a>`).join('')}</div></div>
-  <a class="wdg b4 tint" href="#fn-4" style="--c:var(--${t.m[4]})"><div class="kicker">Чего не хватает · суггестивная</div><div class="num" style="color:var(--${t.m[4]})">${D.ab[t.m[4]]}</div><div class="sm">${D.colname[t.m[4]]} «${D.tag[t.m[4]]}»</div><div class="wtx">${t.lens[t.m[4]] ? t.lens[t.m[4]][0] : ''}</div></a>
+  <a class="wdg b4 tint" href="#fn-4" style="--c:var(--${t.m[4]})"><div class="kicker">Суггестивная: чего не хватает</div><div class="num" style="color:var(--${t.m[4]})">${D.ab[t.m[4]]}</div><div class="sm">${D.colname[t.m[4]]} «${D.tag[t.m[4]]}»</div><div class="wtx">${t.lens[t.m[4]] ? t.lens[t.m[4]][0] : ''}</div></a>
   </div>
 
   <div class="sheet" data-layer="2"><div class="kicker">Портрет · 1 из 2</div><h2>${t.name}: сильное</h2>
