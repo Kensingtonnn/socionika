@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ebebe8">
 <title>Соционика без клише</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -690,6 +695,43 @@ footer{color:var(--mut);padding:24px 0}
 @media (max-width:880px){ .rs2{grid-row:auto} }
 .mood .rx.g{background:color-mix(in srgb,var(--good) 14%,var(--card))!important}
 .mood .rx.b{background:color-mix(in srgb,var(--hard) 14%,var(--card))!important}
+
+/* ===== телефон (≤560px), v3 ===== */
+.toy .tbtn.ghost,.stage .tbtn.ghost{background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+@media (max-width:560px){
+ header.top{position:relative;top:auto}
+ header.top .in{padding-block:10px 8px;gap:8px}
+ .brand{font-size:17px;width:100%}
+ .layers{order:3;width:100%;gap:4px} .layers .lbl{font-size:11.5px} .layers button{padding:5px 9px;font-size:11.5px}
+ nav.main{order:2;width:100%;margin:0;justify-content:space-between;gap:0;padding:4px;overflow:visible}
+ nav.main a{padding:8px 7px;font-size:13px;flex:0 1 auto;text-align:center}
+ .wrap{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+ .sheet,.hero,.stage,.wdg{padding:16px;border-radius:22px}
+ .sheet .sheet{margin-top:18px}
+ h1{font-size:clamp(30px,9vw,40px);margin:4px 0 8px}
+ h2{font-size:22px;margin:4px 0 10px}
+ .kicker{font-size:11px;letter-spacing:.07em}
+ .lead,.analogy{font-size:17px;line-height:1.5}
+ .acards,.cards,.qgrid,.rk,.stats,.sumg,.sides{grid-template-columns:1fr!important}
+ .quads>div{padding:14px}
+ .heat td,.heat th,.qheat td,.qheat th{padding:3px!important}
+ .hc{width:22px!important;height:22px!important;line-height:22px!important;font-size:10px}
+ .qheat td:first-child b,.heat td:first-child a{font-size:13px}
+ .heat th{font-size:10.5px}
+ .possel{margin:0 -16px;padding:10px 16px 6px}
+ .pstrip{grid-template-columns:1fr 1fr!important;gap:6px}
+ .pstrip>div{padding:8px 10px!important}
+ .toy{padding:12px} .stage{min-height:0}
+ .stage .toy.big{min-height:0}
+ .wdg .num{font-size:60px}
+ .vtabs{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none}
+ .vtab{flex:none}
+ .chans .chrow{grid-template-columns:1fr!important}
+ .pick{flex-direction:column;align-items:stretch} .pick select{width:100%;min-width:0}
+ .crumb{margin-top:12px;font-size:13.5px}
+ footer{font-size:12.5px}
+}
+@media (max-width:360px){ nav.main a{font-size:12px;padding:8px 5px} }
 </style>
 
 <header class="top"><div class="in">
