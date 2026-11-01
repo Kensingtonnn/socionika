@@ -1,7 +1,7 @@
 <title>Соционика без клише</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
 <style>
 /* layout: сайт-справочник — шапка с навигацией, одна колонка до 1080px; бумага серии в светлой теме, графит в тёмной */
 :root{
@@ -581,6 +581,115 @@ details.fnmore[open]>summary{color:var(--fg)}
  .pr:last-child{border-bottom:0}
  .fn .side{padding-bottom:4px}
 }
+
+.slw{position:relative;display:block;padding-bottom:16px}
+.slw input{width:100%;margin:0}
+.snorm{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.snorm i{display:block;width:2px;height:22px;background:var(--fg);opacity:.55;border-radius:1px;margin-top:-3px}
+.snorm em{font-style:normal;font-size:10.5px;color:var(--mut);white-space:nowrap}
+.mth em{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-style:normal;font-size:10.5px;color:var(--mut);white-space:nowrap}
+.mth.hot em{color:var(--Se)}
+.meter{margin-bottom:18px;overflow:visible} .mfill{border-radius:6px}
+
+/* ===== дизайн-система v3 (claude.ai/artifact/WWiE2YPopcDBTjNtgg975T): стол + виджеты ===== */
+:root{
+ --bg:#ebebe8; --card:#ffffff; --s2:#f4f4f1; --surface:#ffffff; --fg:#151515; --mut:#62625e; --line:#dcdcd7; --ink:#151515; --inkfg:#f4f4f1; --lime:#d6f26a; --inkfix:#151515;
+ --Ne:#6a4fa0; --Fe:#b03a6e; --Se:#b3362d; --Te:#a95c16; --Si:#237a6b; --Ni:#2c5b74; --Ti:#3f6a45; --Fi:#7b3a68; --good:#1f7a5a; --hard:#b3362d;
+ --serif:"Onest","Helvetica Neue",Arial,system-ui,sans-serif; --sans:"Onest","Helvetica Neue",Arial,system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+ --shw:0 1px 2px rgba(20,20,20,.04),0 8px 24px rgba(20,20,20,.05); --r-lg:28px; --r-md:18px; --r-sm:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#0e0e0f; --card:#1b1b1d; --s2:#252528; --surface:#1b1b1d; --fg:#f1f1ee; --mut:#a6a6a0; --line:#323236; --ink:#f1f1ee; --inkfg:#151515;
+ --Ne:#b39cf0; --Fe:#f08ab8; --Se:#f08a80; --Te:#f0a964; --Si:#6dd3bf; --Ni:#86bcdb; --Ti:#8fca98; --Fi:#d895c4; --good:#5fd1a6; --hard:#f08a80; --shw:none; color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#0e0e0f; --card:#1b1b1d; --s2:#252528; --surface:#1b1b1d; --fg:#f1f1ee; --mut:#a6a6a0; --line:#323236; --ink:#f1f1ee; --inkfg:#151515;
+ --Ne:#b39cf0; --Fe:#f08ab8; --Se:#f08a80; --Te:#f0a964; --Si:#6dd3bf; --Ni:#86bcdb; --Ti:#8fca98; --Fi:#d895c4; --good:#5fd1a6; --hard:#f08a80; --shw:none; color-scheme:dark }
+body{font-family:var(--sans);background:var(--bg);letter-spacing:-.003em}
+body::before{background:var(--bg)}
+h1,h2,h3,.lead,.analogy,.big-rel,details.fold>summary .st,.pzres,.fnlead,.brand{font-family:var(--sans)}
+h1{font-weight:600;letter-spacing:-.035em;line-height:1.02}
+h2{font-weight:600;letter-spacing:-.022em}
+.lead,.analogy,.fnlead{font-weight:400;letter-spacing:-.01em}
+.kicker{font-size:12px;letter-spacing:.08em;font-weight:600}
+/* шапка: пилюля навигации */
+header.top{background:var(--bg);border-bottom:0}
+.brand{font-weight:700;font-size:18px;letter-spacing:-.02em}
+nav.main{background:var(--card);padding:5px;border-radius:999px;box-shadow:var(--shw);gap:2px}
+nav.main a{font-weight:600;padding:8px 14px}
+nav.main a[aria-current="page"]{background:var(--ink);color:var(--inkfg)}
+.layers button{border:0;background:var(--card);box-shadow:var(--shw)}
+.layers button[aria-pressed="true"]{background:var(--ink);color:var(--inkfg)}
+/* виджеты */
+.sheet,.hero{background:var(--card);border:0;border-radius:var(--r-lg);padding:24px;box-shadow:var(--shw);margin-top:20px;--surface:var(--s2)}
+.sheet .sheet,.hero .sheet{background:none;box-shadow:none;padding:0;border-radius:0;margin-top:24px}
+.sheet>h2,.sheet>details.fold>summary .st{margin-top:4px}
+.sheet>details.fold{border:0;background:none;padding:0;margin:0}
+.sheet>details.fold>summary{padding:4px 40px 4px 0}
+details.fold>summary::after{content:"";width:32px;height:32px;border-radius:50%;background:var(--s2);top:6px;right:0;font-size:0;
+ -webkit-mask:none;display:block;box-shadow:inset 0 0 0 1px var(--line)}
+details.fold>summary::before{content:"+";position:absolute;right:0;top:6px;width:32px;height:32px;display:grid;place-items:center;font-size:20px;color:var(--fg);z-index:1}
+details.fold[open]>summary::before{content:"−"}
+details.fold[open]>summary::after{content:""}
+details.fold.sub{background:var(--s2);border:0;border-radius:var(--r-md);padding:0 16px}
+.hero{margin-top:16px}
+.crumb{margin:18px 0 0}
+.vc,.panel,.card,.toy,a.doc,.mbest,.qpairbox,.vstep,.phr{border:0;background:var(--s2);border-radius:var(--r-md);box-shadow:none}
+.card{border-left:0}
+.card h4 .c{color:var(--c)}
+a.doc{background:var(--card);box-shadow:var(--shw)}
+.sheet a.doc{background:var(--s2);box-shadow:none}
+a.doc:hover,.tc:hover,a.mcell:hover{box-shadow:inset 0 0 0 1.5px var(--fg)}
+.tc{border:0;background:var(--card);border-radius:var(--r-md);box-shadow:var(--shw)}
+.quads>div{background:var(--card);border-radius:var(--r-lg);padding:18px;box-shadow:var(--shw)}
+.quads>div .tc{background:var(--s2);box-shadow:none}
+.mcell{border:0;background:var(--s2);border-radius:var(--r-sm)}
+.chip{border:0;background:var(--s2);font-weight:500}
+.hero .chip,.sheet .chip{background:var(--s2)}
+.chip.on{background:var(--lime);color:var(--inkfix)}
+.lay{opacity:.85}
+/* управление: лайм = «ты здесь» */
+.possel button,.seg button,.vtab,.ne-n,.ti-opts button,.ni-cards button{border:0;background:var(--s2);border-radius:999px}
+.possel button[aria-pressed="true"],.seg button[aria-pressed="true"],.vtab.on{background:var(--lime);color:var(--inkfix);border-color:transparent;box-shadow:none}
+.possel button[aria-pressed="true"] span,.seg button[aria-pressed="true"] small{color:var(--inkfix)}
+.tbtn{border-radius:999px;border:0}
+.tbtn.ghost{background:var(--s2);color:var(--fg)}
+.pick select{border:0;background:var(--s2);border-radius:999px;padding:10px 14px}
+.pick button{background:var(--ink);color:var(--inkfg);border:0;border-radius:999px}
+.toy{padding:20px}
+.pr{background:var(--card);border-radius:var(--r-sm);padding:8px 12px;margin-bottom:4px}
+.vc .pr,.panel .pr,.card .pr,.vstep .pr{background:var(--card)}
+.pr.no{background:none;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--mut)}
+.ptab th,.ch th{border-bottom:1.5px solid var(--line)}
+table{font-variant-numeric:tabular-nums}
+.dots i{border-color:var(--fg)}
+footer{color:var(--mut);padding:24px 0}
+@media (max-width:560px){
+ .sheet,.hero{padding:18px;border-radius:22px;margin-top:12px}
+ nav.main{border-radius:999px}
+}
+
+.bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;margin-top:16px;align-items:stretch}
+.bento>*{margin-top:0!important;min-width:0}
+.b4{grid-column:span 4}.b8{grid-column:span 8}
+.bento .hero{display:block}
+.bento .hero h1{margin:6px 0 10px}
+.wdg{display:flex;flex-direction:column;gap:4px;background:var(--card);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shw);text-decoration:none;color:var(--fg);position:relative}
+.wdg:hover{box-shadow:inset 0 0 0 1.5px var(--fg)}
+.wdg.inv{background:var(--ink);color:var(--inkfg)} .wdg.inv .kicker,.wdg.inv .sm{color:var(--inkfg);opacity:.72}
+.wdg.tint{background:color-mix(in srgb,var(--c) 12%,var(--card))}
+.wdg .num{font-size:clamp(56px,7vw,80px);font-weight:500;letter-spacing:-.045em;line-height:.92;margin:10px 0 6px;font-variant-numeric:tabular-nums}
+.wdg .wtx{font-size:15.5px;line-height:1.45;margin-top:10px}
+.wdg .go{margin-top:auto;padding-top:12px;font-weight:600;font-size:14px}
+.wdg .wrow{margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);font-weight:600}
+.pbar{display:flex;gap:4px;margin:4px 0 8px}.pbar i{flex:1;height:8px;border-radius:99px}
+.chip.asp{background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--c);font-weight:600}
+.stage{background:var(--card);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shw);--surface:var(--s2)}
+.mood .rx,.mood>div{border-left:0!important;background:var(--s2)!important;border-radius:var(--r-md)!important}
+@media (max-width:880px){ .b4,.b8{grid-column:span 12} .bento{gap:12px} }
+
+.rs2{grid-row:span 2}
+.pairhero{display:block}
+@media (max-width:880px){ .rs2{grid-row:auto} }
+.mood .rx.g{background:color-mix(in srgb,var(--good) 14%,var(--card))!important}
+.mood .rx.b{background:color-mix(in srgb,var(--hard) 14%,var(--card))!important}
 </style>
 
 <header class="top"><div class="in">
@@ -1004,7 +1113,7 @@ function qVizTop(){
     const mx = (x1+x2)/2, my = (y1+y2)/2;
     o += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--line)" stroke-width="2"/><g transform="translate(${mx},${my})"><rect x="-58" y="-12" width="116" height="24" rx="12" fill="var(--bg)" stroke="var(--line)"/><text text-anchor="middle" y="4" font-size="10.5" font-weight="700">${sh.map(a => `<tspan fill="var(--${a})">${D.ab[a]}</tspan>`).join('<tspan fill="var(--mut)"> + </tspan>')}</text></g>`; });
   QORDER.forEach((q, i) => { const [x,y] = pos[i], c = D.cult.QC[q];
-    o += `<g class="qnode" data-q="${i}" tabindex="0" role="button" aria-label="${q}"><circle cx="${x}" cy="${y}" r="52" fill="${c}" opacity=".14"/><circle cx="${x}" cy="${y}" r="52" fill="none" stroke="${c}" stroke-width="2"/><text x="${x}" y="${y-14}" text-anchor="middle" font-family="Lora,serif" font-size="17" font-weight="600" fill="${c}">${q}</text>
+    o += `<g class="qnode" data-q="${i}" tabindex="0" role="button" aria-label="${q}"><circle cx="${x}" cy="${y}" r="52" fill="${c}" opacity=".14"/><circle cx="${x}" cy="${y}" r="52" fill="none" stroke="${c}" stroke-width="2"/><text x="${x}" y="${y-14}" text-anchor="middle" font-family="Onest,Arial,sans-serif" font-size="17" font-weight="600" fill="${c}">${q}</text>
       <text x="${x}" y="${y+4}" text-anchor="middle" font-size="10" font-weight="700">${D.cult.Q[q].slice(0,2).map(a => `<tspan fill="var(--${a})">${D.ab[a]} </tspan>`).join('')}</text><text x="${x}" y="${y+18}" text-anchor="middle" font-size="10" font-weight="700">${D.cult.Q[q].slice(2).map(a => `<tspan fill="var(--${a})">${D.ab[a]} </tspan>`).join('')}</text><text x="${x}" y="${y+36}" text-anchor="middle" font-size="9" fill="var(--mut)">открыть →</text></g>`; });
   o += `<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="10" fill="var(--mut)">у противоположных</text><text x="${cx}" y="${cy+17}" text-anchor="middle" font-size="10" fill="var(--mut)">общих ценностей нет</text>`;
   return o + `</svg>`;
@@ -1018,7 +1127,7 @@ function qVizQuad(qi){
     o += `<g class="qpair" data-a="${ord2[i]}" data-b="${ord2[j]}" tabindex="0" role="button" aria-label="${T[ord2[i]].name} и ${T[ord2[j]].name}: ${n}"><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${r === 'dual' ? 5 : 3}" ${r === 'mir' ? 'stroke-dasharray="7 5"' : ''}/><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="transparent" stroke-width="18"/>
       <text x="${(x1+x2)/2 + (x1 === x2 ? 8 : 0)}" y="${(y1+y2)/2 - (y1 === y2 ? 8 : 0) + (x1 !== x2 && y1 !== y2 ? (i === 0 ? -6 : 14) : 0)}" text-anchor="${x1 === x2 ? 'start' : 'middle'}" font-size="10.5" font-weight="700" fill="${c}">${n}</text></g>`; }
   ord2.forEach((k, i) => { const [x,y] = pts[i], t = T[k], a = t.m[0];
-    o += `<a href="#type-${k.toLowerCase()}"><circle cx="${x}" cy="${y}" r="38" fill="var(--bg)" stroke="var(--${a})" stroke-width="3"/><text x="${x}" y="${y-2}" text-anchor="middle" font-family="Lora,serif" font-size="13.5" font-weight="600" fill="var(--fg)">${t.name.length > 11 ? t.name.split(' ')[0] : t.name}</text><text x="${x}" y="${y+13}" text-anchor="middle" font-size="10" font-weight="700"><tspan fill="var(--${t.m[0]})">${D.ab[t.m[0]]}</tspan><tspan fill="var(--mut)"> · </tspan><tspan fill="var(--${t.m[1]})">${D.ab[t.m[1]]}</tspan></text></a>`; });
+    o += `<a href="#type-${k.toLowerCase()}"><circle cx="${x}" cy="${y}" r="38" fill="var(--bg)" stroke="var(--${a})" stroke-width="3"/><text x="${x}" y="${y-2}" text-anchor="middle" font-family="Onest,Arial,sans-serif" font-size="13.5" font-weight="600" fill="var(--fg)">${t.name.length > 11 ? t.name.split(' ')[0] : t.name}</text><text x="${x}" y="${y+13}" text-anchor="middle" font-size="10" font-weight="700"><tspan fill="var(--${t.m[0]})">${D.ab[t.m[0]]}</tspan><tspan fill="var(--mut)"> · </tspan><tspan fill="var(--${t.m[1]})">${D.ab[t.m[1]]}</tspan></text></a>`; });
   return o + `</svg>`;
 }
 function qVizPair(a, b){
@@ -1181,7 +1290,7 @@ function polrCompare(k, a){
   const t = T[k], g = D.polrgen[a];
   const hk = D.order.find(x => T[x].m[0] === a && T[x].rel[k] === 'conf') || D.order.find(x => T[x].m[0] === a);
   const H = T[hk], hr = H.raw[a] || {};
-  const tower = (x, full, lab, sub) => { let o = `<text x="${x+90}" y="18" text-anchor="middle" font-family="Lora,serif" font-size="15" fill="var(--fg)">${lab}</text><text x="${x+90}" y="34" text-anchor="middle" font-size="10.5" fill="var(--mut)">${sub}</text>`;
+  const tower = (x, full, lab, sub) => { let o = `<text x="${x+90}" y="18" text-anchor="middle" font-family="Onest,Arial,sans-serif" font-size="15" fill="var(--fg)">${lab}</text><text x="${x+90}" y="34" text-anchor="middle" font-size="10.5" fill="var(--mut)">${sub}</text>`;
     PDIM.slice().reverse().forEach((P, r) => { const i = 3 - r, on = full || i === 0, y = 46 + r*46;
       o += `<rect x="${x}" y="${y}" width="180" height="38" rx="7" fill="${on ? `var(--${a})` : 'none'}" ${on ? '' : 'stroke="var(--line)" stroke-dasharray="5 4" stroke-width="1.5"'}/><text x="${x+12}" y="${y+24}" font-size="13" font-weight="700" fill="${on ? '#fff' : 'var(--mut)'}">${P}</text><text x="${x+168}" y="${y+24}" text-anchor="end" font-size="11" fill="${on ? '#fff' : 'var(--mut)'}">${on ? (full ? 'есть' : 'только своё') : 'нет'}</text>`; });
     return o; };
@@ -1199,7 +1308,7 @@ function polrDeepSheet(k){
   const t = T[k], p = t.polr, a = t.m[3], g = D.polrgen[a], tw = D.polrpa[a].find(x => x !== k), W = T[tw], du = T[t.dual], rat = ['Ti','Te','Fi','Fe'].includes(a);
   const box = (x, y, w, lab, asp, fill, strong) => `<rect x="${x}" y="${y}" width="${w}" height="34" rx="6" fill="${fill}" ${strong ? '' : 'opacity=".9"'}/><text x="${x+10}" y="${y+21}" font-size="11" fill="${strong ? '#fff' : 'var(--mut)'}">${lab}</text><text x="${x+w-10}" y="${y+21}" text-anchor="end" font-size="12" font-weight="700" fill="${strong ? '#fff' : `var(--${asp})`}">${D.ab[asp]} «${D.tag[asp]}»</text>`;
   const twin = `<svg viewBox="0 0 560 210" role="img" aria-label="Почему у ${t.name} и ${W.name} одна болевая">
-    <text x="120" y="18" text-anchor="middle" font-family="Lora,serif" font-size="15" fill="var(--fg)">${t.name} · ${t.ru}</text><text x="440" y="18" text-anchor="middle" font-family="Lora,serif" font-size="15" fill="var(--fg)">${W.name} · ${W.ru}</text>
+    <text x="120" y="18" text-anchor="middle" font-family="Onest,Arial,sans-serif" font-size="15" fill="var(--fg)">${t.name} · ${t.ru}</text><text x="440" y="18" text-anchor="middle" font-family="Onest,Arial,sans-serif" font-size="15" fill="var(--fg)">${W.name} · ${W.ru}</text>
     ${box(20,36,200,'ведущая',t.m[0],`color-mix(in srgb,var(--${t.m[0]}) 18%,transparent)`)}${box(340,36,200,'ведущая',W.m[0],`color-mix(in srgb,var(--${W.m[0]}) 18%,transparent)`)}
     <line x1="220" y1="53" x2="340" y2="53" stroke="var(--mut)"/><text x="280" y="46" text-anchor="middle" font-size="10" fill="var(--mut)">разная ведущая</text>
     ${box(20,90,200,'творческая',t.m[1],`color-mix(in srgb,var(--${t.m[1]}) 18%,transparent)`)}${box(340,90,200,'творческая',W.m[1],`color-mix(in srgb,var(--${W.m[1]}) 18%,transparent)`)}
@@ -1294,20 +1403,23 @@ function typePage(k){
   D.order.forEach(k2 => { if (k2 !== k) (groups[t.rel[k2]] = groups[t.rel[k2]] || []).push(k2); });
   const rels = RORDER.filter(r => groups[r]).map(r => `<div class="rgroup"><div class="rn"><span class="sw" style="background:var(${RTONE[r]})"></span><a href="#rel-${r.replace('_','-')}" style="color:var(--fg)">${D.rel[r][0]}</a></div><div>${groups[r].map(k2 => `<a class="chip" href="#pair-${k.toLowerCase()}-${k2.toLowerCase()}">${T[k2].name} <span class="mut">${T[k2].ru}</span></a>`).join(' ')}</div></div>`).join('');
   const docs = Object.entries(D.docs).filter(([d,v]) => v[2].includes(k)).map(([d,v]) => `<a class="doc" href="docs/${d}.html"><span class="kind">${v[1]}</span><span class="dt">${v[0]}</span></a>`).join('');
+  const pa = t.m[3], ba = t.m[0];
   return `<div class="crumb"><a href="#home">Типы</a> / ${t.q}</div>
-  <div class="hero"><div>
-    <div class="kicker">Соционика · тип · ${t.ru}</div>
+  <div class="bento">
+  <div class="hero b8"><div>
+    <div class="kicker">${t.q} · ${t.rat?'рационал':'иррационал'} · ${t.ru}</div>
     <h1>${t.name}</h1>
-    <div style="font-family:var(--serif);font-size:20px">${t.q} · ${t.rat?'рационал':'иррационал'} · ведущая ${D.ab[t.m[0]]}, творческая ${D.ab[t.m[1]]}</div>
     <p class="analogy" data-layer="2">${P[0]}</p>
-    <p data-layer="2"><b>Где ему лучше всего:</b> ${P[2]}</p>
-    <div class="meta"><a class="chip" href="#pair-${k.toLowerCase()}-${t.dual.toLowerCase()}">дуал: ${T[t.dual].name}</a><a class="chip" href="#fn-3">болевая: ${D.ab[t.m[3]]}</a><a class="chip" href="#fn-4">суггестивная: ${D.ab[t.m[4]]}</a></div>
-  </div><div class="ic" aria-hidden="true">${D.icons[t.m[0]]}</div></div>
-
-  <div class="sheet"><div class="kicker">Профиль</div><h2>Восемь функций одним взглядом</h2>
-  <p class="sm">${lay(0)}Сильные функции выше, слабые ниже; закрашены ценные — те, что человек хочет получать и давать. Порядок — места модели А.</p>
+    <div class="meta"><span class="chip asp" style="--c:var(--${ba})">${D.syms[ba]} ведущая ${D.ab[ba]}</span><span class="chip asp" style="--c:var(--${t.m[1]})">${D.syms[t.m[1]]} творческая ${D.ab[t.m[1]]}</span><a class="chip" href="#pair-${k.toLowerCase()}-${t.dual.toLowerCase()}">дуал: ${T[t.dual].name}</a></div>
+  </div></div>
+  <a class="wdg inv b4" href="#fn-3"><div class="kicker">Самое уязвимое · болевая</div><div class="num">${D.ab[pa]}</div><div class="sm">${D.colname[pa]} «${D.tag[pa]}» · 1D · только опыт</div><div class="wtx">${t.lens[pa] ? t.lens[pa][0] : ''}</div><span class="go">разбор →</span></a>
+  <a class="wdg b4" href="#fn-0"><div class="kicker">Ведущая · ${D.colname[ba]}</div><div class="num" style="color:var(--${ba})">4D</div><div class="pbar">${[0,1,2,3].map(()=>`<i style="background:var(--${ba})"></i>`).join('')}</div><div class="sm">опыт, нормы, ситуация, время</div><div class="wrow"><span>Где ему лучше всего</span></div><div class="wtx" data-layer="2">${P[2]}</div></a>
+  <div class="sheet b8 rs2" style="margin-top:0"><div class="kicker">Профиль · модель А</div><h2>Восемь функций одним взглядом</h2>
+  <p class="sm">${lay(0)}Сильные функции выше, слабые ниже; закрашены ценные — те, что человек хочет получать и давать.</p>
   <div class="prof">${profileSvg(t)}</div>
   <div class="mrow">${t.m.map((a,i) => `<a class="mcell${VALUED[i]?' v':''}" href="#fn-${i}"><div class="p">${i+1} · ${D.posn[i].slice(0,4)}.</div><div class="a" style="color:var(--${a})">${D.syms[a]}${D.ab[a]}</div><div class="t"><span data-layer="1">${D.dim[i]}D</span></div></a>`).join('')}</div></div>
+  <a class="wdg b4 tint" href="#fn-4" style="--c:var(--${t.m[4]})"><div class="kicker">Чего не хватает · суггестивная</div><div class="num" style="color:var(--${t.m[4]})">${D.ab[t.m[4]]}</div><div class="sm">${D.colname[t.m[4]]} «${D.tag[t.m[4]]}»</div><div class="wtx">${t.lens[t.m[4]] ? t.lens[t.m[4]][0] : ''}</div></a>
+  </div>
 
   <div class="sheet" data-layer="2"><div class="kicker">Портрет · 1 из 2</div><h2>${t.name}: сильное</h2>
   <div class="cards">${cards([0,1], false)}</div></div>
@@ -1399,15 +1511,15 @@ function pairPage(a, b){
     <path d="M350 96 C 300 120, 240 120, 190 96" fill="none" stroke="var(--fg)" stroke-width="1.8"/><path d="M196 104 L189 96 L199 93" fill="none" stroke="var(--fg)" stroke-width="1.8"/>
     <text x="270" y="34" text-anchor="middle" font-size="11" fill="var(--mut)">${D.ab[A.m[0]]} → ${D.posn[B.m.indexOf(A.m[0])].toLowerCase()}</text>
     <text x="270" y="138" text-anchor="middle" font-size="11" fill="var(--mut)">${D.posn[A.m.indexOf(B.m[0])].toLowerCase()} ← ${D.ab[B.m[0]]}</text>
-    <text x="110" y="172" text-anchor="middle" font-family="Lora,serif" font-size="17" fill="var(--fg)">${nA}</text><text x="430" y="172" text-anchor="middle" font-family="Lora,serif" font-size="17" fill="var(--fg)">${nB}</text>
+    <text x="110" y="172" text-anchor="middle" font-family="Onest,Arial,sans-serif" font-size="17" fill="var(--fg)">${nA}</text><text x="430" y="172" text-anchor="middle" font-family="Onest,Arial,sans-serif" font-size="17" fill="var(--fg)">${nB}</text>
     <text x="110" y="187" text-anchor="middle" font-size="10" fill="var(--mut)">ведущая ${D.ab[A.m[0]]}</text><text x="430" y="187" text-anchor="middle" font-size="10" fill="var(--mut)">ведущая ${D.ab[B.m[0]]}</text></svg>`;
   return `<div class="crumb"><a href="#relations">Отношения</a> / <a href="#rel-${r.replace('_','-')}">${D.rel[r][0]}</a></div>
-  <div class="kicker" style="margin-top:14px">Соционика · интертипные отношения</div>
+  <div class="hero pairhero"><div><div class="kicker">Соционика · интертипные отношения</div>
   <h1>${nA}<br>и ${nB}</h1>
   <div class="big-rel"><span class="sw" style="width:18px;height:18px;background:var(${RTONE[r]})"></span>${D.rel[r][0].toLowerCase()}</div>
   ${r !== rb ? `<p class="sm mut">С другой стороны это ${D.rel[rb][0].toLowerCase()}.</p>` : ''}
   <div style="max-width:620px">${cover}</div>
-  <div class="pick"><label for="pa">Первый<select id="pa">${opts(a)}</select></label><label for="pb">Второй<select id="pb">${opts(b)}</select></label><button type="button" id="go">Показать</button><a class="chip" href="#pair-${b.toLowerCase()}-${a.toLowerCase()}">поменять местами</a></div>
+  <div class="pick"><label for="pa">Первый<select id="pa">${opts(a)}</select></label><label for="pb">Второй<select id="pb">${opts(b)}</select></label><button type="button" id="go">Показать</button><a class="chip" href="#pair-${b.toLowerCase()}-${a.toLowerCase()}">поменять местами</a></div></div></div>
 
   ${storySheet(a, b)}
   ${r === 'dual' ? dualSheets(a, b) : ''}
@@ -1785,7 +1897,7 @@ function toyNe(el){
     q(); return;
   }
   let found = 0;
-  el.innerHTML = `${L < 3 ? absent(2, 'необычного запаса этой вещи не видно — только типовое') : ''}${L < 4 ? absent(3, 'не видно, во что вырастет каждая возможность') : ''}<div class="ne-wrap"><div class="ne-count">найдено возможностей: <b id="necnt">0</b>${L===2?' <span class="mut">· видишь только типовое</span>':''}</div><ul class="ne-tree"><li><button type="button" class="ne-n root" data-k="кирпич" data-d="0">🧱 кирпич</button></li></ul></div>`;
+  el.innerHTML = `${L >= 2 ? `<p class="sm" style="margin:0 0 8px">${ptag(1)} ${L === 2 ? 'Нажми на кирпич — раскроются <b>типовые применения</b>: то, как этой вещью «обычно» пользуются. Это и есть нормы.' : 'Типовые применения видны сразу — это нормы; поверх них открывается необычное.'}</p>` : ''}${L < 3 ? absent(2, 'необычного запаса этой вещи не видно — только типовое') : ''}${L < 4 ? absent(3, 'не видно, во что вырастет каждая возможность') : ''}<div class="ne-wrap"><div class="ne-count">найдено возможностей: <b id="necnt">0</b>${L===2?' <span class="mut">· видишь только типовое</span>':''}</div><ul class="ne-tree"><li><button type="button" class="ne-n root" data-k="кирпич" data-d="0">🧱 кирпич</button></li></ul></div>`;
   el.addEventListener('click', e => {
     const b = e.target.closest('.ne-n'); if (!b || b.dataset.open) return;
     const depth = +b.dataset.d, maxD = L === 2 ? 1 : 2;
@@ -1805,7 +1917,7 @@ function toyFe(el){
   el.innerHTML = `<canvas class="fe-c" width="640" height="260" aria-label="Сцена с искрами"></canvas>
     <div class="toybar"><button type="button" class="tbtn" id="fepump">Держи, чтобы подкачать</button>
     ${L < 2 ? absent(1, 'меток «где обычно начинается» нет') : ''}${L >= 2 && L < 3 ? absent(2, 'текущего накала не видно — только метки') : ''}${L < 4 ? absent(3, 'не видно, когда перегреешь или погаснет') : ''}
-    ${L >= 2 ? `<div class="meter">${L>=3?'<div class="mfill" id="femet"></div>':''}<div class="mth" style="left:35%"></div><div class="mth hot" style="left:88%"></div></div>` : ''}<span id="fest" class="sm"></span></div><p id="fefc" class="sm mut"></p>`;
+    ${L >= 2 ? `<div class="meter">${L>=3?'<div class="mfill" id="femet"></div>':''}<div class="mth" style="left:35%"><em>обычно «началось»</em></div><div class="mth hot" style="left:88%"><em>перебор</em></div></div>` : ''}<span id="fest" class="sm"></span></div><p id="fefc" class="sm mut"></p>`;
   const c = el.querySelector('canvas'), x = c.getContext('2d'), btn = el.querySelector('#fepump');
   let E = 6, pump = false, started = false, P = [], was = 0;
   const rel = () => { if (!pump) return; pump = false;
@@ -1834,7 +1946,7 @@ function toyFe(el){
 /* ЧС */
 function toySe(el){
   const L = LV();
-  el.innerHTML = `<svg class="se-s" viewBox="0 0 640 300" aria-label="Качели с грузами"><g id="sebeam"><rect x="70" y="146" width="500" height="10" rx="4" fill="var(--fg)"/>${L>=2?'<rect x="250" y="160" width="140" height="6" fill="var(--Se)" opacity=".25"/><text x="320" y="180" text-anchor="middle" font-size="10" fill="var(--mut)">как принято: тяжёлое ближе к опоре</text>':''}<circle id="secm" r="7" fill="var(--Se)" stroke="var(--bg)" stroke-width="2" ${L>=3?'':'visibility="hidden"'}/></g><polygon points="320,156 300,200 340,200" fill="var(--mut)"/><line x1="40" y1="200" x2="600" y2="200" stroke="var(--line)"/><text x="320" y="228" text-anchor="middle" font-size="13" fill="var(--fg)" id="setxt"></text><text x="320" y="292" text-anchor="middle" font-size="12" fill="var(--mut)" id="sefc"></text></svg>${L < 2 ? absent(1, 'правила «тяжёлое ближе к опоре» нет') : ''}${L < 3 ? absent(2, 'центр силы не виден') : ''}${L < 4 ? absent(3, 'что будет после следующего груза, не видно') : ''}`;
+  el.innerHTML = `<svg class="se-s" viewBox="0 0 640 300" aria-label="Качели с грузами"><g id="sebeam"><rect x="70" y="146" width="500" height="10" rx="4" fill="var(--fg)"/>${L>=2?'<rect x="250" y="160" width="140" height="6" fill="var(--Se)" opacity=".25"/><text x="400" y="176" text-anchor="start" font-size="10" fill="var(--mut)">← как принято: тяжёлое ближе к опоре</text>':''}<circle id="secm" r="7" fill="var(--Se)" stroke="var(--bg)" stroke-width="2" ${L>=3?'':'visibility="hidden"'}/></g><polygon points="320,156 300,200 340,200" fill="var(--mut)"/><line x1="40" y1="200" x2="600" y2="200" stroke="var(--line)"/><text x="320" y="228" text-anchor="middle" font-size="13" fill="var(--fg)" id="setxt"></text><text x="320" y="292" text-anchor="middle" font-size="12" fill="var(--mut)" id="sefc"></text></svg>${L < 2 ? absent(1, 'правила «тяжёлое ближе к опоре» нет') : ''}${L < 3 ? absent(2, 'центр силы не виден') : ''}${L < 4 ? absent(3, 'что будет после следующего груза, не видно') : ''}`;
   const svg = el.querySelector('svg'), beam = el.querySelector('#sebeam');
   const W = [{m:1,s:26},{m:2,s:34},{m:3,s:40},{m:5,s:50}].map((w,i) => Object.assign(w, {on:false, bx:0, tx: 90 + i*130}));
   let shown = 0, target = 0;
@@ -1907,7 +2019,7 @@ function toySi(el){
       <div class="si-states" id="sist"></div>
       <div class="toybar"><button type="button" class="tbtn ghost" data-act="air">Проветрить</button><button type="button" class="tbtn ghost" data-act="food">Перекусить</button><button type="button" class="tbtn ghost" data-act="body">Размяться</button></div></div>
     <div><label class="sl" for="sitask" style="margin-top:0">Что сейчас происходит<select id="sitask" class="sisel">${Object.entries(TASK).map(([k,o]) => `<option value="${k}">${o.n}</option>`).join('')}</select></label>
-      ${SL.map(([k,n]) => `<label class="sl" for="si-${k}">${n}<input type="range" id="si-${k}" min="0" max="100" value="50"${L>=2?` style="background:linear-gradient(90deg,transparent ${NORMS[k]*100-1}%,var(--mut) ${NORMS[k]*100-1}%,var(--mut) ${NORMS[k]*100+1}%,transparent ${NORMS[k]*100+1}%)"`:''}></label>`).join('')}
+      ${SL.map(([k,n]) => `<label class="sl" for="si-${k}">${n}<span class="slw"><input type="range" id="si-${k}" min="0" max="100" value="50">${L>=2?`<span class="snorm" style="left:calc(${NORMS[k]*100}% + ${(0.5-NORMS[k])*16}px)" aria-hidden="true"><i></i><em>как принято</em></span>`:''}</span></label>`).join('')}
       ${L>=2?`<p class="sm mut" style="margin:8px 0 0">${ptag(1)} Метка на ползунке — «как принято». Проветривать раз в час, есть каждые четыре часа, вставать каждый час.</p>`:absent(1, 'меток «как принято» и правил нет')}
       <div class="si-out"><div class="si-feel"><span class="mut sm">Самочувствие</span><b id="sifeel"></b></div><div id="sidiag"></div><div id="sifc"></div></div></div></div>`;
   const q = s => el.querySelector(s);
@@ -2067,7 +2179,7 @@ function toyTi(el){
 function toyFi(el){
   const L = LV(), P = curPos;
   const IT = [['дом',1],['старый друг',1],['любимая кружка',1],['шумный бар',-1],['чужая работа',-1],['соседний город',0]];
-  el.innerHTML = `<svg class="fi-s" viewBox="0 0 640 380" aria-label="Я и то, что вокруг">${L===1?'<defs><radialGradient id="fog"><stop offset="38%" stop-color="var(--surface)" stop-opacity="0"/><stop offset="62%" stop-color="var(--surface)" stop-opacity=".93"/></radialGradient></defs>':''}<circle cx="320" cy="190" r="80" fill="none" stroke="var(--line)" stroke-dasharray="4 4"/><circle cx="320" cy="190" r="165" fill="none" stroke="var(--line)" stroke-dasharray="4 4"/><text x="320" y="104" text-anchor="middle" font-size="10" fill="var(--mut)">своё</text><text x="320" y="20" text-anchor="middle" font-size="10" fill="var(--mut)">чужое</text><g id="fig"></g>${L===1?'<rect width="640" height="380" fill="url(#fog)" pointer-events="none"/>':''}<circle cx="320" cy="190" r="34" fill="var(--Fi)"/><text x="320" y="196" text-anchor="middle" font-size="16" font-weight="700" fill="var(--bg)">я</text><text id="fifc" x="320" y="372" text-anchor="middle" font-size="12" fill="var(--mut)"></text></svg>
+  el.innerHTML = `<svg class="fi-s" viewBox="0 -10 640 410" aria-label="Я и то, что вокруг">${L===1?'<defs><radialGradient id="fog"><stop offset="38%" stop-color="var(--surface)" stop-opacity="0"/><stop offset="62%" stop-color="var(--surface)" stop-opacity=".93"/></radialGradient></defs>':''}<circle cx="320" cy="190" r="80" fill="none" stroke="var(--line)" stroke-dasharray="4 4"/><circle cx="320" cy="190" r="165" fill="none" stroke="var(--line)" stroke-dasharray="4 4"/><text x="320" y="104" text-anchor="middle" font-size="10" fill="var(--mut)">своё</text><text x="320" y="20" text-anchor="middle" font-size="10" fill="var(--mut)">чужое</text><g id="fig"></g>${L===1?'<rect width="640" height="380" fill="url(#fog)" pointer-events="none"/>':''}<circle cx="320" cy="190" r="34" fill="var(--Fi)"/><text x="320" y="196" text-anchor="middle" font-size="16" font-weight="700" fill="var(--bg)">я</text><text id="fifc" x="320" y="372" text-anchor="middle" font-size="12" fill="var(--mut)"></text></svg>
     ${L === 1 ? absent(2, 'дальние предметы в тумане: им знак не поставить') : ''}${L < 2 ? absent(1, 'знаков «как принято» нет') : L === 2 ? `<p class="sm mut" style="margin:6px 0 0">${ptag(1)} Знаки расставлены «как принято». Свои поставить можно, но без чутья.</p>${absent(2, 'своё ощущение «здесь и сейчас» не подключено')}` : ''}${L < 4 ? absent(3, 'не видно, как изменится притяжение') : ''}
     <div class="legend"><span><span class="sw" style="background:var(--good)"></span>своё — тянется ближе</span><span><span class="sw" style="background:var(--mut)"></span>всё равно</span><span><span class="sw" style="background:var(--hard)"></span>чужое — отходит дальше</span></div>`;
   const svg = el.querySelector('svg'), G = el.querySelector('#fig');
