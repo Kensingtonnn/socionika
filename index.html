@@ -842,6 +842,25 @@ body.ai-dockL .wrap,body.ai-dockL header.top .in{margin-left:400px;margin-right:
  body.ai-dockR .wrap,body.ai-dockL .wrap,body.ai-dockR header.top .in,body.ai-dockL header.top .in{margin:0 auto;max-width:none}
  #aifab span{display:none} #aifab{padding:15px}
 }
+
+/* ===== уровни ===== */
+.lvbtn{margin-left:6px;font:600 12px var(--sans);border:0;border-radius:999px;padding:6px 12px;background:var(--lime);color:var(--inkfix);cursor:pointer;box-shadow:var(--shw)}
+.gl{border-bottom:2px dotted color-mix(in srgb,var(--fg) 45%,transparent);cursor:help}
+.gl:hover,.gl:focus{background:color-mix(in srgb,var(--lime) 55%,transparent);border-radius:3px;outline:none}
+.dict{background:color-mix(in srgb,var(--lime) 22%,var(--card))!important}
+.dgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.dct{background:var(--card);border-radius:var(--r-md);padding:10px 14px;display:flex;flex-direction:column;gap:2px;font-size:14.5px;line-height:1.45}
+.dct b{text-transform:capitalize}
+.qz{position:fixed;inset:0;z-index:60;background:rgba(10,10,10,.45);display:grid;place-items:center;padding:16px}
+.qzc{background:var(--card);border-radius:28px;padding:24px;max-width:560px;width:100%;max-height:calc(100vh - 32px);overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.qzc h2{margin:8px 0 6px}
+.qzq{margin-top:16px} .qzq b{display:block;margin-bottom:8px}
+.qzo{display:flex;flex-direction:column;gap:6px}
+.qzo button{text-align:left;border:0;background:var(--s2);color:var(--fg);border-radius:14px;padding:10px 14px;font:500 15px var(--sans);cursor:pointer}
+.qzo button[aria-pressed="true"]{background:var(--lime);color:var(--inkfix)}
+.qzf{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.qzf .tbtn:not(.ghost){background:var(--ink);color:var(--inkfg)} .qzf .tbtn:disabled{opacity:.4}
+@media (max-width:560px){ .dgrid{grid-template-columns:1fr} .lvbtn{order:4} }
 </style>
 
 <header class="top"><div class="in">
@@ -2545,12 +2564,14 @@ function route(){
   else if (/^(fn|pos)-\d$/.test(h)) { const el = document.getElementById(h); if (el) { el.scrollIntoView(); return; } html = home(); }
   else { html = home(); }
   clearToys(); hideTip && hideTip();
+  { const dk = dictSheet(); if (dk) { const ci = html.indexOf('class="crumb"'); if (ci >= 0 && ci < 20) { const e2 = html.indexOf('</div>', ci) + 6; html = html.slice(0, e2) + dk + html.slice(e2); } else html = dk + html; } }
   app.innerHTML = html + `<footer>Авторская интерпретация, 2026. Ядро — по Аугустинавичюте; классика — Букалов, Рейнин; линза и гипотезы — мои. Соционика не прошла строгой научной проверки.</footer>`;
   document.getElementById('nav-home').toggleAttribute('aria-current', nav === 'home'); if (nav==='home') document.getElementById('nav-home').setAttribute('aria-current','page');
   ['home','fn','rel','quad','bas'].forEach(n => { const el = document.getElementById('nav-'+n); el.removeAttribute('aria-current'); if (nav === n) el.setAttribute('aria-current','page'); });
   bindPick(); bindMatrix(); bindCmp(); if (nav === 'fn') { const mm = h.match(/^aspect-([a-z]{2})$/); if (mm) { const A = mm[1][0].toUpperCase()+mm[1][1]; bindStage(A); mountToy(A); } mountBW(); } window.scrollTo(0, 0);
   if (openAnchor) { const el = document.getElementById(openAnchor); if (el) el.scrollIntoView({block:'start'}); }
   if (openV != null) { const b = document.querySelector(`#vals .vtab[data-v="${openV}"]`); if (b) { b.click(); openTo(document.getElementById('vals')); } }
+  if (typeof glossify === 'function') glossify();
 }
 const openTo = el => { el.querySelectorAll(':scope > details.fold').forEach(d => d.open = true); let p = el; while (p) { if (p.tagName === 'DETAILS') p.open = true; p = p.parentElement; } el.scrollIntoView({block:'start'}); };
 app.addEventListener('click', e => { const a = e.target.closest('a[href^="#fn-"],a[href^="#pos-"]'); if (a) { e.preventDefault(); const el = document.getElementById(a.getAttribute('href').slice(1)); if (el) openTo(el); } });
@@ -2664,6 +2685,93 @@ document.addEventListener('keydown', e => { if (e.target.id === 'aiin' && e.key 
 document.addEventListener('input', e => { if (e.target.id === 'aiin') { e.target.style.height = 'auto'; e.target.style.height = Math.min(140, e.target.scrollHeight) + 'px'; } });
 window.addEventListener('hashchange', () => { if (AI.open && !AI.msgs.length) aiRender(); });
 aiRender();
+// ---------- уровни понимания: мини-тест, словарь, подсказки к терминам (новичку — с функцией этого типа)
+const GL = [
+ ['аспект', 'Одна из восьми сторон мира, которую психика замечает: запас, зажигание, вес, КПД, самочувствие, сюжет, мера, гравитация.', 'Кто-то первым замечает, что в комнате душно (самочувствие), а кто-то — что план не сходится (мера).'],
+ ['функция', 'Аспект на своём месте в модели конкретного типа. Одна и та же сторона мира у разных типов работает по-разному.', 'БС у Дюма — главное, у Дона Кихота — то, чего не хватает.'],
+ ['ведущая', 'Главная функция: работает даром, ценна, через неё человек смотрит на мир.', 'Как родной язык: говоришь, не задумываясь.'],
+ ['творческая', 'Вторая сильная функция: инструмент, которым ведущая добивается своего.', 'Как профессия, в которой хорош, — гибко и по ситуации.'],
+ ['ролевая', 'Слабая функция, которую держат «как положено» на людях. Получается по образцу, но дорого.', 'Вежливая улыбка на чужом празднике: выходит, но потом нужна тишина.'],
+ ['болевая', 'Самое уязвимое место: только личный опыт, нет правил, ситуации и прогноза. Ошибки ранят, критика звучит как приговор.', 'Если болевая — КПД: трудно заранее прикинуть, сколько сил и времени уйдёт на ремонт, и упрёк «можно было проще» бьёт в самое больное.'],
+ ['суггестивная', 'То, чего больше всего не хватает. Сам не производит, но жадно принимает, когда дают.', 'Как голодному еда: подсказку берёшь с благодарностью, почти не проверяя.'],
+ ['активационная', 'Слабая, но интересная: помощь здесь бодрит и подталкивает к делу.', 'Рядом с тем, кто это умеет, хочется действовать.'],
+ ['ограничительная', 'Сильная, но не ценная: умеет, но сдерживает и включает, когда задели.', 'Умеешь спорить, но делаешь это только когда без этого никак.'],
+ ['демонстративная', 'Сильная, но фоновая: делает на автомате и не придаёт значения.', 'Чинишь кран между делом и удивляешься, что тебя за это хвалят.'],
+ ['мерность', 'Сколько параметров видит функция: 1D — только опыт, 2D — опыт и нормы, 3D — плюс ситуация, 4D — плюс время.', 'Как карта: 1D — помнишь дорогу, по которой ходил; 4D — видишь весь город и пробки через час.'],
+ ['опыт', 'Параметр функции: то, что сам пережил и запомнил.', '«В прошлый раз так сработало».'],
+ ['нормы', 'Параметр функции: как обычно принято и устроено.', '«Обычно это делают так».'],
+ ['ситуация', 'Параметр функции: что нужно именно здесь и сейчас.', '«А сегодня надо иначе, потому что…»'],
+ ['время', 'Параметр функции: к чему это приведёт дальше.', '«Если так, то через месяц будет…»'],
+ ['цена', 'Сколько сил стоит пользоваться функцией: ведущая и творческая — даром, роль — дорого, болевая — дороже всего.', 'После дня на ведущей — бодрость, после дня на болевой — выжат.'],
+ ['дуал', 'Тип, у которого сильные функции точно закрывают твои слабые, а твои — его. Рядом с ним ничего не надо изображать.', 'Один без усилия делает то, что другому даётся тяжелее всего, — и наоборот.'],
+ ['квадра', 'Четыре типа с одинаковым набором ценных аспектов: им важно одно и то же.', 'Как люди, которые сразу понимают, о чём ты, без объяснений.'],
+ ['блок', 'Пара мест модели: эго (сильно и ценно), сверх-я (слабо и под оценкой), сверх-оно (слабо, но хочется), оно (сильно, но фоном).', 'Болевая и суггестивная одинаково слабые, но первая — под оценкой, вторая — жажда.'],
+ ['ядро', 'Метка: так у Аугустинавичюте, основательницы соционики.', ''],
+ ['линза', 'Метка: авторская интерпретация этого сайта, не исходная теория.', ''],
+ ['гипотеза', 'Метка: предположение, которое не проверено.', '']];
+const GLM = Object.fromEntries(GL.map(g => [g[0], g]));
+const POSW = {'ведущая':0,'творческая':1,'ролевая':2,'болевая':3,'суггестивная':4,'активационная':5,'ограничительная':6,'демонстративная':7};
+const LVN = ['новичок','знаю основы','глубоко'];
+let LEVEL = +ls.get('level', '-1');
+const QZ = [
+ ['Что такое «болевая функция»?', ['Самое уязвимое место типа', 'Функция, которая отвечает за боль в теле', 'Не знаю'], 0],
+ ['Что значит «4D» у функции?', ['Она видит опыт, нормы, ситуацию и время', 'Четыре типа в квадре', 'Не знаю'], 0],
+ ['Кто такой дуал?', ['Тип, который закрывает твои слабые места, а ты — его', 'Тип, похожий на тебя', 'Не знаю'], 0]];
+function glossTip(term){
+  const g = GLM[term]; if (!g) return '';
+  let tip = g[1] + (g[2] ? ' Пример: ' + g[2] : '');
+  const m = location.hash.match(/^#type-([a-z]{3})/);
+  if (m && term in POSW) { const t = T[m[1].toUpperCase()], a = t.m[POSW[term]]; tip = `У ${G(t)} ${term} — ${D.ab[a]} «${D.tag[a]}». ` + tip; }
+  return tip;
+}
+function glossify(){
+  if (LEVEL !== 0) return;
+  const re = new RegExp('(^|[^А-Яа-яЁё])(' + GL.filter(g => g[0].length > 3).map(g => g[0]).join('|') + ')(?![А-Яа-яЁё])', 'i');
+  const seen = new Set();
+  document.querySelectorAll('#app .sheet, #app .hero, #app .wdg').forEach(sec => {
+    const local = new Set();
+    const w = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT, {acceptNode: n => n.parentElement.closest('a,button,summary,.gl,svg,.lay,select,option,script,.kicker') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT});
+    const nodes = []; while (w.nextNode()) nodes.push(w.currentNode);
+    nodes.forEach(n => { const mm = n.textContent.match(re); if (!mm) return; const term = mm[2].toLowerCase(); if (local.has(term) || seen.size > 60) return;
+      local.add(term); seen.add(term);
+      const i = mm.index + mm[1].length, span = document.createElement('span'); span.className = 'tipb gl'; span.tabIndex = 0; span.dataset.tip = glossTip(term); span.textContent = mm[2];
+      const rest = n.splitText(i); rest.textContent = rest.textContent.slice(mm[2].length); n.after(span); });
+  });
+}
+function dictSheet(){
+  if (LEVEL !== 0) return '';
+  const h = location.hash.slice(1); if (!/^(type-|pair-|aspect-|home|functions|$)/.test(h || 'home')) return '';
+  const m = h.match(/^type-([a-z]{3})/), t = m ? T[m[1].toUpperCase()] : null;
+  const pos = Object.keys(POSW).map(p => `<div class="dct"><b>${p}${t ? ` · <span style="color:var(--${t.m[POSW[p]]})">${D.ab[t.m[POSW[p]]]}</span>` : ''}</b><span>${GLM[p][1]}</span></div>`).join('');
+  return `<div class="sheet dict"><details class="fold"${ls.get('dictOpen','1') === '1' ? ' open' : ''}><summary><span class="kicker">Для новичка</span><span class="st">Словарь в двух словах${t ? ` — на примере ${G(t)}` : ''}</span><span class="sm mut">восемь мест модели, мерность и цена; наведи на подчёркнутое слово — будет пример</span></summary>
+    <div class="dgrid">${pos}<div class="dct"><b>мерность · 1D–4D</b><span>${GLM['мерность'][1]}</span></div><div class="dct"><b>цена</b><span>${GLM['цена'][1]}</span></div></div>
+    <p class="sm mut" style="margin-top:10px">Сменить уровень — кнопка «Уровень» в шапке.</p></details></div>`;
+}
+function quizHTML(){
+  return `<div class="qz" role="dialog" aria-modal="true" aria-label="Мини-тест"><div class="qzc"><div class="kicker">Три вопроса · 20 секунд</div><h2>Насколько ты знаком с соционикой?</h2><p class="sm">Сайт подстроится: новичку — словарь и подсказки к каждому термину, знающему — без лишнего.</p>
+    ${QZ.map((q,i) => `<div class="qzq"><b>${i+1}. ${q[0]}</b><div class="qzo">${q[1].map((o,j) => `<button type="button" data-qz="${i}" data-o="${j}">${o}</button>`).join('')}</div></div>`).join('')}
+    <div class="qzf"><button type="button" class="tbtn ghost" data-qzskip>Пропустить</button><button type="button" class="tbtn" data-qzdone disabled>Готово</button></div></div></div>`;
+}
+function levelUI(){
+  const b = document.getElementById('lvbtn'); if (b) b.textContent = 'Уровень: ' + (LEVEL < 0 ? '?' : LVN[LEVEL]);
+  document.body.dataset.level = LEVEL;
+}
+const qzAns = {};
+document.addEventListener('click', e => {
+  const o = e.target.closest('[data-qz]');
+  if (o) { qzAns[o.dataset.qz] = +o.dataset.o; o.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === o)); document.querySelector('[data-qzdone]').disabled = Object.keys(qzAns).length < QZ.length; return; }
+  if (e.target.closest('[data-qzdone]') || e.target.closest('[data-qzskip]')) {
+    const score = e.target.closest('[data-qzskip]') ? 0 : QZ.reduce((s,q,i) => s + (qzAns[i] === q[2] ? 1 : 0), 0);
+    LEVEL = score >= 3 ? 2 : score >= 2 ? 1 : 0; ls.set('level', LEVEL); document.querySelector('.qz')?.remove(); levelUI(); route(); return; }
+  if (e.target.closest('#lvbtn')) { LEVEL = (LEVEL + 1) % 3; ls.set('level', LEVEL); levelUI(); route(); return; }
+  const dsum = e.target.closest('.dict summary'); if (dsum) setTimeout(() => ls.set('dictOpen', dsum.parentElement.open ? '1' : '0'), 0);
+});
+function levelInit(){
+  const lay = document.querySelector('.layers'); if (lay && !document.getElementById('lvbtn')) { const b = document.createElement('button'); b.type = 'button'; b.id = 'lvbtn'; b.className = 'lvbtn'; lay.appendChild(b); }
+  levelUI();
+  if (LEVEL < 0) { let qs = false; try { qs = navigator.webdriver; } catch(e){} if (!qs) document.body.insertAdjacentHTML('beforeend', quizHTML()); else { LEVEL = 2; levelUI(); } }
+}
 window.addEventListener('hashchange', route);
 route();
+levelInit();
 </script>
