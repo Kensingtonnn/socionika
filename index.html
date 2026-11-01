@@ -858,6 +858,7 @@ body.ai-dockL .wrap,body.ai-dockL header.top .in{margin-left:400px;margin-right:
 .qzo{display:flex;flex-direction:column;gap:6px}
 .qzo button{text-align:left;border:0;background:var(--s2);color:var(--fg);border-radius:14px;padding:10px 14px;font:500 15px var(--sans);cursor:pointer}
 .qzo button[aria-pressed="true"]{background:var(--lime);color:var(--inkfix)}
+.qzo .qzno{background:none;box-shadow:inset 0 0 0 1px var(--line);color:var(--mut)}
 .qzf{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
 .qzf .tbtn:not(.ghost){background:var(--ink);color:var(--inkfg)} .qzf .tbtn:disabled{opacity:.4}
 @media (max-width:560px){ .dgrid{grid-template-columns:1fr} .lvbtn{order:4} }
@@ -2714,9 +2715,14 @@ const POSW = {'ведущая':0,'творческая':1,'ролевая':2,'б
 const LVN = ['новичок','знаю основы','глубоко'];
 let LEVEL = +ls.get('level', '-1');
 const QZ = [
- ['Что такое «болевая функция»?', ['Самое уязвимое место типа', 'Функция, которая отвечает за боль в теле', 'Не знаю'], 0],
- ['Что значит «4D» у функции?', ['Она видит опыт, нормы, ситуацию и время', 'Четыре типа в квадре', 'Не знаю'], 0],
- ['Кто такой дуал?', ['Тип, который закрывает твои слабые места, а ты — его', 'Тип, похожий на тебя', 'Не знаю'], 0]];
+ ['Что в первую очередь описывает соционика?', ['Характер и поступки человека', 'Что психике даётся легко, а что дорого, когда она воспринимает мир', 'Судьбу и подходящую профессию'], 1],
+ ['Два человека одного типа…', ['почти одинаковые', 'могут сильно отличаться: у них разный опыт, ценности, среда', 'обязательно хорошо ладят'], 1],
+ ['Человек отлично раскладывает сложные расчёты, но после этого совсем без сил. Что это скорее значит?', ['Умение есть, но для его психики это дорого', 'Он просто ленится', 'На самом деле он этого не умеет'], 0],
+ ['Что значит «самое слабое место» человека в этой системе?', ['То, чего он не умеет вообще', 'Черта характера, которую надо исправить', 'Где он опирается только на свой опыт и особенно остро реагирует на критику'], 2],
+ ['Двоим людям рядом удивительно легко. Чаще всего это потому, что…', ['каждый без усилия даёт другому то, что тому даётся тяжелее всего', 'они очень похожи', 'у них общие увлечения'], 0],
+ ['Умение чувствовать, что «своё», а что «чужое», человек применяет…', ['только к людям', 'к людям, местам, вещам, делам, идеям', 'только к вещам и местам'], 1],
+ ['Что происходит с типом с возрастом?', ['Он меняется полностью', 'Он не меняется, но меняется то, на что человек больше опирается в жизни', 'Он «застывает» и больше ничего не меняется'], 1],
+ ['Описание твоего типа совпало с тобой не во всём. Что это скорее значит?', ['Тип определён неверно', 'Это нормально: описание — «чистый» тип без опыта и ценностей; проверять стоит по тому, что даётся даром, а что дорого', 'Соционика не работает'], 1]];
 function glossTip(term){
   const g = GLM[term]; if (!g) return '';
   let tip = g[1] + (g[2] ? ' Пример: ' + g[2] : '');
@@ -2748,8 +2754,8 @@ function dictSheet(){
     <p class="sm mut" style="margin-top:10px">Сменить уровень — кнопка «Уровень» в шапке.</p></details></div>`;
 }
 function quizHTML(){
-  return `<div class="qz" role="dialog" aria-modal="true" aria-label="Мини-тест"><div class="qzc"><div class="kicker">Три вопроса · 20 секунд</div><h2>Насколько ты знаком с соционикой?</h2><p class="sm">Сайт подстроится: новичку — словарь и подсказки к каждому термину, знающему — без лишнего.</p>
-    ${QZ.map((q,i) => `<div class="qzq"><b>${i+1}. ${q[0]}</b><div class="qzo">${q[1].map((o,j) => `<button type="button" data-qz="${i}" data-o="${j}">${o}</button>`).join('')}</div></div>`).join('')}
+  return `<div class="qz" role="dialog" aria-modal="true" aria-label="Мини-тест"><div class="qzc"><div class="kicker">Восемь вопросов · одна минута</div><h2>Как ты понимаешь людей и их различия?</h2><p class="sm">Здесь не нужно знать термины — только здравый смысл. По ответам сайт подстроится: подробнее объяснит основы или сразу покажет глубину. Если не уверен, выбирай «не знаю».</p>
+    ${QZ.map((q,i) => `<div class="qzq"><b>${i+1}. ${q[0]}</b><div class="qzo">${q[1].map((o,j) => `<button type="button" data-qz="${i}" data-o="${j}">${o}</button>`).join('')}<button type="button" data-qz="${i}" data-o="9" class="qzno">не знаю</button></div></div>`).join('')}
     <div class="qzf"><button type="button" class="tbtn ghost" data-qzskip>Пропустить</button><button type="button" class="tbtn" data-qzdone disabled>Готово</button></div></div></div>`;
 }
 function levelUI(){
@@ -2762,14 +2768,14 @@ document.addEventListener('click', e => {
   if (o) { qzAns[o.dataset.qz] = +o.dataset.o; o.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === o)); document.querySelector('[data-qzdone]').disabled = Object.keys(qzAns).length < QZ.length; return; }
   if (e.target.closest('[data-qzdone]') || e.target.closest('[data-qzskip]')) {
     const score = e.target.closest('[data-qzskip]') ? 0 : QZ.reduce((s,q,i) => s + (qzAns[i] === q[2] ? 1 : 0), 0);
-    LEVEL = score >= 3 ? 2 : score >= 2 ? 1 : 0; ls.set('level', LEVEL); document.querySelector('.qz')?.remove(); levelUI(); route(); return; }
+    LEVEL = score >= 7 ? 2 : score >= 4 ? 1 : 0; ls.set('level', LEVEL); document.querySelector('.qz')?.remove(); levelUI(); route(); return; }
   if (e.target.closest('#lvbtn')) { LEVEL = (LEVEL + 1) % 3; ls.set('level', LEVEL); levelUI(); route(); return; }
   const dsum = e.target.closest('.dict summary'); if (dsum) setTimeout(() => ls.set('dictOpen', dsum.parentElement.open ? '1' : '0'), 0);
 });
 function levelInit(){
   const lay = document.querySelector('.layers'); if (lay && !document.getElementById('lvbtn')) { const b = document.createElement('button'); b.type = 'button'; b.id = 'lvbtn'; b.className = 'lvbtn'; lay.appendChild(b); }
   levelUI();
-  if (LEVEL < 0) { let qs = false; try { qs = navigator.webdriver; } catch(e){} if (!qs) document.body.insertAdjacentHTML('beforeend', quizHTML()); else { LEVEL = 2; levelUI(); } }
+  if (LEVEL < 0 || ls.get('qzv','1') !== '2') { if (LEVEL >= 0) { ls.set('qzv','2'); return; } ls.set('qzv','2'); let qs = false; try { qs = navigator.webdriver; } catch(e){} if (!qs) document.body.insertAdjacentHTML('beforeend', quizHTML()); else { LEVEL = 2; levelUI(); } }
 }
 window.addEventListener('hashchange', route);
 route();
