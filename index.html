@@ -862,6 +862,19 @@ body.ai-dockL .wrap,body.ai-dockL header.top .in{margin-left:400px;margin-right:
 .qzf{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
 .qzf .tbtn:not(.ghost){background:var(--ink);color:var(--inkfg)} .qzf .tbtn:disabled{opacity:.4}
 @media (max-width:560px){ .dgrid{grid-template-columns:1fr} .lvbtn{order:4} }
+
+/* ===== что меняет уровень ===== */
+body[data-level="0"] [data-lvl="1"],body[data-level="0"] [data-lvl="2"],body[data-level="1"] [data-lvl="2"]{display:none!important}
+body[data-level="0"] [data-layer="1"],body[data-level="0"] [data-layer="3"],body[data-level="1"] [data-layer="3"]{display:none!important}
+body[data-level="0"] .lay{display:none}
+body[data-level="0"] .fn .blk[data-layer="2"],body[data-level="0"] details.fnmore,body[data-level="0"] .fnchip[data-layer="1"]{display:none!important}
+body[data-level="0"] .fn .body::after{content:"Разбор по параметрам (опыт, нормы, ситуация, время) — на уровне «знаю основы»";display:block;margin-top:8px;font-size:13.5px;color:var(--mut)}
+select.lvbtn{appearance:none;-webkit-appearance:none;padding-right:26px;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 13px) 55%,calc(100% - 8px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+.qzpick{margin-top:14px;padding-bottom:16px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.qzpick button{display:flex;flex-direction:column;gap:2px;text-align:left;border:0;background:var(--s2);color:var(--fg);border-radius:16px;padding:12px 14px;font:400 14px/1.45 var(--sans);cursor:pointer}
+.qzpick button b{font-size:15px} .qzpick button span{color:var(--mut)}
+.qzpick button:hover{box-shadow:inset 0 0 0 1.5px var(--fg)}
+.qzpick .qzskip{background:none;box-shadow:inset 0 0 0 1px var(--line);align-items:center;font-weight:600}
 </style>
 
 <header class="top"><div class="in">
@@ -1441,11 +1454,11 @@ function layersPage(k){
     <p class="sm mut" style="margin-top:8px">${lay(0)}Информационный метаболизм, постоянство типа, модель А, каналы дуальности — по Аугустинавичюте. ${lay(1)}Мерность — по А. Букалову; подтипы и уровни — развитие после Аугустинавичюте. ${lay(2)}Модель слоёв, «вес типа», варианты, возрастные этапы и оценки пар — авторские.</p></div>`;
 }
 // ---------- сворачиваемые разделы
-function foldify(html, hint, open){
+function foldify(html, hint, open, lvl){
   const m = html.match(/^\s*<div class="sheet"([^>]*)><div class="kicker">([\s\S]*?)<\/div><h2[^>]*>([\s\S]*?)<\/h2>/);
   if (!m) return html;
   const end = html.lastIndexOf('</div>');
-  return `<div class="sheet"${m[1]}><details class="fold"${open ? ' open' : ''}><summary><span class="kicker">${m[2]}</span><span class="st">${m[3]}</span>${hint ? `<span class="sm mut">${hint}</span>` : ''}</summary>${html.slice(m[0].length, end)}</details></div>`;
+  return `<div class="sheet"${m[1]}${lvl ? ` data-lvl="${lvl}"` : ''}><details class="fold"${open ? ' open' : ''}><summary><span class="kicker">${m[2]}</span><span class="st">${m[3]}</span>${hint ? `<span class="sm mut">${hint}</span>` : ''}</summary>${html.slice(m[0].length, end)}</details></div>`;
 }
 const RKN = {jung:['Юнговские','Четыре исходные дихотомии Юнга — из них собран весь тип.'],model:['Выводятся из модели строго','Полюс признака однозначно следует из того, какие аспекты стоят на каких местах.'],desc:['Описательные','Полюс выводится строго, но словесные описания признака у разных авторов расходятся.']};
 function reininSheet(k){
@@ -1603,12 +1616,12 @@ function typePage(k){
 
   <div class="kicker" style="margin:28px 0 0">Дальше — подробно. Каждый раздел раскрывается по нажатию.</div>
   ${foldify(dualTypeSheet(k), 'кто дополняет и как работают четыре канала')}
-  ${foldify(variantsSheet(k), 'семь путей одного типа')}
-  ${foldify(valuesSheet(k), 'восемь ценностей и какой дуал подходит каждой')}
+  ${foldify(variantsSheet(k), 'семь путей одного типа', 0, 1)}
+  ${foldify(valuesSheet(k), 'восемь ценностей и какой дуал подходит каждой', 0, 2)}
 
   ${foldify(`<div class="sheet"><div class="kicker">Модель А · где что стоит</div><h2>Место меняет, как работает аспект</h2>
   <p class="sm">${lay(0)}Место решает, сильный аспект или слабый и ценный или нет. <span data-layer="1">${lay(1)}Мерность — сколько параметров из четырёх (опыт, нормы, ситуация, время) учитывает функция. 4D и 3D — сильные функции, работают с чутьём; 2D и 1D — слабые: правила и личный опыт.</span></p>
-  <div class="tw"><table class="ptab"><tr><th>Место · блок</th><th data-layer="1">Мерность</th><th>Аспект</th><th>Как проявляется</th></tr>${ptab}</table></div></div>`, 'восемь мест, мерность и блоки')}
+  <div class="tw"><table class="ptab"><tr><th>Место · блок</th><th data-layer="1">Мерность</th><th>Аспект</th><th>Как проявляется</th></tr>${ptab}</table></div></div>`, 'восемь мест, мерность и блоки', 0, 1)}
 
   ${foldify(`<div class="sheet"><div class="kicker">Функция за функцией</div><h2>Все восемь функций развёрнуто</h2>
   <p class="sm">${lay(0)}Что означает аспект и что означает место. <span data-layer="2">${lay(2)}Как это проявляется у этого типа: сначала просто, потом по параметрам. Параметра нет — серая строка с тем, что из этого следует.</span></p>
@@ -1616,7 +1629,7 @@ function typePage(k){
 
   ${foldify(polrDeepSheet(k), 'что это такое, почему так больно, кто задевает и кто прикрывает')}
 
-  ${foldify(reininSheet(k), '15 признаков: полюс этого типа и что он значит')}
+  ${foldify(reininSheet(k), '15 признаков: полюс этого типа и что он значит', 0, 2)}
 
   ${foldify(`<div class="sheet"><div class="kicker">Отношения</div><h2>${t.name} и все остальные типы</h2>
   <p class="sm">${lay(0)}Вид отношений рассчитан по классической модели. Название вида ведёт на его объяснение, тип — на разбор пары.</p>
@@ -1728,7 +1741,7 @@ function relationsPage(){
   <div class="sheet"><div class="kicker">Шестнадцать видов</div><h2>Какие бывают отношения</h2>
   <p class="sm">${lay(0)}Вид отношений определяется тем, на какие места модели одного попадают ведущая и творческая функции другого. Два вида асимметричны: ревизия и заказ.</p>
   <div class="rk">${kinds}</div></div>
-  <div class="sheet"><div class="kicker">Матрица</div><h2>Все 256 пар</h2>
+  <div class="sheet" data-lvl="1"><div class="kicker">Матрица</div><h2>Все 256 пар</h2>
   <p class="sm">${lay(0)}Строка — с чьей стороны смотрим, столбец — на кого. Цвет: зелёный — дополнение, голубой — схожесть, песочный — асимметрия или холод, красный — напряжение. Нажми на клетку.</p>
   <div class="legend">${leg}</div>
   <div class="matrixw">${matrix()}</div></div>`;
@@ -1952,7 +1965,7 @@ function stageSheet(a){
     <div class="mood" id="mood" aria-live="polite"></div>
     <div class="toy big" id="toy"></div>
     <div class="stexp" id="stexp"></div>
-    <div class="pcmp" id="pcmp"></div>
+    <div class="pcmp" id="pcmp" data-lvl="1"></div>
     <p class="sm" style="margin:10px 0 0">${I[1]}</p>
     <div class="panel" style="margin-top:10px"><p style="margin:0"><b>Что ты сейчас сделал.</b> ${I[2]}</p></div>
     <div class="panel mindp" data-layer="3" style="margin-top:10px"><p style="margin:0">${lay(3)}<b>Как это отражается в голове.</b> ${MIND[a]}</p></div>
@@ -2573,6 +2586,7 @@ function route(){
   if (openAnchor) { const el = document.getElementById(openAnchor); if (el) el.scrollIntoView({block:'start'}); }
   if (openV != null) { const b = document.querySelector(`#vals .vtab[data-v="${openV}"]`); if (b) { b.click(); openTo(document.getElementById('vals')); } }
   if (typeof glossify === 'function') glossify();
+  if (LEVEL === 2) document.querySelectorAll('details.fnmore').forEach(d => d.open = true);
 }
 const openTo = el => { el.querySelectorAll(':scope > details.fold').forEach(d => d.open = true); let p = el; while (p) { if (p.tagName === 'DETAILS') p.open = true; p = p.parentElement; } el.scrollIntoView({block:'start'}); };
 app.addEventListener('click', e => { const a = e.target.closest('a[href^="#fn-"],a[href^="#pos-"]'); if (a) { e.preventDefault(); const el = document.getElementById(a.getAttribute('href').slice(1)); if (el) openTo(el); } });
@@ -2751,31 +2765,41 @@ function dictSheet(){
   const pos = Object.keys(POSW).map(p => `<div class="dct"><b>${p}${t ? ` · <span style="color:var(--${t.m[POSW[p]]})">${D.ab[t.m[POSW[p]]]}</span>` : ''}</b><span>${GLM[p][1]}</span></div>`).join('');
   return `<div class="sheet dict"><details class="fold"${ls.get('dictOpen','1') === '1' ? ' open' : ''}><summary><span class="kicker">Для новичка</span><span class="st">Словарь в двух словах${t ? ` — на примере ${G(t)}` : ''}</span><span class="sm mut">восемь мест модели, мерность и цена; наведи на подчёркнутое слово — будет пример</span></summary>
     <div class="dgrid">${pos}<div class="dct"><b>мерность · 1D–4D</b><span>${GLM['мерность'][1]}</span></div><div class="dct"><b>цена</b><span>${GLM['цена'][1]}</span></div></div>
-    <p class="sm mut" style="margin-top:10px">Сменить уровень — кнопка «Уровень» в шапке.</p></details></div>`;
+    <p class="sm mut" style="margin-top:10px">На уровне «новичок» скрыты таблицы модели А, признаки Рейнина, разновидности и гипотезы, а у функций — разбор по параметрам. Сменить уровень — в шапке.</p></details></div>`;
 }
 function quizHTML(){
   return `<div class="qz" role="dialog" aria-modal="true" aria-label="Мини-тест"><div class="qzc"><div class="kicker">Восемь вопросов · одна минута</div><h2>Как ты понимаешь людей и их различия?</h2><p class="sm">Здесь не нужно знать термины — только здравый смысл. По ответам сайт подстроится: подробнее объяснит основы или сразу покажет глубину. Если не уверен, выбирай «не знаю».</p>
+    <div class="qzpick"><div class="kicker">Не хочешь тест? Выбери уровень сам</div>
+      <button type="button" data-pick="0"><b>Новичок</b><span>Словарь вверху страниц, подсказки к каждому термину, только самое понятное: без таблиц, признаков Рейнина и гипотез.</span></button>
+      <button type="button" data-pick="1"><b>Знаю основы</b><span>Полные описания, параметры функций, модель А, пути. Без признаков Рейнина и авторских гипотез.</span></button>
+      <button type="button" data-pick="2"><b>Глубоко</b><span>Всё: признаки Рейнина, разновидности по ценностям, гипотезы, развёрнутые определения у каждой функции.</span></button>
+      <button type="button" class="qzskip" data-qzskip>Не проходить — показать как есть</button></div>
+    <div class="kicker" style="margin-top:20px">Или пройди тест — восемь вопросов</div>
     ${QZ.map((q,i) => `<div class="qzq"><b>${i+1}. ${q[0]}</b><div class="qzo">${q[1].map((o,j) => `<button type="button" data-qz="${i}" data-o="${j}">${o}</button>`).join('')}<button type="button" data-qz="${i}" data-o="9" class="qzno">не знаю</button></div></div>`).join('')}
-    <div class="qzf"><button type="button" class="tbtn ghost" data-qzskip>Пропустить</button><button type="button" class="tbtn" data-qzdone disabled>Готово</button></div></div></div>`;
+    <div class="qzf"><button type="button" class="tbtn" data-qzdone disabled>Узнать мой уровень</button></div>
+
+    <p class="sm mut" style="margin-top:10px">Уровень всегда можно сменить в шапке.</p></div></div>`;
 }
 function levelUI(){
-  const b = document.getElementById('lvbtn'); if (b) b.textContent = 'Уровень: ' + (LEVEL < 0 ? '?' : LVN[LEVEL]);
-  document.body.dataset.level = LEVEL;
+  const b = document.getElementById('lvsel'); if (b) b.value = String(LEVEL < 0 ? 1 : LEVEL);
+  document.body.dataset.level = LEVEL < 0 ? 1 : LEVEL;
 }
+function setLevel(n){ LEVEL = n; ls.set('level', n); document.querySelector('.qz')?.remove(); if (typeof applyLayer === 'function') applyLayer(n === 2 ? 3 : 2); levelUI(); route(); }
 const qzAns = {};
 document.addEventListener('click', e => {
   const o = e.target.closest('[data-qz]');
   if (o) { qzAns[o.dataset.qz] = +o.dataset.o; o.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === o)); document.querySelector('[data-qzdone]').disabled = Object.keys(qzAns).length < QZ.length; return; }
   if (e.target.closest('[data-qzdone]') || e.target.closest('[data-qzskip]')) {
     const score = e.target.closest('[data-qzskip]') ? 0 : QZ.reduce((s,q,i) => s + (qzAns[i] === q[2] ? 1 : 0), 0);
-    LEVEL = score >= 7 ? 2 : score >= 4 ? 1 : 0; ls.set('level', LEVEL); document.querySelector('.qz')?.remove(); levelUI(); route(); return; }
-  if (e.target.closest('#lvbtn')) { LEVEL = (LEVEL + 1) % 3; ls.set('level', LEVEL); levelUI(); route(); return; }
+    if (e.target.closest('[data-qzskip]')) { setLevel(1); return; }
+    setLevel(score >= 7 ? 2 : score >= 4 ? 1 : 0); return; }
+  const pl = e.target.closest('[data-pick]'); if (pl) { setLevel(+pl.dataset.pick); return; }
   const dsum = e.target.closest('.dict summary'); if (dsum) setTimeout(() => ls.set('dictOpen', dsum.parentElement.open ? '1' : '0'), 0);
 });
 function levelInit(){
-  const lay = document.querySelector('.layers'); if (lay && !document.getElementById('lvbtn')) { const b = document.createElement('button'); b.type = 'button'; b.id = 'lvbtn'; b.className = 'lvbtn'; lay.appendChild(b); }
+  const lay = document.querySelector('.layers'); if (lay && !document.getElementById('lvbtn')) { const b = document.createElement('select'); b.id = 'lvsel'; b.className = 'lvbtn'; b.setAttribute('aria-label', 'Уровень'); b.innerHTML = LVN.map((n,i) => `<option value="${i}">Уровень: ${n}</option>`).join(''); lay.appendChild(b); b.addEventListener('change', () => setLevel(+b.value)); }
   levelUI();
-  if (LEVEL < 0 || ls.get('qzv','1') !== '2') { if (LEVEL >= 0) { ls.set('qzv','2'); return; } ls.set('qzv','2'); let qs = false; try { qs = navigator.webdriver; } catch(e){} if (!qs) document.body.insertAdjacentHTML('beforeend', quizHTML()); else { LEVEL = 2; levelUI(); } }
+  if (LEVEL < 0 || ls.get('qzv','1') !== '2') { if (LEVEL >= 0) { ls.set('qzv','2'); return; } ls.set('qzv','2'); document.body.dataset.level = 1; let qs = false; try { qs = navigator.webdriver; } catch(e){} if (!qs) document.body.insertAdjacentHTML('beforeend', quizHTML()); else { LEVEL = 2; levelUI(); } }
 }
 window.addEventListener('hashchange', route);
 route();
