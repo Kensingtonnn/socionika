@@ -566,6 +566,21 @@ details.fold>summary{padding-block:10px;min-height:44px}
 @media (prefers-reduced-motion:no-preference){}
 @media (max-width:560px){ .basics *{grid-template-columns:1fr!important} }
 .basics section{border-top:1px solid var(--line);margin-top:48px;padding-top:16px}
+
+.fnlead{font-family:var(--serif);font-size:clamp(18px,2.3vw,21px);line-height:1.4;font-weight:500;margin:0 0 10px;max-width:60ch}
+.fnplace{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.fnchip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--mut);background:var(--bg)}
+.fnchip[style*="--c"]{color:var(--c);border-color:var(--c);font-weight:600}
+details.fnmore{margin-top:12px;border-top:1px dashed var(--line);padding-top:8px}
+details.fnmore>summary{cursor:pointer;font-size:14.5px;font-weight:600;color:var(--mut);min-height:40px;display:flex;align-items:center}
+details.fnmore[open]>summary{color:var(--fg)}
+@media (max-width:560px){
+ .pr{display:block!important;padding:6px 0;border-bottom:1px solid var(--line)}
+ .pr>b{display:inline;margin-right:6px}
+ .pr>span{display:inline}
+ .pr:last-child{border-bottom:0}
+ .fn .side{padding-bottom:4px}
+}
 </style>
 
 <header class="top"><div class="in">
@@ -1339,20 +1354,22 @@ function typePage(k){
       <div class="side"><div class="pos">${i+1} · ${D.posn[i]}</div>
         <div style="display:flex;align-items:center;gap:8px">${D.bigs[a]}<h3>${D.colname[a]} · ${D.ab[a]}</h3></div>
         <div class="sm mut">${D.cname[a]}<span data-layer="2"> · «${D.tag[a]}»</span></div>
-        <div class="sm mut" style="margin-top:6px">${D.blk[i]}<span data-layer="1"> · ${dots(D.dim[i])} ${D.dim[i]}D</span></div>
         <div class="sm" style="margin-top:8px"><a href="#aspect-${a.toLowerCase()}">${D.ab[a]} у всех типов →</a><br><a href="#cmp-${a.toLowerCase()}-${k.toLowerCase()}-${holders(a,i).find(x => x !== k).toLowerCase()}">сравнить с ${T[holders(a,i).find(x => x !== k)].name} →</a></div></div>
       <div class="body">
-        <div class="blk" data-layer="0">${lay(0)}<b>Аспект.</b> ${D.core[a]} <b>Место.</b> ${D.pcore[i]}</div>
-        <div class="blk" data-layer="2"><div class="kicker" style="margin:10px 0 4px;color:var(--${a})">Что такое ${D.ab[a]}</div>
-          <p><b>Обычно отвечает за:</b> ${POP[a]}.</p>
-          <p><b style="color:var(--${a})">Глубже:</b> ${D.deepfull[a]}</p>
-          <p class="mut" style="font-style:italic">${D.analogy[a]}</p>
-          <p class="sm" style="background:var(--bg);border-radius:8px;padding:6px 10px"><span class="mut">В пересказах:</span> <s class="mut">${D.cliche[a][0]}</s> → ${D.cliche[a][1]}</p></div>
-        <div class="blk" data-layer="1"><div class="kicker" style="margin:10px 0 4px;color:var(--${a})">Что делает с ним место · ${D.posn[i].toLowerCase()} · ${D.dim[i]}D</div>
-          <p class="sm"><span data-layer="2">«${D.lang[i]}». </span>Из четырёх параметров функция на этом месте учитывает ${D.dim[i]}: ${['опыт','опыт и нормы','опыт, нормы и ситуацию','опыт, нормы, ситуацию и время'][D.dim[i]-1]}.</p>
-          ${D.howp[i].map(([k,v]) => `<div class="pr"><b>${k}:</b><span>${v}</span></div>`).join('')}
-          ${['Опыт','Нормы','Ситуация','Время'].slice(D.dim[i]).map(k => `<div class="pr no"><b>${k}:</b><span><i>нет</i></span></div>`).join('')}</div>
-        <div class="blk" data-layer="2"><div class="kicker" style="margin:12px 0 4px;color:var(--${a})">Как это у ${t.ru}</div>${lensBlock(t, a)}</div>
+        ${t.lens[a] ? `<div class="fnlead" data-layer="2">${t.lens[a][0]}</div>` : ''}
+        <div class="fnplace"><span class="fnchip" style="--c:var(--${a})">${D.posn[i].toLowerCase()}</span><span class="fnchip">${D.blk[i]}</span><span class="fnchip" data-layer="1">${dots(D.dim[i])} ${D.dim[i]}D · ${['только опыт','опыт и нормы','опыт, нормы, ситуация','все четыре параметра'][D.dim[i]-1]}</span><span class="fnchip">${STRONG[i] ? 'сильная' : 'слабая'} · ${VALUED[i] ? 'ценная' : 'не ценная'}</span></div>
+        ${t.lens[a] ? `<div class="blk" data-layer="2"><div class="kicker" style="margin:12px 0 4px;color:var(--${a})">Как это у ${G(t)} — по параметрам</div>${t.lens[a][1]}</div>` : `<p>${D.deep[a]}</p>`}
+        <details class="fnmore"><summary>Что такое ${D.ab[a]} вообще и что делает с ней место</summary>
+          <div class="blk" data-layer="0">${lay(0)}<b>Аспект.</b> ${D.core[a]} <b>Место.</b> ${D.pcore[i]}</div>
+          <div class="blk" data-layer="2"><p><b>Обычно отвечает за:</b> ${POP[a]}.</p>
+            <p><b style="color:var(--${a})">Глубже:</b> ${D.deepfull[a]}</p>
+            <p class="mut" style="font-style:italic">${D.analogy[a]}</p>
+            <p class="sm" style="background:var(--bg);border-radius:8px;padding:6px 10px"><span class="mut">В пересказах:</span> <s class="mut">${D.cliche[a][0]}</s> → ${D.cliche[a][1]}</p></div>
+          <div class="blk" data-layer="1"><div class="kicker" style="margin:10px 0 4px;color:var(--${a})">Место · ${D.posn[i].toLowerCase()} · ${D.dim[i]}D</div>
+            <p class="sm"><span data-layer="2">«${D.lang[i]}». </span>Из четырёх параметров функция на этом месте учитывает ${D.dim[i]}.</p>
+            ${D.howp[i].map(([k,v]) => `<div class="pr"><b>${k}:</b><span>${v}</span></div>`).join('')}
+            ${['Опыт','Нормы','Ситуация','Время'].slice(D.dim[i]).map(k => `<div class="pr no"><b>${k}:</b><span><i>нет</i></span></div>`).join('')}</div>
+        </details>
       </div></div>`;
   });
   const p = t.polr;
