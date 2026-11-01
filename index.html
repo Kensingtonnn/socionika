@@ -939,6 +939,7 @@ nav.main a[aria-current="page"]{background:var(--ink);color:var(--inkfg)}
 .qzsc span{font-size:14px;color:var(--mut)}
 .qzread{padding-left:1.1em} .qzread li{margin:.45em 0}
 .qzagain{display:inline-block;margin-bottom:8px;font-weight:600;color:var(--fg)}
+.aiprompt{white-space:pre-wrap;background:var(--s2);border-radius:var(--r-md);padding:14px 16px;font:400 14.5px/1.55 var(--sans);margin:8px 0 12px}
 </style>
 
 <header class="top"><div class="in">
@@ -2635,6 +2636,7 @@ function route(){
   else if ((m = h.match(/^layers(?:-([a-z]{3}))?$/))) { html = layersPage(m[1] ? m[1].toUpperCase() : null); nav = 'home'; }
   else if ((m = h.match(/^paths(?:-([a-z]{3}))?$/))) { html = pathsPage(m[1] ? m[1].toUpperCase() : null); nav = 'home'; }
   else if (h === 'test') { html = home(); }
+  else if (h === 'ai') { html = aiPage(); nav = 'bas'; }
   else if (h === 'basics') { html = basicsPage(); nav = 'bas'; }
   else if (h === 'quadras') { html = quadrasPage(); nav = 'quad'; }
   else if (h === 'polr' || /^polr-[a-z]{2}$/.test(h)) { html = polrPage(); nav = 'fn'; if (h !== 'polr') openAnchor = h; }
@@ -2644,7 +2646,7 @@ function route(){
   else { html = home(); }
   clearToys(); hideTip && hideTip();
   { const dk = dictSheet(); if (dk) { const ci = html.indexOf('class="crumb"'); if (ci >= 0 && ci < 20) { const e2 = html.indexOf('</div>', ci) + 6; html = html.slice(0, e2) + dk + html.slice(e2); } else html = dk + html; } }
-  app.innerHTML = html + `<footer><a href="#test" class="qzagain">Пройти тест ещё раз</a><br>Авторская интерпретация, 2026. Ядро — по Аугустинавичюте; классика — Букалов, Рейнин; линза и гипотезы — мои. Соционика не прошла строгой научной проверки.</footer>`;
+  app.innerHTML = html + `<footer><a href="#test" class="qzagain">Пройти тест ещё раз</a> · <a href="#ai" class="qzagain">Подключить ИИ к системе</a><br>Авторская интерпретация, 2026. Ядро — по Аугустинавичюте; классика — Букалов, Рейнин; линза и гипотезы — мои. Соционика не прошла строгой научной проверки.</footer>`;
   document.getElementById('nav-home').toggleAttribute('aria-current', nav === 'home'); if (nav==='home') document.getElementById('nav-home').setAttribute('aria-current','page');
   ['home','fn','rel','quad','bas'].forEach(n => { const el = document.getElementById('nav-'+n); el.removeAttribute('aria-current'); if (nav === n) el.setAttribute('aria-current','page'); });
   bindPick(); bindMatrix(); bindCmp(); if (nav === 'fn') { const mm = h.match(/^aspect-([a-z]{2})$/); if (mm) { const A = mm[1][0].toUpperCase()+mm[1][1]; bindStage(A); mountToy(A); } mountBW(); } window.scrollTo(0, 0);
@@ -2686,20 +2688,39 @@ const aiModel = () => ls.get('model.' + AI.prov, AIP[AI.prov].m);
 const aiKey = () => ls.get('key.' + AI.prov, '');
 const esc = t => t.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const md = t => esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/^#{1,4}\s*(.+)$/gm, '<b>$1</b>').replace(/^[-•]\s+(.+)$\n?/gm, '<span class="li">$1</span>').replace(/\n/g, '<br>');
-function aiSystem(){
-  const page = (document.getElementById('app')?.innerText || '').replace(/\n{3,}/g, '\n\n').slice(0, 14000);
-  return `Ты — помощник сайта «Соционика без клише». Отвечай по-русски, коротко и по сути, простыми словами, без лести.
-Правила системы сайта:
-- Ядро — соционика Аугустинавичюте (модель А, 8 аспектов, отношения, квадры). Классика — мерность Букалова, признаки Рейнина. Линза — авторская интерпретация. Гипотеза — непроверенное. Помечай слой, если говоришь о спорном: [ядро] / [классика] / [линза] / [гипотеза].
-- Аспекты через суть, не клише: ЧИ — запас, ЧЭ — зажигание, ЧС — вес, ЧЛ — КПД, БС — самочувствие, БИ — сюжет, БЛ — мера, БЭ — гравитация. Объекты любые: вещи, пространство, тело, идеи, процессы, люди. Не своди функцию «только к людям» или «только к вещам».
-- Место функции — через мерность и параметры: опыт, нормы, ситуация, время. Слабые функции описывай так же подробно, как сильные.
-- Тип постоянен; меняется путь — функция, вокруг которой человек строит жизнь.
-- Не ставь диагнозов и не типируй людей по одному признаку; говори, что для типирования нужно наблюдать рисунок цены: что даётся даром, что дорого, что ранит.
-Пользователь сейчас на странице: «${document.title}», адрес #${location.hash.slice(1) || 'home'}. Текст страницы (опирайся на него в первую очередь):
+let KB = null;
+async function kbLoad(){ if (KB) return KB; try { const r = await fetch('kb.json'); if (r.ok) KB = await r.json(); } catch(e){} return KB; }
+function kbFind(text){
+  if (!KB) return [];
+  const low = ' ' + text.toLowerCase().replace(/ё/g, 'е') + ' ', found = [];
+  KB.order.forEach(k => { const hit = (KB.stems[k] || []).some(st => low.includes(st)) || new RegExp('(^|[^А-ЯЁ])' + KB.abbr[k] + '([^А-ЯЁ]|$)').test(text); if (hit) found.push(k); });
+  return found;
+}
+async function aiSystem(){
+  await kbLoad();
+  const page = (document.getElementById('app')?.innerText || '').replace(/\n{3,}/g, '\n\n').slice(0, KB ? 5000 : 14000);
+  const conv = AI.msgs.map(m => m.t).join('\n');
+  const here = (location.hash.match(/^#(?:type|pair)-([a-z]{3})(?:-([a-z]{3}))?/) || []).slice(1).filter(Boolean).map(x => x.toUpperCase());
+  const ks = [...new Set([...kbFind(conv), ...here])].slice(0, 6);
+  let kb = '';
+  if (KB) {
+    kb = KB.core + '\n\n# Типы из разговора\n\n' + (ks.length ? ks.map(k => KB.types[k]).join('\n\n') : '(типы не названы — если нужно, спроси пользователя, о ком речь, или дай общий ответ по системе)');
+    if (ks.length > 1) {
+      const rels = [], pairs = [];
+      ks.forEach((a, i) => ks.slice(i + 1).forEach(b => {
+        rels.push(`${KB.names[a]} → ${KB.names[b]}: ${KB.relname[KB.rel[a][KB.order.indexOf(b)]]}`);
+        const P = KB.pairs[a + '|' + b] || KB.pairs[b + '|' + a]; if (P) pairs.push(P); }));
+      kb += '\n\n# Отношения между ними (рассчитано по модели А)\n' + rels.join('\n') + (pairs.length ? '\n\n' + pairs.join('\n\n') : '');
+    }
+  }
+  return `Ты — помощник сайта «Соционика без клише». Отвечай по-русски, по делу, простыми словами, без лести и без воды. Опирайся на базу знаний ниже — это вся система сайта.
+${kb || `Правила: аспекты через суть (ЧИ запас, ЧЭ зажигание, ЧС вес, ЧЛ КПД, БС самочувствие, БИ сюжет, БЛ мера, БЭ гравитация), объекты любые; место функции — через параметры опыт/нормы/ситуация/время; помечай [ядро]/[классика]/[линза]/[гипотеза]; не типируй по одному признаку.`}
+
+Пользователь сейчас на странице «${document.title}» (#${location.hash.slice(1) || 'home'}). Её текст — дополнительный контекст:
 """${page}"""`;
 }
 async function aiCall(){
-  const key = aiKey(), model = aiModel(), sys = aiSystem(), M = AI.msgs.map(m => ({role: m.r, content: m.t}));
+  const key = aiKey(), model = aiModel(), sys = await aiSystem(), M = AI.msgs.map(m => ({role: m.r, content: m.t}));
   if (AI.prov === 'claude') {
     const r = await fetch('https://api.anthropic.com/v1/messages', {method:'POST', headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}, body: JSON.stringify({model, max_tokens: 1500, system: sys, messages: M})});
     const j = await r.json(); if (!r.ok) throw new Error(j.error?.message || r.status); return j.content.map(c => c.text || '').join('');
@@ -2729,7 +2750,7 @@ function aiRender(){
   document.getElementById('aifab').hidden = AI.open;
   el.hidden = !AI.open; el.className = 'ai-' + AI.dock; if (!AI.open) return;
   const P = AIP[AI.prov], hasKey = !!aiKey();
-  el.innerHTML = `<div class="aih"><div class="ait"><b>ИИ-помощник</b><span>${P.n} · видит эту страницу</span></div>
+  el.innerHTML = `<div class="aih"><div class="ait"><b>ИИ-помощник</b><span>${P.n} · знает всю систему сайта</span></div>
       <div class="aib"><button type="button" data-dock="left" aria-label="Закрепить слева" ${AI.dock==='left'?'aria-pressed="true"':''}>⇤</button><button type="button" data-dock="float" aria-label="Плавающее окно" ${AI.dock==='float'?'aria-pressed="true"':''}>❐</button><button type="button" data-dock="right" aria-label="Закрепить справа" ${AI.dock==='right'?'aria-pressed="true"':''}>⇥</button><button type="button" data-ai="set" aria-label="Настройки">⚙</button><button type="button" data-ai="close" aria-label="Закрыть">✕</button></div></div>
     <div class="aiset" ${hasKey ? 'hidden' : ''}>
       <div class="seg aiprov" role="group" aria-label="Агент">${Object.entries(AIP).map(([k,v]) => `<button type="button" data-prov="${k}" aria-pressed="${k===AI.prov}">${v.n.split(' ·')[0]}</button>`).join('')}</div>
@@ -2737,7 +2758,7 @@ function aiRender(){
       <label class="ail" for="aimod">Модель<input id="aimod" type="text" value="${esc(aiModel())}"></label>
       <p class="sm mut">Ключ хранится только в этом браузере и уходит напрямую в ${P.n.split(' ·')[0]}. У сайта нет сервера, и он ключ не видит. Получить ключ: <a href="${P.url}" target="_blank" rel="noopener">${P.url.replace('https://','')}</a>. Запросы оплачиваются на твоём аккаунте у провайдера.</p>
       <button type="button" class="tbtn" data-ai="save">Сохранить</button></div>
-    <div class="aim" id="aim">${AI.msgs.length ? AI.msgs.map(m => `<div class="aimsg ${m.r}">${m.r === 'assistant' ? md(m.t) : esc(m.t)}</div>`).join('') : `<div class="aiempty"><b>Спроси про то, что сейчас на экране.</b><span>Агент читает текст этой страницы и правила сайта: ядро, слои, призму аспектов.</span></div>`}${AI.busy ? '<div class="aimsg assistant busy"><i></i><i></i><i></i></div>' : ''}</div>
+    <div class="aim" id="aim">${AI.msgs.length ? AI.msgs.map(m => `<div class="aimsg ${m.r}">${m.r === 'assistant' ? md(m.t) : esc(m.t)}</div>`).join('') : `<div class="aiempty"><b>Спроси про то, что сейчас на экране.</b><span>Агент знает всю систему сайта: 16 типов, функции по параметрам, отношения, пути. Опиши ситуацию и назови типы людей — например: «отец Бальзак, я Дюма, на работе есть Штирлиц…».</span></div>`}${AI.busy ? '<div class="aimsg assistant busy"><i></i><i></i><i></i></div>' : ''}</div>
     ${AI.msgs.length ? '' : `<div class="aisug">${aiSuggest().map(q => `<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`}
     <form class="aif" id="aif"><textarea id="aiin" rows="1" placeholder="${hasKey ? 'Напиши вопрос…' : 'Сначала вставь ключ в настройках ⚙'}"></textarea><button type="submit" class="aisend" aria-label="Отправить" ${AI.busy ? 'disabled' : ''}>↑</button></form>`;
   const m = document.getElementById('aim'); m.scrollTop = m.scrollHeight;
@@ -2901,6 +2922,22 @@ function levelInit(){
   let bot = false; try { bot = navigator.webdriver; } catch(e){}
   if (location.hash === '#test' || (first && !bot)) openQuiz(); else if (first) { LEVEL = 1; levelUI(); }
 }
+// ---------- страница: подключить ИИ-агента одним промптом
+function aiPage(){
+  const base = 'https://kensingtonnn.github.io/socionika/';
+  const P = [['Claude Code, Codex, Cursor или любой агент с доступом к сети', `Прочитай ${base}agent.md — это база знаний системы «Соционика без клише». Дальше отвечай на мои вопросы о людях и ситуациях строго по ней: определи типы, разложи по функциям и параметрам, посчитай отношения, дай практический совет каждому и помечай слои ([ядро]/[классика]/[линза]/[гипотеза]).`],
+   ['Навык для Claude Code (навсегда)', `Скачай ${base}skill/SKILL.md и ${base}agent.md в папку ~/.claude/skills/socionika/ и используй навык socionika, когда я спрашиваю о соционических типах.`],
+   ['ChatGPT, Claude.ai, Gemini (без доступа к сети)', 'Скачай файл agent.md по ссылке ниже и прикрепи его к чату с текстом: «Это база знаний системы „Соционика без клише“. Отвечай по ней».']];
+  return `<div class="hero" style="margin-top:20px;display:block"><div class="kicker">Для своих вопросов</div><h1>Подключить ИИ к системе</h1>
+    <p class="lead">Вся система сайта собрана в один файл. Дай его любому ИИ — и спрашивай про свою ситуацию: работу, семью, пару. Агент разложит её по типам, функциям и отношениям.</p>
+    <div class="chips" style="margin-top:12px"><a class="chip" href="agent.md" target="_blank" rel="noopener">agent.md — вся база</a><a class="chip" href="skill/SKILL.md" target="_blank" rel="noopener">SKILL.md — навык Claude Code</a><a class="chip" href="llms.txt" target="_blank" rel="noopener">llms.txt</a></div></div>
+  ${P.map(([h,t],i) => `<div class="sheet"><h2>${h}</h2><pre class="aiprompt" id="aip${i}">${esc(t)}</pre><button type="button" class="tbtn" data-copy="aip${i}">Скопировать промпт</button></div>`).join('')}
+  <div class="sheet"><h2>Или прямо здесь</h2><p>Кнопка «Спросить ИИ» справа внизу — тот же агент, со своим ключом. Он сам находит в вопросе типы, подтягивает их разборы и считает отношения между ними.</p>
+    <p class="sm mut">Пример вопроса: «Отец — Бальзак, я — Дюма, работаем вместе. Отец сильный мастер, но не становится бригадиром. Рядом Штирлиц, который держится за отца, потому что тот много делает за небольшие деньги. Как помочь отцу стать бригадиром?»</p></div>`;
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-copy]'); if (!b) return; const t = document.getElementById(b.dataset.copy).textContent;
+  const ok = () => { b.textContent = 'Скопировано'; setTimeout(() => b.textContent = 'Скопировать промпт', 1600); };
+  (navigator.clipboard ? navigator.clipboard.writeText(t).then(ok, () => { const r = document.createRange(); r.selectNodeContents(document.getElementById(b.dataset.copy)); getSelection().removeAllRanges(); getSelection().addRange(r); }) : null); });
 window.addEventListener('hashchange', route);
 route();
 levelInit();
