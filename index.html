@@ -382,11 +382,195 @@ h3.ph{font-family:var(--serif);font-size:20px;margin:22px 0 6px}
  .pcol .pr{grid-template-columns:1fr;gap:0}
 }
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+.pzctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 14px}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.seg button small{display:block;font-size:11px;opacity:.7}
+.pzhead{border-left:4px solid var(--line);padding:4px 0 4px 12px;margin-bottom:12px}
+.pzres{font-family:var(--serif);font-size:clamp(19px,2.6vw,24px);font-weight:600;display:flex;align-items:center;gap:8px;margin:2px 0 4px}
+.pzgrid{display:grid;gap:6px}
+.pzr{display:grid;grid-template-columns:minmax(120px,190px) 1fr auto;gap:10px;align-items:center;padding:6px 8px;border-radius:10px;border:1px solid transparent}
+.pzr.on{border-color:var(--c);background:var(--surface)}
+.pzn{display:flex;align-items:center;gap:6px;min-width:0}.pzn b{color:var(--c)}.pzn small{color:var(--mut);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pzb{height:10px;border-radius:99px;background:var(--line);overflow:hidden}.pzb i{display:block;height:100%;background:var(--c);transition:width .35s}
+.pzc{font-size:12px;letter-spacing:1px;color:var(--fg)}.pzc span{color:var(--line)}
+.pzfoot{margin-top:12px}.pzmeter{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.pzmeter .bar{flex:1 1 140px;height:10px;border-radius:99px;background:var(--line);overflow:hidden}.pzmeter .bar i{display:block;height:100%;background:var(--Si);transition:width .35s}
+.ptl svg{width:100%;max-width:760px;height:auto;display:block}
+@media (max-width:560px){ .pzr{grid-template-columns:1fr auto;} .pzr .pzb{grid-column:1/-1;order:3} }
+
+/* ===== дизайн-система v2 (notes/design_system.md) ===== */
+:root{ --mut:#5F5A50 }
+body{font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+p{margin:0 0 .8em}
+.sheet p,.sheet li,.hero p,.vc p{max-width:68ch}
+.sm{font-size:14.5px;line-height:1.55}
+.kicker{font-size:11.5px;letter-spacing:.14em;margin-bottom:4px}
+h1{font-size:clamp(30px,5.4vw,52px);line-height:1.08;margin:28px 0 10px}
+h2{font-size:clamp(22px,3vw,30px);line-height:1.2;margin:8px 0 14px}
+h3{font-size:18px;line-height:1.35}
+.sheet{margin-top:48px;padding-top:16px}
+.vgrid{gap:12px}
+.vc{background:var(--surface);border:1px solid var(--line);padding:14px 16px}
+.vc .kicker{margin-bottom:6px}
+.lay{font-size:9.5px;padding:0 6px;opacity:.72;letter-spacing:.08em}
+ul,ol{padding-left:1.2em} li{margin:.25em 0}
+details.fold>summary{padding-block:10px;min-height:44px}
+.lead{margin-bottom:12px}
+@media (max-width:560px){
+ body{font-size:16px}
+ .sheet{margin-top:36px;padding-top:12px}
+ .vgrid{grid-template-columns:1fr}
+ header.top .in{gap:6px 10px;padding-block:8px}
+ nav.main{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;width:100%;order:3;margin:0 -4px}
+ nav.main::-webkit-scrollbar{display:none}
+ nav.main a{white-space:nowrap;padding:8px 12px;font-size:14px}
+ .layers{order:2}
+ .layers button{padding:6px 10px}
+ h1{margin-top:20px}
+ table{font-size:14.5px}
+}
+
+.pcmpt tr.on td{background:var(--surface)} .pcmpt tr.on td:first-child{box-shadow:inset 3px 0 0 var(--c)}
+.pcb{font:600 14px var(--sans);background:none;border:0;padding:0;color:var(--fg);cursor:pointer;text-align:left}
+.pcb:hover{text-decoration:underline}
+
+.qstage svg{width:100%;max-width:640px;height:auto;display:block;margin:0 auto}
+.qnode,.qpair{cursor:pointer} .qnode:hover circle:last-of-type,.qnode:focus circle{stroke-width:3.5}
+.qpair:hover line:first-child{stroke-width:7}
+.qcrumb{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:8px;margin:6px 0}
+.qlegend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px} .qlegend i{display:inline-block;width:18px;height:4px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.qpairbox{margin-top:12px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.qheat td,.qheat th{text-align:center}
+@media (max-width:560px){ #qdet .cards{grid-template-columns:1fr!important} }
+@media (prefers-color-scheme: dark){}
+.basics {background:var(--bg);color:var(--fg);font:400 16px/1.6 var(--sans);margin:0}
+.basics .wrap{max-width:1040px;margin:0 auto;padding-block:0 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.basics ::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.basics nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding:10px 0;margin-bottom:8px;scrollbar-width:none}
+.basics nav.toc a{color:var(--fg);text-decoration:none;font-size:14px;font-weight:500;padding:6px 12px;border-radius:999px;white-space:nowrap}
+.basics nav.toc a:hover,.basics nav.toc a:focus-visible{background:var(--surface);outline:none;box-shadow:inset 0 0 0 1px var(--line)}
+.basics h1,.basics h2{font-family:var(--serif);font-weight:600;text-wrap:balance;letter-spacing:-.01em}
+.basics h1{font-size:clamp(40px,7vw,72px);line-height:1.02;margin:40px 0 16px}
+.basics h2{font-size:clamp(28px,4vw,38px);line-height:1.1;margin:0 0 12px}
+.basics h3{font-size:17px;margin:0;line-height:1.3}
+.basics h4{margin:0 0 4px;font-size:15px}
+.basics p{margin:0 0 10px}
+.basics .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);font-weight:600;margin-bottom:10px}
+.basics .lead{font-family:var(--serif);font-size:clamp(18px,2.2vw,22px);line-height:1.45;max-width:62ch}
+.basics .mut{color:var(--mut);font-size:14px}
+.basics section{padding:48px 0 8px;border-top:1px solid var(--line);scroll-margin-top:60px}
+.basics section>.intro{max-width:68ch;margin-bottom:24px}
+.basics .tagf,.basics .tagi,.basics .tagd{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-right:6px;vertical-align:2px;color:var(--fg)}
+.basics .tagf{background:var(--fact)}
+.basics .tagi,.basics .tagd{background:var(--int)}
+.basics .disc{background:var(--ink);color:var(--inkfg);border-radius:14px;padding:22px 24px;margin:24px 0 8px;max-width:76ch}
+.basics .disc p{margin:0 0 8px}
+.basics .disc p:last-child{margin:0;opacity:.75;font-size:14px}
+.basics .map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:28px 0 8px}
+.basics .map a{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--fg);padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.basics .map a:hover,.basics .map a:focus-visible{border-color:var(--fg);outline:none}
+.basics .map .n{font-family:var(--serif);font-size:20px}
+.basics .map .arrow{font-size:13px;color:var(--mut)}
+.basics .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 28px}
+.basics .asp{border-top:2px solid var(--c);padding-top:10px;min-width:0}
+.basics .asp header{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.basics .asp h3{color:var(--c)}
+.basics .asp .tag{font-size:13px;color:var(--mut)}
+.basics .asp p{font-size:15px;line-height:1.5;margin:0 0 6px}
+.basics .asp .c{color:var(--c)}
+.basics .asp .img{font-style:italic;color:var(--mut)}
+.basics .asp .cl{font-size:14px;background:var(--surface);border-radius:8px;padding:6px 10px}
+.basics .asp .cl s{color:var(--mut);text-decoration-color:var(--Se)}
+.basics .tw{overflow-x:auto;margin:8px 0 20px}
+.basics table{border-collapse:collapse;width:100%;font-size:15px;min-width:560px}
+.basics th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);text-align:left;padding:8px;border-bottom:1.5px solid var(--fg)}
+.basics td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.basics .dots{display:inline-flex;gap:3px;vertical-align:-1px}
+.basics .dots i{width:9px;height:9px;border-radius:50%;border:1.2px solid var(--fg);display:block}
+.basics .dots i.on{background:var(--fg)}
+.basics .pars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.basics .par,.basics .quad,.basics .rel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.basics .par p{font-size:14px;line-height:1.5}
+.basics .ratio{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:12px 0}
+.basics .ratio div{border-left:3px solid var(--fg);padding:4px 0 4px 14px}
+.basics .quads{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.basics .quad .qs{display:flex;gap:6px;margin:6px 0}
+.basics .quad p{font-size:14px;margin:0 0 4px}
+.basics .explorer{display:grid;grid-template-columns:240px minmax(0,1fr);gap:24px;align-items:start}
+.basics .tlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.basics .tlist button{font:500 14px/1.2 var(--sans);text-align:left;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.basics .tlist button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.basics .tlist button:focus-visible{outline:2px solid var(--Ne);outline-offset:2px}
+.basics .tlist .q{grid-column:1/-1;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:6px}
+.basics .tcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.basics .tcard h3{font-family:var(--serif);font-size:30px;font-weight:600}
+.basics .mrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}
+.basics .mcell{border:1px solid var(--line);border-radius:10px;padding:8px;min-width:0}
+.basics .mcell.v{background:var(--bg)}
+.basics .mcell .p{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.basics .mcell .a{display:flex;align-items:center;gap:6px;font-weight:700;margin:4px 0}
+.basics .mcell .t{font-size:12px;color:var(--mut)}
+.basics .rels{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.basics .rels button{font:500 14px var(--sans);border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:999px;padding:6px 12px;cursor:pointer}
+.basics .rels button:hover{border-color:var(--fg)}
+.basics .docs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.basics a.doc{display:flex;flex-direction:column;gap:2px;min-width:180px;flex:1 1 180px;text-decoration:none;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg)}
+.basics a.doc:hover,.basics a.doc:focus-visible{border-color:var(--fg);outline:none}
+.basics a.doc .kind{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:600}
+.basics a.doc .dt{font-family:var(--serif);font-size:17px;line-height:1.25}
+.basics .rels-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.basics .rel h3{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:6px}
+.basics .rel p{font-size:15px}
+.basics .rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px}
+.basics .rules div{border-top:1px solid var(--line);padding-top:10px}
+.basics .src{font-size:13px;color:var(--mut);max-width:90ch}
+.basics footer{margin-top:40px;font-size:13px;color:var(--mut)}
+.basics .lay{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:1px 7px;border-radius:999px;margin:0 0 4px;border:1px solid currentColor}
+.basics .l0{color:var(--fg)}
+.basics .l1{color:var(--Ni)}
+.basics .l2{color:var(--Te)}
+.basics .l3{color:var(--Fe)}
+.basics .blk{margin-top:6px}
+.basics .layers{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 4px}
+.basics .layers .lbl{font-size:13px;color:var(--mut);margin-right:4px}
+.basics .layers button{font:600 13px var(--sans);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.basics .layers button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.basics .layers button:focus-visible{outline:2px solid var(--Ne);outline-offset:2px}
+.basics .stack{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0 6px}
+.basics .stack div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);min-width:0}
+.basics .stack p{font-size:14px;margin:6px 0 0}
+.basics .rnwrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start}
+.basics .rnlist{display:flex;flex-direction:column;gap:4px}
+.basics .rnlist button{font:500 14px/1.3 var(--sans);text-align:left;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;display:flex;justify-content:space-between;gap:8px}
+.basics .rnlist button[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 3px 0 0 var(--fg)}
+.basics .rnlist button:focus-visible{outline:2px solid var(--Ne);outline-offset:2px}
+.basics .rnlist .k{font-size:11px;color:var(--mut);white-space:nowrap}
+.basics .rngrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:12px 0}
+.basics .rngrid .qh{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);text-align:center}
+.basics .rngrid .c{border-radius:8px;padding:8px 6px;text-align:center;font-size:13px;font-weight:600;border:1px solid var(--line)}
+.basics .rngrid .c.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.basics .rngrid .c .s{display:block;font-size:11px;font-weight:500;opacity:.75}
+.basics .traits{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 14px}
+.basics .traits span{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:3px 9px;background:var(--bg)}
+@media (max-width:820px){.basics .rnwrap{grid-template-columns:1fr}
+.basics .stack{grid-template-columns:repeat(2,minmax(0,1fr))}
+.basics .map,.basics .pars,.basics .quads{grid-template-columns:repeat(2,minmax(0,1fr))}
+.basics .explorer{grid-template-columns:1fr}
+.basics .tlist{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:560px){.basics .grid2,.basics .ratio,.basics .rels-grid,.basics .rules{grid-template-columns:1fr}
+.basics .mrow{grid-template-columns:repeat(2,minmax(0,1fr))}
+.basics .tlist{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.basics [data-show="0"] [data-layer]:not([data-layer="0"]){display:none}
+.basics [data-show="1"] [data-layer="2"],.basics [data-show="1"] [data-layer="3"]{display:none}
+.basics [data-show="2"] [data-layer="3"]{display:none}
+@media (prefers-reduced-motion:no-preference){}
+@media (max-width:560px){ .basics *{grid-template-columns:1fr!important} }
+.basics section{border-top:1px solid var(--line);margin-top:48px;padding-top:16px}
 </style>
 
 <header class="top"><div class="in">
   <a class="brand" href="#home">Соционика без клише</a>
-  <nav class="main" aria-label="Разделы"><a href="#home" id="nav-home">Типы</a><a href="#functions" id="nav-fn">Функции</a><a href="#relations" id="nav-rel">Отношения</a><a href="#topics" id="nav-top">Темы</a><a href="reference.html">Справочник</a></nav>
+  <nav class="main" aria-label="Разделы"><a href="#home" id="nav-home">Типы</a><a href="#functions" id="nav-fn">Функции</a><a href="#relations" id="nav-rel">Отношения</a><a href="#quadras" id="nav-quad">Квадры</a><a href="#topics" id="nav-top">Темы</a><a href="#basics" id="nav-bas">Основы</a></nav>
   <div class="layers" role="group" aria-label="Слои"><span class="lbl">Слои:</span>
     <button type="button" id="ly0" data-l="0">ядро</button><button type="button" id="ly1" data-l="1">+ классика</button><button type="button" id="ly2" data-l="2">+ линза</button><button type="button" id="ly3" data-l="3">все</button></div>
 </div></header>
@@ -532,7 +716,7 @@ function variantsSheet(k){
       </div></div>`;
   }).join('');
   return `<div class="sheet" data-layer="2"><div class="kicker">Вариации · одна модель, разные пути</div><h2>По какой функции ${t.name} идёт по жизни</h2>
-  <p class="sm">${lay(2)}Тип не меняется, но человек может строить жизнь вокруг разных своих функций: вокруг сильной, вокруг роли, которую выучил, даже вокруг болевой. От этого один ${t.ru} выглядит совсем по-разному. Активационная сюда не входит: по ней не идут, ею подпитываются.</p>
+  <p class="sm">${lay(2)}Тип не меняется, но человек может строить жизнь вокруг разных своих функций: вокруг сильной, вокруг роли, которую выучил, даже вокруг болевой. От этого один ${t.ru} выглядит совсем по-разному. Активационная сюда не входит: по ней не идут, ею подпитываются. <a href="#paths-${k.toLowerCase()}">Как путь меняется с этапом жизни, в кризисе и с осознанностью →</a></p>
   <div class="vtabs" role="tablist">${tabs}</div>${panels}
   <p class="sm mut" style="margin-top:10px">${lay(2)}Ловушка этой линзы: если любое несовпадение объяснять «он просто идёт по другой функции», тип становится неопровержимым. Проверка одна — рисунок цены: что даётся даром, что дорого, что ранит.</p></div>`;
 }
@@ -637,6 +821,7 @@ function polrPage(){
 function topicsPage(){
   const it = [['polr','Болевые функции всех типов','памятка','Восемь болевых аспектов, по два типа на каждый: как болит через ведущую, что ранит, кто прикрывает.']];
   if (typeof culturesPage === 'function') it.push(['cultures','Культуры через ценности квадр','квадры','Культуры и идеалы, разложенные по ценностям четырёх квадр.']);
+  it.push(['paths','Пути и этапы','механика','Тип постоянен, а путь меняется: по какой функции человек живёт на разных этапах, в кризисе и при разной осознанности.']);
   if (typeof layersPage === 'function') it.push(['layers','Тип и всё остальное','слои','Осознанность, опыт, возраст, ценности и среда: почему два человека одного типа не похожи.']);
   return `<div class="hero"><div><div class="kicker">Темы</div><h1>Сквозные темы</h1><p>То, что касается всех типов сразу.</p></div></div>
   <div class="docs">${it.map(([h,n,k,d]) => `<a class="doc" href="#${h}"><span class="kind">${k}</span><span class="dt">${n}</span><span class="sm mut" style="display:block;margin-top:4px">${d}</span></a>`).join('')}</div>`;
@@ -758,6 +943,203 @@ document.addEventListener('click', e => {
   if (b) { b.click(); document.getElementById('cdet').scrollIntoView({block:'start'}); }
 });
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.closest && e.target.closest('.cpt')) e.target.closest('.cpt').dispatchEvent(new MouseEvent('click', {bubbles:true})); });
+// ---------- страница: пути и этапы (механика: тип постоянен, путь — переменная с ценой)
+const PPOS = [0,1,7,6,2,3,4];
+const PCOST = {0:1,1:1,7:2,6:2,4:3,2:4,3:5};
+const PCOSTW = {0:'даром: все четыре параметра и ценность',1:'даром: инструмент ведущей, нет только времени',7:'легко, но без радости: функция не ценная',6:'легко, но уходит на сдерживание',4:'дорого: сам не держит, зависит от тех, кто даёт',2:'дорого: маска по нормам, нет ситуации и времени',3:'дороже всего: только личный опыт, всё ранит'};
+const PST = [
+ {id:'child', n:'Детство', y:'0–14', w:{0:3,4:3,1:1}, d:'Ведущая уже работает, но сырая: ни опыта, ни норм. По суггестивной ребёнок целиком зависит от взрослых — это и есть его первый «путь за».'},
+ {id:'youth', n:'Юность', y:'15–25', w:{2:3,3:2,0:2,1:1,4:1}, d:'Время масок. Ролевая учится по образцам, чтобы «быть как надо»; болевая — источник стыда, и часть людей начинает доказывать по ней (гиперкомпенсация).'},
+ {id:'build', n:'Становление', y:'25–40', w:{1:3,0:2,7:1,2:1}, d:'Творческая становится ремеслом: ведущая задаёт цель, творческая её добывает. Демонстративная иногда превращается в профессию «потому что получается».'},
+ {id:'mature', n:'Зрелость', y:'40–60', w:{0:3,7:2,1:2,6:1}, d:'Роль ослабевает: держать маску дорого, и человек отпускает её. Опора — ведущая; болевую чаще делегируют, чем прячут.'},
+ {id:'late', n:'Поздний возраст', y:'60+', w:{0:3,7:2,6:2}, d:'Путь закрепился как привычка: идти по нему дёшево, переключаться дорого. Ограничительная заметнее — больше сдерживания, меньше риска.'}];
+const PAW = [['На автомате','Путь выбирают этап и среда. Человек принимает свою оптику за устройство мира и не замечает, сколько платит.'],
+ ['Замечает','Видит рисунок цены: что даром, что дорого, что ранит. Дорогие пути реже становятся главными — он от них устаёт и знает почему.'],
+ ['Управляет','Выбирает путь под задачу. Для слабых мест берёт внешние опоры — правила, методики, людей, — и цена падает на ступень. Мерность от этого не растёт.']];
+function pathWeights(t, st, aw, cr){
+  const S = PST[st], w = {};
+  PPOS.forEach(i => { let v = S.w[i] || 0;
+    if (aw >= 1 && PCOST[i] >= 4) v = Math.max(0, v - 1);
+    if (aw >= 2 && PCOST[i] <= 2) v += 1;
+    if (cr) { if (i === 0) v += 2; else if (i === 3) v += aw >= 2 ? 0 : 2; else if (PCOST[i] >= 3) v = 0; else v = Math.max(0, v - 1); }
+    w[i] = v; });
+  return w;
+}
+function pathCost(i, aw, cr){ let c = PCOST[i]; if (aw >= 2 && c >= 3) c -= 1; if (cr && i !== 0) c += 1; return Math.min(5, c); }
+function pathsViz(k, st, aw, cr){
+  const t = T[k], m = t.m, w = pathWeights(t, st, aw, cr), max = Math.max(...Object.values(w), 1);
+  const top = PPOS.filter(i => w[i] === max && max > 0);
+  const main = top[0], a0 = m[main], c0 = pathCost(main, aw, cr), left = Math.max(0, 6 - c0 - (cr ? 2 : 0));
+  const rows = PPOS.map(i => { const a = m[i], c = pathCost(i, aw, cr), on = top.includes(i);
+    return `<div class="pzr${on ? ' on' : ''}" style="--c:var(--${a})"><div class="pzn">${D.syms[a]}<b>${D.ab[a]}</b><small>${D.posn[i].toLowerCase()} · ${D.dim[i]}D</small></div>
+      <div class="pzb"><i style="width:${w[i]/Math.max(max,5)*100}%"></i></div>
+      <div class="pzc" title="цена пути">${'●'.repeat(c)}<span>${'○'.repeat(5-c)}</span></div></div>`; }).join('');
+  const why = cr ? `${lay(2)}<b>Кризис.</b> На дорогие пути сил нет. Психика отступает к самому дешёвому — ведущей ${D.ab[m[0]]}${aw >= 2 ? '' : `, или срывается в защиту болевой ${D.ab[m[3]]}: обесценивает («это неважно») или доказывает изо всех сил`}.` : `${lay(3)}<b>${PST[st].n}.</b> ${PST[st].d}`;
+  const res = `${t.name}, ${main === 4 ? 'идущий за' : 'идущий по'} ${D.ab[a0]} «${D.tag[a0]}»`;
+  return `<div class="pzhead"><div class="kicker">Сейчас вероятнее всего</div><div class="pzres" style="color:var(--${a0})">${D.syms[a0]} ${res}</div>
+      <div class="sm">${CAP(PCOSTW[main])}. ${VLIFE[a0][main] || ''}</div></div>
+    <div class="pzgrid">${rows}</div>
+    <div class="pzfoot"><div class="pzmeter"><span class="kicker">Запас сил на остальное</span><div class="bar"><i style="width:${left/5*100}%"></i></div><b>${left} из 5</b></div>
+      <p class="sm">${why}</p><p class="sm">${lay(2)}<b>${PAW[aw][0]}.</b> ${PAW[aw][1]}</p>
+      ${top.length > 1 ? `<p class="sm mut">${cr ? 'Два исхода кризиса' : 'Пути равновероятны'}: ${top.map(i => D.ab[m[i]]).join(', ')}. ${cr ? 'Какой победит, зависит от осознанности: на уровне «управляет» срыв в болевую уходит.' : 'Решают среда и ценности.'}</p>` : ''}</div>`;
+}
+function pathsTimeline(k){
+  const t = T[k], m = t.m, W = 560, H = 300, x0 = 120, cw = (W - x0 - 10) / PST.length, rh = 36;
+  let o = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Линия жизни: какие пути вероятны на каждом этапе">`;
+  PST.forEach((s, j) => { const x = x0 + j*cw + cw/2; o += `<text x="${x}" y="16" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fg)">${s.n}</text><text x="${x}" y="29" text-anchor="middle" font-size="9" fill="var(--mut)">${s.y}</text>`; });
+  PPOS.forEach((i, r) => { const a = m[i], y = 50 + r*rh;
+    o += `<line x1="${x0}" y1="${y}" x2="${W-10}" y2="${y}" stroke="var(--line)"/><text x="${x0-8}" y="${y-2}" text-anchor="end" font-size="11" font-weight="700" fill="var(--${a})">${D.ab[a]}</text><text x="${x0-8}" y="${y+10}" text-anchor="end" font-size="8.5" fill="var(--mut)">${D.posn[i].toLowerCase()}</text>`;
+    let prev = null;
+    PST.forEach((s, j) => { const v = s.w[i] || 0, x = x0 + j*cw + cw/2;
+      if (v) { if (prev) o += `<line x1="${prev}" y1="${y}" x2="${x}" y2="${y}" stroke="var(--${a})" stroke-width="3" opacity=".35"/>`; o += `<circle cx="${x}" cy="${y}" r="${4 + v*3.5}" fill="var(--${a})" opacity="${.25 + v*.22}"/>`; prev = x; } else prev = null; }); });
+  const yb = 50 + 3*rh, y0 = 50;
+  o += `<path d="M ${x0+1.5*cw} ${H-16} C ${x0+1.5*cw} ${H-40}, ${x0+2.6*cw} ${H-40}, ${x0+2.6*cw} ${yb+10}" fill="none" stroke="var(--hard,#A3322B)" stroke-dasharray="4 3"/><text x="${x0+1.6*cw}" y="${H-4}" font-size="9" fill="var(--mut)">кризис: откат к ведущей или защита болевой</text>`;
+  return o + `</svg>`;
+}
+function pathsPage(k){
+  k = k && T[k] ? k : 'SEI';
+  const t = T[k], m = t.m;
+  const pick = D.order.map(c => `<a class="chip${c === k ? ' on' : ''}" href="#paths-${c.toLowerCase()}" style="${c === k ? `border-color:var(--${T[c].m[0]});font-weight:700` : ''}">${T[c].name}</a>`).join(' ');
+  const stb = PST.map((s, j) => `<button type="button" data-pst="${j}" aria-pressed="${j === 2}">${s.n}<small>${s.y}</small></button>`).join('');
+  const awb = PAW.map((a, j) => `<button type="button" data-paw="${j}" aria-pressed="${j === 0}">${a[0]}</button>`).join('');
+  const par = [['Подтипы по ведущей и творческой', lay(1) + 'классика, после Аугустинавичюте', 'Один тип делят на два подтипа по тому, какая из сильных функций заметнее.', 'Берём как частный случай: путь по ведущей и путь по творческой. Добавляем ещё пять путей и цену каждого.'],
+    ['ДКНХ-подтипы (В. Гуленко)', lay(1) + 'последователи', 'Четыре подтипа: доминант, креатив, нормализатор, гармонизатор — акцент на одну из групп функций.', 'Похоже по идее «акцента», но у Гуленко подтип закреплён за человеком. У нас путь может меняться с этапом и кризисом, а тип при этом не меняется.'],
+    ['Низшая функция под стрессом (юнгианцы, N. Quenk)', 'вне соционики', 'В перегрузке человек «захвачен» самой слабой функцией и ведёт себя непохоже на себя.', 'Внешняя параллель к правилу кризиса: откат к ведущей или срыв в защиту болевой. Не доказательство, но то же наблюдение с другой стороны.'],
+    ['Стабильность личности с возрастом (Big Five)', 'проверяемая психология', 'Порядок людей по чертам становится устойчивее примерно до 50 лет, но сами черты меняются всю жизнь.', 'Основа для «закрепления пути»: с годами переключаться дороже, но возможно.']];
+  return `<div class="crumb"><a href="#topics">Темы</a> / Пути и этапы</div>
+  <div class="hero"><div><div class="kicker">Соционика · механика · линза</div><h1>Пути и этапы</h1>
+    <div class="lead">Тип постоянен. Меняется то, вокруг какой функции человек строит жизнь, — и сколько это ему стоит.</div>
+    <p class="sm mut">${lay(0)}Тип и модель А — по Аугустинавичюте. ${lay(1)}Мерность — по Букалову. ${lay(2)}Пути, цена, осознанность — моя линза. ${lay(3)}Этапы, кризис и закрепление пути — гипотеза.</p></div></div>
+  <div class="sheet"><div class="kicker">Выбери тип — всё ниже подстроится</div><div class="chips">${pick}</div></div>
+  <div class="sheet"><div class="kicker">${lay(0)} Из чего исходим</div><h2>Что не меняется и что меняется</h2>
+    <div class="vgrid"><div class="vc"><div class="kicker">Не меняется — ядро</div><p>${lay(0)}Тип информационного метаболизма врождённый. Восемь мест модели А, их мерность и ценность закреплены. У ${G(t)} ${D.ab[m[0]]} всегда ведущая, ${D.ab[m[3]]} всегда болевая.</p></div>
+      <div class="vc"><div class="kicker">Меняется — путь</div><p>${lay(2)}<b>Путь</b> — функция, вокруг которой организованы занятия, самооценка и решения. Их семь: все места, кроме активационной — ею подпитываются, а не живут.</p></div>
+      <div class="vc"><div class="kicker">У каждого пути — цена</div><p>${lay(2)}Цена выводится из ядра: сколько параметров видит место (мерность) и хочется ли им жить (ценность). Ведущая и творческая — даром, роль и болевая — дорого.</p></div>
+      <div class="vc"><div class="kicker">Что сдвигает путь</div><p>${lay(3)}Этап жизни, кризис, требования среды. ${lay(2)}Осознанность превращает сдвиг из случайного в выбранный.</p></div></div></div>
+  <div class="sheet" id="pz-sheet"><div class="kicker">Интерактивная визуализация</div><h2>Четыре ручки: этап, осознанность, кризис — и твой тип</h2>
+    <p class="sm">Выбери этап и уровень осознанности, включи кризис. Полоса — насколько вероятно, что жизнь строится вокруг этой функции. Точки справа — цена пути: сколько сил он забирает.</p>
+    <div class="pzctl"><div class="seg" role="group" aria-label="Этап">${stb}</div><div class="seg" role="group" aria-label="Осознанность">${awb}</div>
+      <button type="button" class="tbtn ghost" data-pcr aria-pressed="false">Кризис: выкл</button></div>
+    <div id="pz" data-k="${k}" data-st="2" data-aw="0" data-cr="0">${pathsViz(k, 2, 0, 0)}</div></div>
+  <div class="sheet"><div class="kicker">${lay(3)} Линия жизни</div><h2>Какие пути вероятны на каждом этапе</h2>
+    <p class="sm">Круг крупнее — путь вероятнее. Это типичная картина, а не расписание: человек может прожить всю жизнь на одном пути или сменить его в любой момент.</p>
+    <div class="ptl">${pathsTimeline(k)}</div>
+    <div class="vgrid" style="margin-top:10px">${PST.map(s => `<div class="vc"><div class="kicker">${s.n} · ${s.y}</div><p class="sm">${s.d}</p></div>`).join('')}</div></div>
+  <div class="sheet"><div class="kicker">${lay(2)} Осознанность</div><h2>Что это такое, если думать через ядро</h2>
+    <p>${lay(2)}Осознанность — насколько человек отличает <b>свою оптику</b> от <b>устройства мира</b>. Тот, кто не отличает, считает, что все видят ${D.ab[m[0]]} «${D.tag[m[0]]}» так же, как он, а трудности по ${D.ab[m[3]]} — личным провалом. Тот, кто отличает, видит рисунок цены и выбирает.</p>
+    <div class="vgrid">${PAW.map((a, j) => `<div class="vc"><div class="kicker">${j+1} · ${a[0]}</div><p class="sm">${a[1]}</p></div>`).join('')}</div>
+    <p class="sm" style="margin-top:10px">${lay(0)}Чего осознанность не делает: не добавляет функции мерности. Болевая ${D.ab[m[3]]} остаётся одномерной. ${lay(2)}Меняется другое — вокруг неё появляются внешние опоры, и она перестаёт управлять самооценкой.</p></div>
+  <div class="sheet"><div class="kicker">${lay(3)} Закрепление пути</div><h2>Может ли тип «законсервироваться»?</h2>
+    <p>${lay(0)}Тип — нет: он и так не меняется. ${lay(3)}Закрепляется <b>путь</b>. Чем дольше человек живёт по одной функции, тем дешевле ему этот путь и тем дороже переключение — привычки, круг общения, профессия, самооценка завязаны на него.</p>
+    <p class="sm"><b>Что говорит наука.</b> Ранговая стабильность черт личности растёт примерно до 50 лет и выходит на плато (Roberts, DelVecchio, 2000), но средние уровни черт меняются на протяжении всей жизни (Roberts и др., 2006). Пластичность мозга с возрастом снижается, но не исчезает. Поэтому честная формулировка: <b>закрепление обратимо, но с годами дороже</b>. «Консервация типа» в этой системе — ошибка категорий, а не явление.</p></div>
+  <div class="sheet"><div class="kicker">С чем перекликается</div><h2>Похожие идеи и чем наша отличается</h2>
+    <div class="tw"><table class="ptab"><tr><th>Идея</th><th>Суть</th><th>Как используем</th></tr>${par.map(([a,b,c,d]) => `<tr><td><b>${a}</b><div class="sm mut">${b}</div></td><td>${c}</td><td>${d}</td></tr>`).join('')}</table></div></div>
+  <div class="sheet"><div class="kicker">Проверка</div><h2>Как не сделать тип неопровержимым</h2>
+    <p>${lay(2)}Опасность механики: любое несовпадение можно объяснить «он просто идёт по другой функции». Поэтому проверка одна и она не зависит от пути — <b>рисунок цены</b>. После какого дня ${t.name} выжат, после какого восстановлен, что ранит. Этот рисунок одинаков на всех семи путях: ${D.ab[m[0]]} восстанавливает, ${D.ab[m[3]]} ранит, ${D.ab[m[4]]} хочется получать.</p>
+    <p class="sm"><a href="#type-${k.toLowerCase()}">Все семь путей ${G(t)} подробно — на странице типа</a> · <a href="#layers-${k.toLowerCase()}">Опыт, возраст, ценности, среда — «Тип и всё остальное»</a></p></div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-pst],[data-paw],[data-pcr]'); if (!b) return;
+  const z = document.getElementById('pz'); if (!z) return;
+  if (b.dataset.pst != null) { z.dataset.st = b.dataset.pst; b.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); }
+  if (b.dataset.paw != null) { z.dataset.aw = b.dataset.paw; b.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); }
+  if (b.hasAttribute('data-pcr')) { const on = z.dataset.cr !== '1'; z.dataset.cr = on ? '1' : '0'; b.setAttribute('aria-pressed', on); b.textContent = on ? 'Кризис: вкл' : 'Кризис: выкл'; }
+  z.innerHTML = pathsViz(z.dataset.k, +z.dataset.st, +z.dataset.aw, z.dataset.cr === '1');
+});
+// ---------- страница: квадры (ценности, взаимодействие, визуализация по уровням)
+const QORDER = ['Альфа','Бета','Гамма','Дельта'];
+const QTXT = {
+ 'Альфа':{v:'Что ещё можно и как это устроено — и чтобы при этом было хорошо и горело.', l:'Запас и мера: видеть, чем вещь, идея, место могут стать, и проверять, сходится ли это. Самочувствие и зажигание: чтобы рядом было удобно телу и живо по накалу. Общее поле альфы — пространство, где можно пробовать и обсуждать без давления и без счёта пользы.', bg:'Вес, сюжет, КПД и гравитация звучат фоном: кто сильнее, к чему всё идёт, сколько это даст и кто кому свой — альфе это не так важно, как «интересно ли и сходится ли».', g:'Пространство, где пробуют: мастерская, разговор до ночи, совместная затея без чёткой цели.'},
+ 'Бета':{v:'Общий порядок и общий накал — и сила, которая ведёт по сюжету.', l:'Мера и зажигание: единая система и состояние, которое захватывает всех сразу. Вес и сюжет: опора, мобилизация и ощущение, что история идёт к развязке. Общее поле беты — дело, в котором у каждого своё место в общей линии.', bg:'Запас, самочувствие, КПД и гравитация — фоном: бете важнее «за что мы» и «куда идём», чем «удобно ли», «выгодно ли» и «кто кому лично близок».', g:'Общее дело с линией и ставкой: команда, движение, проект, где понятно, кто ведёт и к чему.'},
+ 'Гамма':{v:'Своё и результат — и сила с чувством момента.', l:'Вес и сюжет: опора и точный выбор момента. КПД и гравитация: что в итоге получится и кто кому на деле свой. Общее поле гаммы — договор между самостоятельными людьми, где каждый отвечает за своё.', bg:'Запас, мера, самочувствие и зажигание — фоном: гамме важнее «что выйдет» и «кому можно доверять», чем «как ещё можно», «как правильно по системе», «удобно ли» и «горит ли».', g:'Самостоятельные люди с общим результатом: партнёрство, рынок, сделка, где ясно, кто за что отвечает.'},
+ 'Дельта':{v:'Польза и близость — и чтобы было хорошо и было куда расти.', l:'КПД и гравитация: дело, которое приносит пользу, и надёжные связи. Запас и самочувствие: возможность развиваться и среда, в которой хорошо жить. Общее поле дельты — дом, мастерская, хозяйство: место, где долго и с толком.', bg:'Вес, сюжет, мера и зажигание — фоном: дельте важнее «полезно ли и надёжно ли», чем «кто сильнее», «к чему всё идёт», «как устроено по системе» и «горит ли».', g:'Долгое общее дело, в котором растут: семья, хозяйство, ремесло, сообщество «своих».'}};
+const QCL = [['«Альфа — весёлые, бета — агрессивные, гамма — дельцы, дельта — домоседы».','Квадра — это общий набор ценных аспектов. Поведение людей одной квадры очень разное; общее — то, что для них имеет значение, а не как они себя ведут.'],
+ ['«Квадра — это компания друзей».','Типы одной квадры легче понимают, что важно другому. Дружба при этом зависит от всего остального: ценностей, опыта, характера.'],
+ ['«Квадры сменяют друг друга в истории».','Это гипотеза Аугустинавичюте о «квадральном прогрессе». Проверки у неё нет, и здесь она не используется как факт.']];
+function qRel(a, b){
+  const A = T[a], B = T[b];
+  if (A.dual === b) return ['dual','дуальность','var(--good)'];
+  if (B.m[0] === A.m[5] && B.m[1] === A.m[4]) return ['act','активация','var(--Ne)'];
+  if (B.m[0] === A.m[1] && B.m[1] === A.m[0]) return ['mir','зеркальные','var(--Te)'];
+  return ['oth','—','var(--mut)'];
+}
+function qTypes(q){ return D.order.filter(k => D.cult.Q[q].includes(T[k].m[0]) && D.cult.Q[q].includes(T[k].m[1])); }
+function qVizTop(){
+  const W = 560, H = 360, cx = 280, cy = 180, R = 118, pos = [[cx, cy-R],[cx+R*1.35, cy],[cx, cy+R],[cx-R*1.35, cy]];
+  let o = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Четыре квадры и общие ценности соседних">`;
+  QORDER.forEach((q, i) => { const j = (i+1)%4, [x1,y1] = pos[i], [x2,y2] = pos[j], sh = D.cult.Q[q].filter(a => D.cult.Q[QORDER[j]].includes(a));
+    const mx = (x1+x2)/2, my = (y1+y2)/2;
+    o += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--line)" stroke-width="2"/><g transform="translate(${mx},${my})"><rect x="-58" y="-12" width="116" height="24" rx="12" fill="var(--bg)" stroke="var(--line)"/><text text-anchor="middle" y="4" font-size="10.5" font-weight="700">${sh.map(a => `<tspan fill="var(--${a})">${D.ab[a]}</tspan>`).join('<tspan fill="var(--mut)"> + </tspan>')}</text></g>`; });
+  QORDER.forEach((q, i) => { const [x,y] = pos[i], c = D.cult.QC[q];
+    o += `<g class="qnode" data-q="${i}" tabindex="0" role="button" aria-label="${q}"><circle cx="${x}" cy="${y}" r="52" fill="${c}" opacity=".14"/><circle cx="${x}" cy="${y}" r="52" fill="none" stroke="${c}" stroke-width="2"/><text x="${x}" y="${y-14}" text-anchor="middle" font-family="Lora,serif" font-size="17" font-weight="600" fill="${c}">${q}</text>
+      <text x="${x}" y="${y+4}" text-anchor="middle" font-size="10" font-weight="700">${D.cult.Q[q].slice(0,2).map(a => `<tspan fill="var(--${a})">${D.ab[a]} </tspan>`).join('')}</text><text x="${x}" y="${y+18}" text-anchor="middle" font-size="10" font-weight="700">${D.cult.Q[q].slice(2).map(a => `<tspan fill="var(--${a})">${D.ab[a]} </tspan>`).join('')}</text><text x="${x}" y="${y+36}" text-anchor="middle" font-size="9" fill="var(--mut)">открыть →</text></g>`; });
+  o += `<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="10" fill="var(--mut)">у противоположных</text><text x="${cx}" y="${cy+17}" text-anchor="middle" font-size="10" fill="var(--mut)">общих ценностей нет</text>`;
+  return o + `</svg>`;
+}
+function qVizQuad(qi){
+  const q = QORDER[qi], ks = qTypes(q), W = 560, H = 340, pts = [[150,80],[410,80],[410,260],[150,260]];
+  const k0 = ks[0], k1 = ks.find(k => k !== k0 && k !== T[k0].dual);
+  const ord2 = [k0, T[k0].dual, T[k1].dual, k1];
+  let o = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Отношения внутри квадры ${q}">`;
+  for (let i = 0; i < 4; i++) for (let j = i+1; j < 4; j++) { const [r, n, c] = qRel(ord2[i], ord2[j]), [x1,y1] = pts[i], [x2,y2] = pts[j];
+    o += `<g class="qpair" data-a="${ord2[i]}" data-b="${ord2[j]}" tabindex="0" role="button" aria-label="${T[ord2[i]].name} и ${T[ord2[j]].name}: ${n}"><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${r === 'dual' ? 5 : 3}" ${r === 'mir' ? 'stroke-dasharray="7 5"' : ''}/><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="transparent" stroke-width="18"/>
+      <text x="${(x1+x2)/2 + (x1 === x2 ? 8 : 0)}" y="${(y1+y2)/2 - (y1 === y2 ? 8 : 0) + (x1 !== x2 && y1 !== y2 ? (i === 0 ? -6 : 14) : 0)}" text-anchor="${x1 === x2 ? 'start' : 'middle'}" font-size="10.5" font-weight="700" fill="${c}">${n}</text></g>`; }
+  ord2.forEach((k, i) => { const [x,y] = pts[i], t = T[k], a = t.m[0];
+    o += `<a href="#type-${k.toLowerCase()}"><circle cx="${x}" cy="${y}" r="38" fill="var(--bg)" stroke="var(--${a})" stroke-width="3"/><text x="${x}" y="${y-2}" text-anchor="middle" font-family="Lora,serif" font-size="13.5" font-weight="600" fill="var(--fg)">${t.name.length > 11 ? t.name.split(' ')[0] : t.name}</text><text x="${x}" y="${y+13}" text-anchor="middle" font-size="10" font-weight="700"><tspan fill="var(--${t.m[0]})">${D.ab[t.m[0]]}</tspan><tspan fill="var(--mut)"> · </tspan><tspan fill="var(--${t.m[1]})">${D.ab[t.m[1]]}</tspan></text></a>`; });
+  return o + `</svg>`;
+}
+function qVizPair(a, b){
+  const A = T[a], B = T[b], [r, n] = qRel(a, b);
+  const lines = r === 'dual' ? CHN.map(([i,j,nm,p,d]) => `<div class="vc"><div class="kicker">${nm} · ${p}</div><p class="sm"><b style="color:var(--${A.m[i]})">${D.ab[A.m[i]]}</b> ${A.name} → ${B.name}, <b style="color:var(--${B.m[i]})">${D.ab[B.m[i]]}</b> ${B.name} → ${A.name}. ${CAP(d)}.</p></div>`).join('')
+    : r === 'act' ? `<div class="vc"><div class="kicker">Активация · сильное одного попадает в активационную другого</div><p class="sm">${lay(0)}Ведущая ${G(A)} — <b style="color:var(--${A.m[0]})">${D.ab[A.m[0]]}</b> — приходит в активационную ${G(B)}, и наоборот. Рядом бодро и легко начать, но к суггестивной сигнал не доходит: голод не утоляется до конца, и долгая близость утомляет.</p></div>`
+    : r === 'mir' ? `<div class="vc"><div class="kicker">Зеркальные · одни и те же сильные функции, переставленные местами</div><p class="sm">${lay(0)}Ведущая одного — творческая другого: <b style="color:var(--${A.m[0]})">${D.ab[A.m[0]]}</b> и <b style="color:var(--${A.m[1]})">${D.ab[A.m[1]]}</b>. Смотрят на одно и то же, но один из позиции «зачем», другой «как». Интересно спорить и поправлять друг друга; помощи по слабым местам друг от друга нет.</p></div>` : '';
+  return `<div class="qpairbox"><h3 style="font-family:var(--serif);margin:0 0 8px">${A.name} и ${B.name} — ${n}</h3><div class="vgrid">${lines}</div><p class="sm" style="margin-top:8px"><a href="#pair-${a.toLowerCase()}-${b.toLowerCase()}">Полный разбор пары →</a></p></div>`;
+}
+function quadrasPage(){
+  const tabs = QORDER.map((q, i) => `<button type="button" class="vtab${i ? '' : ' on'}" data-v="${i}" style="--c:${D.cult.QC[q]}"><span>${q}</span><small>${D.cult.QT[q]}</small></button>`).join('');
+  const panels = QORDER.map((q, i) => { const Q = QTXT[q], ks = qTypes(q), val = D.cult.Q[q], bg = AORD.filter(a => !val.includes(a));
+    return `<div class="vpanel" data-v="${i}" ${i ? 'hidden' : ''} style="--c:${D.cult.QC[q]}">
+      <h2 style="color:${D.cult.QC[q]};margin:8px 0 4px">${q}</h2><div class="lead">${Q.v}</div>
+      <div class="kicker" style="margin:12px 0 6px">${lay(0)} Четыре ценных аспекта</div>
+      <div class="cards" style="grid-template-columns:repeat(2,minmax(0,1fr))">${val.map(a => `<div class="card" style="--c:var(--${a})"><h4><span class="c">${D.syms[a]} ${D.colname[a]} · ${D.ab[a]}</span> <span class="m">«${D.tag[a]}»</span></h4><p class="sm mut">Обычно отвечает за: ${POP[a]}.</p><p class="sm">${D.core ? (D.core[a] || '') : ''}</p></div>`).join('')}</div>
+      <div class="vgrid" style="margin-top:12px"><div class="vc"><div class="kicker">${lay(2)} Как это звучит вместе</div><p>${Q.l}</p></div>
+        <div class="vc"><div class="kicker">${lay(2)} Что для квадры фон</div><p>${bg.map(a => `<b style="color:var(--${a})">${D.ab[a]}</b>`).join(' · ')}</p><p class="sm">${Q.bg}</p></div>
+        <div class="vc"><div class="kicker">${lay(3)} Где квадре легко</div><p class="sm">${Q.g}</p></div>
+        <div class="vc"><div class="kicker">${lay(0)} Типы квадры</div><p>${ks.map(k => `<a href="#type-${k.toLowerCase()}" style="color:var(--${T[k].m[0]})">${T[k].name}</a> <span class="sm mut">${D.ab[T[k].m[0]]}+${D.ab[T[k].m[1]]}</span>`).join('<br>')}</p></div></div></div>`; }).join('');
+  const heat = `<div class="tw"><table class="heat qheat"><tr><th></th>${AORD.map(a => `<th style="color:var(--${a})">${D.syms[a]}<br>${D.ab[a]}</th>`).join('')}</tr>${QORDER.map(q => `<tr><td><b style="color:${D.cult.QC[q]}">${q}</b></td>${AORD.map(a => `<td><span class="hc" style="--c:var(--${a});opacity:${D.cult.Q[q].includes(a) ? 1 : .08}">${D.cult.Q[q].includes(a) ? '●' : ''}</span></td>`).join('')}</tr>`).join('')}</table></div>`;
+  return `<div class="hero"><div><div class="kicker">Соционика · квадры</div><h1>Четыре квадры</h1>
+    <div class="lead">Квадра — четыре типа, которым важны одни и те же четыре аспекта. Не компания и не характер, а общий язык того, что имеет значение.</div>
+    <p class="sm mut">${lay(0)}Квадры и их ценности — по Аугустинавичюте. ${lay(2)}Описания «как звучит вместе», «фон», «где легко» — моя линза. ${lay(3)}Связь с группами и средой — гипотеза.</p></div></div>
+  <div class="sheet"><div class="kicker">${lay(0)} Откуда берутся квадры</div><h2>Два выбора — четыре квадры</h2>
+    <p>${lay(0)}У каждого типа ценны четыре функции: две сильные в эго (ведущая и творческая) и две желанные в сверх-оно (суггестивная и активационная). У четырёх типов этот набор совпадает — это и есть квадра.</p>
+    <p>${lay(0)}Выбор у квадры всего из двух пар на каждой оси. Чем оценивать: мерой и зажиганием (БЛ+ЧЭ) или КПД и гравитацией (ЧЛ+БЭ). Что воспринимать: запасом и самочувствием (ЧИ+БС) или весом и сюжетом (ЧС+БИ). Два выбора — четыре квадры.</p>
+    ${heat}</div>
+  <div class="sheet" id="qviz"><div class="kicker">Интерактивная визуализация · от общего к частному</div><h2>Квадры → квадра → пара → тип</h2>
+    <p class="sm">Нажми на квадру, чтобы увидеть, как устроены отношения внутри неё. Нажми на линию между типами — откроется, как работает эта пара. Нажми на тип — его страница.</p>
+    <div class="qcrumb" id="qcrumb"></div><div class="qstage" id="qstage">${qVizTop()}</div><div id="qpair"></div>
+    <div class="qlegend sm"><span><i style="background:var(--good)"></i>дуальность — дополнение по всем каналам</span><span><i style="background:var(--Ne)"></i>активация — бодрит, но не насыщает</span><span><i style="background:var(--Te)"></i>зеркальные — одно и то же с разных сторон</span></div>
+    <p class="sm" style="margin-top:8px">${lay(0)}Внутри квадры всего три вида отношений, по две пары каждого: дуальность, активация, зеркальные. Это единственное место, где все отношения «свои»: общие ценности есть у всех шестерых пар.</p></div>
+  <div class="sheet" id="qdet"><div class="kicker">Каждая квадра</div><h2>Ценности, фон и типы</h2><div class="vtabs">${tabs}</div>${panels}</div>
+  <div class="sheet"><div class="kicker">Клише</div><h2>Чем квадра не является</h2>
+    <div class="tw"><table class="ptab"><tr><th>Клише</th><th>Что на самом деле</th></tr>${QCL.map(([a,b]) => `<tr><td class="mut"><s>${a}</s></td><td>${b}</td></tr>`).join('')}</table></div>
+    <p class="sm" style="margin-top:10px"><a href="#cultures">Культуры через ценности квадр →</a></p></div>`;
+}
+function qGo(level, arg){
+  const st = document.getElementById('qstage'), cr = document.getElementById('qcrumb'), pr = document.getElementById('qpair'); if (!st) return;
+  if (level === 0) { st.innerHTML = qVizTop(); cr.innerHTML = ''; pr.innerHTML = ''; return; }
+  const qi = +arg, q = QORDER[qi];
+  st.innerHTML = qVizQuad(qi); pr.innerHTML = '';
+  cr.innerHTML = `<button type="button" class="tbtn ghost" data-qback>← все квадры</button> <b style="color:${D.cult.QC[q]}">${q}</b> <span class="sm mut">${D.cult.QT[q]}</span>`;
+}
+document.addEventListener('click', e => {
+  const n = e.target.closest('.qnode'); if (n) { qGo(1, n.dataset.q); return; }
+  if (e.target.closest('[data-qback]')) { qGo(0); return; }
+  const p = e.target.closest('.qpair'); if (p) { document.getElementById('qpair').innerHTML = qVizPair(p.dataset.a, p.dataset.b); document.getElementById('qpair').scrollIntoView({block:'nearest'}); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.closest && e.target.closest('.qnode,.qpair')) e.target.closest('.qnode,.qpair').dispatchEvent(new MouseEvent('click', {bubbles:true})); });
+// ---------- страница: основы (бывший справочник, встраивается при сборке)
+const BASICS = "<section id=\"layers-map\" style=\"border-top:none;padding-top:20px\">\n  <div class=\"kicker\">Из чего собрана система</div>\n  <h2>Ядро и надстройки</h2>\n  <div class=\"intro\"><p>Всё здесь разложено по слоям. Ниже лежит то, из чего строится соционика; выше — развития и интерпретации. Переключатель над этим блоком прячет верхние слои, чтобы прочитать систему только по основанию.</p></div>\n  <div class=\"stack\">\n    <div><span class=\"lay l0\">ядро</span><h4>Аугустинавичюте</h4><p>Информационный метаболизм, восемь аспектов в её определениях, модель А, интертипные отношения, квадры, дихотомии Юнга.</p></div>\n    <div><span class=\"lay l1\">классика</span><h4>После неё, общепринятое</h4><p>Мерность функций (Букалов). Признаки Рейнина: принадлежность выводится строго, описания у авторов расходятся.</p></div>\n    <div><span class=\"lay l2\">линза</span><h4>Моя интерпретация</h4><p>Ярлыки аспектов (вес, сюжет, гравитация…), широкие объекты, разбор по параметрам, болевая через ведущую, образы мест.</p></div>\n    <div><span class=\"lay l3\">гипотеза</span><h4>Гипотезы</h4><p>Вес типа и слои личности, связь ценностей Шварца с аспектами, культуры, совместимость вариантов. Цифры там условные.</p></div>\n  </div>\n</section><section id=\"system\">\n  <div class=\"kicker\">Как устроена система</div>\n  <h2>Четыре уровня, каждый опирается на предыдущий</h2>\n  <div class=\"map\">\n    <a href=\"#aspects\"><span class=\"kicker\" style=\"margin:0\">1 · Язык</span><span class=\"n\">Аспекты, модель А, мерность</span><span class=\"arrow\">восемь сторон мира, восемь мест в психике, четыре параметра</span></a>\n    <a href=\"#types\"><span class=\"kicker\" style=\"margin:0\">2 · Типы</span><span class=\"n\">16 типов и их болевые</span><span class=\"arrow\">как аспекты расставлены у конкретного человека</span></a>\n    <a href=\"#relations\"><span class=\"kicker\" style=\"margin:0\">3 · Отношения</span><span class=\"n\">Дуальность, ревизия, активация</span><span class=\"arrow\">что происходит, когда две модели стыкуются</span></a>\n    <a href=\"#beyond\"><span class=\"kicker\" style=\"margin:0\">4 · Вне типа</span><span class=\"n\">Слои личности и культуры</span><span class=\"arrow\">что тип задаёт, а что нет</span></a>\n  </div>\n  <p class=\"mut\">Документы серии — это углублённые разборы. Всё, что в них повторяется (аспекты, места, мерность), собрано здесь один раз.</p>\n</section><section id=\"aspects\">\n  <div class=\"kicker\">Язык · 1</div>\n  <h2>Восемь аспектов — восемь сторон мира</h2>\n  <div class=\"intro\"><p data-layer=\"0\"><span class=\"lay l0\">ядро</span> Аугустинавичюте называла тип типом информационного метаболизма: способом, которым психика принимает сигналы мира. Четыре <b>чёрных</b> аспекта описывают объект сам по себе (потенциал, процесс, движение, работа), четыре <b>белых</b> — отношения (пространство, время, мера, притяжение). Ниже её определения, пересказанные близко к тексту.</p>\n  <p data-layer=\"2\"><span class=\"lay l2\">линза</span> Объекты у всех аспектов одинаково широки: вещи, тело, пространство, идеи, процессы, дела, люди. Ярлык в кавычках — моё короткое имя аспекта; строка «в пересказах» показывает, во что аспект обычно сводят.</p></div>\n  <div class=\"grid2\"><article class=\"asp\" style=\"--c:var(--Ne)\">\n  <header><svg class=\"sym\" width=\"22\" height=\"22\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><polygon points=\"0,-8 8,6 -8,6\" fill=\"var(--Ne)\"/></svg><div><h3>Чёрная интуиция · ЧИ</h3><div class=\"tag\">Интуиция возможностей · иррациональный</div></div></header>\n  <div data-layer=\"0\" class=\"blk\"><span class=\"lay l0\">ядро</span><p>Потенциал объекта: его внутренняя суть, способности, то, чем он может стать.</p></div>\n  <div data-layer=\"2\" class=\"blk\"><span class=\"lay l2\">линза</span><p><b class=\"c\">«запас».</b> Видеть запас: на что ещё способны вещь, человек, идея или положение, чем они могут стать, какие есть другие выходы.</p>\n  <p class=\"img\">Как фонарик, который везде находит двери.</p>\n  <p class=\"cl\"><span class=\"mut\">В пересказах:</span> <s>креатив и перспективы</s> → запас: на что ещё способны вещь, человек, идея, положение</p></div>\n</article><article class=\"asp\" style=\"--c:var(--Fe)\">\n  <header><svg class=\"sym\" width=\"22\" height=\"22\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><path d=\"M-7 -7 H0 V0 H7 V7 H-7 Z\" fill=\"var(--Fe)\"/></svg><div><h3>Чёрная этика · ЧЭ</h3><div class=\"tag\">Этика эмоций · рациональный</div></div></header>\n  <div data-layer=\"0\" class=\"blk\"><span class=\"lay l0\">ядро</span><p>Внутренний процесс объекта: возбуждение, переход энергии из потенциальной в движение.</p></div>\n  <div data-layer=\"2\" class=\"blk\"><span class=\"lay l2\">линза</span><p><b class=\"c\">«зажигание».</b> Чувствовать заряд: что разгорается, что гаснет, где «может быть» переходит в «началось», — и уметь поднять или погасить накал.</p>\n  <p class=\"img\">Как спичка: чувствует, где можно разжечь.</p>\n  <p class=\"cl\"><span class=\"mut\">В пересказах:</span> <s>эмоции и настроение</s> → зажигание: что разгорается и что гаснет — в событии, тексте, проекте, месте</p></div>\n</article><article class=\"asp\" style=\"--c:var(--Se)\">\n  <header><svg class=\"sym\" width=\"22\" height=\"22\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><circle cx=\"0\" cy=\"0\" r=\"7\" fill=\"var(--Se)\"/></svg><div><h3>Чёрная сенсорика · ЧС</h3><div class=\"tag\">Волевая сенсорика · иррациональный</div></div></header>\n  <div data-layer=\"0\" class=\"blk\"><span class=\"lay l0\">ядро</span><p>Кинетическая энергия: движение объекта в пространстве, его внешняя форма и сила.</p></div>\n  <div data-layer=\"2\" class=\"blk\"><span class=\"lay l2\">линза</span><p><b class=\"c\">«вес».</b> Чувствовать массу и форму: сколько что весит, сколько занимает места, готово ли прямо сейчас тратить силу, выразительно ли.</p>\n  <p class=\"img\">Как руки, которые чувствуют вес.</p>\n  <p class=\"cl\"><span class=\"mut\">В пересказах:</span> <s>воля, давление, власть, напор</s> → вес: масса, форма, выразительность, готовность собраться для рывка — у вещей, решений, пространства, тела</p></div>\n</article><article class=\"asp\" style=\"--c:var(--Te)\">\n  <header><svg class=\"sym\" width=\"22\" height=\"22\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><rect x=\"-7\" y=\"-7\" width=\"14\" height=\"14\" fill=\"var(--Te)\"/></svg><div><h3>Чёрная логика · ЧЛ</h3><div class=\"tag\">Деловая логика · рациональный</div></div></header>\n  <div data-layer=\"0\" class=\"blk\"><span class=\"lay l0\">ядро</span><p>Использование энергии: внешняя работа объекта, его действие и результат.</p></div>\n  <div data-layer=\"2\" class=\"blk\"><span class=\"lay l2\">линза</span><p><b class=\"c\">«КПД».</b> Видеть, во что превращается энергия: вложенное усилие, полученный результат, потери по дороге.</p>\n  <p class=\"img\">Как мастер, который видит, что выйдет из заготовки.</p>\n  <p class=\"cl\"><span class=\"mut\">В пересказах:</span> <s>деньги и работа</s> → КПД: во что превращается усилие — в деле, технике, теле, быту</p></div>\n</article><article class=\"asp\" style=\"--c:var(--Si)\">\n  <header><svg class=\"sym\" width=\"22\" height=\"22\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><circle cx=\"0\" cy=\"0\" r=\"7\" fill=\"none\" stroke=\"var(--Si)\" stroke-width=\"1.7\"/></svg><div><h3>Белая сенсорика · БС</h3><div class=\"tag\">Сенсорика ощущений · иррациональный</div></div></header>\n  <div data-layer=\"0\" class=\"blk\"><span class=\"lay l0\">ядро</span><p>Пространство, как его ощущает субъект: взаимодействие с ним, самочувствие, равновесие.</p></div>\n  <div data-layer=\"2\" class=\"blk\"><span class=\"lay l2\">линза</span><p><b class=\"c\">«самочувствие».</b> Чувствовать, как сочетается всё, что есть одновременно: тело, свет, звук, вещи, процессы — и каково от этого.</p>\n  <p class=\"img\">Как звукорежиссёр, который слышит весь зал сразу.</p>\n  <p class=\"cl\"><span class=\"mut\">В пересказах:</span> <s>уют и комфорт</s> → самочувствие: как сочетается всё, что есть одновременно — тело, свет, звук, вещи, процессы</p></div>\n</article><article class=\"asp\" style=\"--c:var(--Ni)\">\n  <header><svg class=\"sym\" width=\"22\" height=\"22\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><polygon points=\"0,-8 8,6 -8,6\" fill=\"none\" stroke=\"var(--Ni)\" stroke-width=\"1.7\"/></svg><div><h3>Белая интуиция · БИ</h3><div class=\"tag\">Интуиция времени · иррациональный</div></div></header>\n  <div data-layer=\"0\" class=\"blk\"><span class=\"lay l0\">ядро</span><p>Время: последовательность событий и связь между ними.</p></div>\n  <div data-layer=\"2\" class=\"blk\"><span class=\"lay l2\">линза</span><p><b class=\"c\">«сюжет».</b> Видеть линию: что из чего вытекает, на какой стадии процесс, созрело ли, пора или рано.</p>\n  <p class=\"img\">Как читатель, который знает, к чему идёт сюжет.</p>\n  <p class=\"cl\"><span class=\"mut\">В пересказах:</span> <s>сроки, пунктуальность, прогнозы</s> → сюжет: что из чего вытекает, на какой стадии процесс, созрело ли</p></div>\n</article><article class=\"asp\" style=\"--c:var(--Ti)\">\n  <header><svg class=\"sym\" width=\"22\" height=\"22\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><rect x=\"-7\" y=\"-7\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"var(--Ti)\" stroke-width=\"1.7\"/></svg><div><h3>Белая логика · БЛ</h3><div class=\"tag\">Структурная логика · рациональный</div></div></header>\n  <div data-layer=\"0\" class=\"blk\"><span class=\"lay l0\">ядро</span><p>Объективное соотношение объектов: мера, структура, иерархия.</p></div>\n  <div data-layer=\"2\" class=\"blk\"><span class=\"lay l2\">линза</span><p><b class=\"c\">«мера».</b> Держать мир в пропорции: что чему равно, что к какому классу относится, что чему противоречит.</p>\n  <p class=\"img\">Как линейка: что больше, что меньше, что лишнее.</p>\n  <p class=\"cl\"><span class=\"mut\">В пересказах:</span> <s>порядок и правила</s> → мера: что чему соответствует, к какому классу относится, где противоречие</p></div>\n</article><article class=\"asp\" style=\"--c:var(--Fi)\">\n  <header><svg class=\"sym\" width=\"22\" height=\"22\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><path d=\"M-7 -7 H0 V0 H7 V7 H-7 Z\" fill=\"none\" stroke=\"var(--Fi)\" stroke-width=\"1.7\"/></svg><div><h3>Белая этика · БЭ</h3><div class=\"tag\">Этика отношений · рациональный</div></div></header>\n  <div data-layer=\"0\" class=\"blk\"><span class=\"lay l0\">ядро</span><p>Субъективное отношение объектов: притяжение и отталкивание между ними.</p></div>\n  <div data-layer=\"2\" class=\"blk\"><span class=\"lay l2\">линза</span><p><b class=\"c\">«гравитация».</b> Чувствовать силу и знак притяжения: что своё, что чужое, что к чему тянется, какая между всем дистанция.</p>\n  <p class=\"img\">Как магнит: что своё, что чужое.</p>\n  <p class=\"cl\"><span class=\"mut\">В пересказах:</span> <s>отношения с людьми, мораль</s> → гравитация: что своё, что чужое, какая дистанция — к людям, местам, делам, вещам, идеям</p></div>\n</article></div>\n</section><section id=\"model\">\n  <div class=\"kicker\">Язык · 2</div>\n  <h2>Модель А: место меняет, как работает аспект</h2>\n  <div class=\"intro\"><p data-layer=\"0\"><span class=\"lay l0\">ядро</span> Все восемь аспектов есть у каждого, но стоят на разных местах модели А. Место решает, сильный аспект или слабый и ценный или нет. Четыре блока: эго, сверх-я, сверх-оно, оно.</p>\n  <p data-layer=\"1\"><span class=\"lay l1\">классика</span> Колонка мерности — по Букалову. <span data-layer=\"2\"><span class=\"lay l2\">линза</span> Колонка образов — моя: восемь языков, которыми человек владеет по-разному.</span></p></div>\n  <div class=\"tw\"><table><tr><th>Место · блок · сила и ценность</th><th data-layer=\"1\">Мерность</th><th data-layer=\"2\">Образ и как работает</th></tr><tr><td><b>1 · Ведущая</b><div class=\"mut\">эго · сильная, ценная</div></td><td data-layer=\"1\"><span class=\"dots\" aria-label=\"4D\"><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i></span> <span class=\"mut\">4D</span></td><td data-layer=\"2\"><span class=\"mut\">«родной язык»</span><br>сильная и ценная: через неё человек смотрит на мир</td></tr><tr><td><b>2 · Творческая</b><div class=\"mut\">эго · сильная, ценная</div></td><td data-layer=\"1\"><span class=\"dots\" aria-label=\"3D\"><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"\"></i></span> <span class=\"mut\">3D</span></td><td data-layer=\"2\"><span class=\"mut\">«рабочий язык»</span><br>сильная и ценная: инструмент, гибко отступает от правил ради результата</td></tr><tr><td><b>3 · Ролевая</b><div class=\"mut\">сверх-я · слабая, не ценная</div></td><td data-layer=\"1\"><span class=\"dots\" aria-label=\"2D\"><i class=\"on\"></i><i class=\"on\"></i><i class=\"\"></i><i class=\"\"></i></span> <span class=\"mut\">2D</span></td><td data-layer=\"2\"><span class=\"mut\">«фразы из разговорника»</span><br>слабая, но осознанная: действует «по учебнику», держит лицо через усилие</td></tr><tr><td><b>4 · Болевая</b><div class=\"mut\">сверх-я · слабая, не ценная</div></td><td data-layer=\"1\"><span class=\"dots\" aria-label=\"1D\"><i class=\"on\"></i><i class=\"\"></i><i class=\"\"></i><i class=\"\"></i></span> <span class=\"mut\">1D</span></td><td data-layer=\"2\"><span class=\"mut\">«язык, на котором стыдно ошибиться»</span><br>слабая и уязвимая: только личный опыт, критика ранит сильнее всего</td></tr><tr><td><b>5 · Суггестивная</b><div class=\"mut\">сверх-оно · слабая, ценная</div></td><td data-layer=\"1\"><span class=\"dots\" aria-label=\"1D\"><i class=\"on\"></i><i class=\"\"></i><i class=\"\"></i><i class=\"\"></i></span> <span class=\"mut\">1D</span></td><td data-layer=\"2\"><span class=\"mut\">«язык, который любишь слушать»</span><br>слабая и ценная: жажда этой информации, принимает почти без проверки</td></tr><tr><td><b>6 · Активационная</b><div class=\"mut\">сверх-оно · слабая, ценная</div></td><td data-layer=\"1\"><span class=\"dots\" aria-label=\"2D\"><i class=\"on\"></i><i class=\"on\"></i><i class=\"\"></i><i class=\"\"></i></span> <span class=\"mut\">2D</span></td><td data-layer=\"2\"><span class=\"mut\">«язык, который учишь с удовольствием»</span><br>слабая и ценная: помощь бодрит и подталкивает к действию</td></tr><tr><td><b>7 · Ограничительная</b><div class=\"mut\">оно · сильная, не ценная</div></td><td data-layer=\"1\"><span class=\"dots\" aria-label=\"3D\"><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"\"></i></span> <span class=\"mut\">3D</span></td><td data-layer=\"2\"><span class=\"mut\">«знаешь, но молчишь»</span><br>сильная, но не ценная: умеет, но сдерживает себя</td></tr><tr><td><b>8 · Демонстративная</b><div class=\"mut\">оно · сильная, не ценная</div></td><td data-layer=\"1\"><span class=\"dots\" aria-label=\"4D\"><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i></span> <span class=\"mut\">4D</span></td><td data-layer=\"2\"><span class=\"mut\">«говоришь во сне»</span><br>сильная, но не ценная: на автомате и незаметно для себя</td></tr></table></div>\n</section><section id=\"dimension\" data-layer=\"1\">\n  <div class=\"kicker\">Язык · 3</div>\n  <h2>Мерность: четыре параметра функции</h2>\n  <div class=\"intro\"><p><span class=\"lay l1\">классика</span> Мерность предложил А. Букалов уже после Аугустинавичюте. Каждый следующий параметр добавляется к предыдущим: 1D — только опыт, 4D — опыт, нормы, ситуация и время. </p><p data-layer=\"2\"><span class=\"lay l2\">линза</span> В разборах каждая функция описывается построчно по этим параметрам, а недостающие отмечены «нет — и вот что из этого следует».</p></div>\n  <div class=\"pars\"><div class=\"par\"><h4>1. Опыт</h4><p>То, что человек сам пережил и проверил на себе. Есть у любой функции.</p><p class=\"mut\">Без других параметров опыт узок: судит только по себе.</p></div><div class=\"par\"><h4>2. Нормы</h4><p>Общепринятые правила и образцы, «как принято». Функция может учиться у других и сверяться с эталоном.</p><p class=\"mut\">Без ситуации нормы превращаются в учебник: правильно, но негибко.</p></div><div class=\"par\"><h4>3. Ситуация</h4><p>Видеть конкретные обстоятельства здесь и сейчас и отступать от правил, если случай того требует.</p><p class=\"mut\">Без времени: как поступить сейчас — ясно, к чему это приведёт — нет.</p></div><div class=\"par\"><h4>4. Время</h4><p>Видеть развитие: откуда всё пришло, куда идёт, предвидеть последствия.</p><p class=\"mut\">С этим параметром функция становится мировоззрением.</p></div></div>\n  <p class=\"mut\" style=\"margin-top:14px\">Мерность — не «ум» функции. 1D болевая и 1D суггестивная обе знают только опыт, но первая боится ошибки, а вторая просто ждёт подсказки.</p>\n</section><section id=\"rationality\">\n  <div class=\"kicker\">Язык · 4</div>\n  <h2>Рациональность и иррациональность</h2>\n  <div class=\"intro\"><p data-layer=\"0\"><span class=\"lay l0\">ядро</span> Рациональные аспекты — логика и этика (БЛ, ЧЛ, БЭ, ЧЭ) — оценивают. Иррациональные — сенсорика и интуиция (ЧС, БС, ЧИ, БИ) — воспринимают. Тип рационален, если ведущая функция оценивающая. Слова взяты у Юнга: <i>ratio</i> здесь — суждение, а не «разумность».</p></div>\n  <div class=\"ratio\" data-layer=\"2\">\n    <div><h4>Рационал</h4><p><span class=\"lay l2\">линза</span> Сначала выносит суждение и держится его, даже если обстановка меняется. Мир — то, что нужно оценить и упорядочить.</p></div>\n    <div><h4>Иррационал</h4><p><span class=\"lay l2\">линза</span> Сначала принимает, что есть, и пересматривает решение, когда меняется картина. Мир — то, что нужно сначала увидеть.</p></div>\n  </div>\n  <p data-layer=\"0\"><span class=\"lay l0\">ядро</span> Дуалы всегда одинаковы по этому признаку. Болевая у рационала — всегда воспринимающий аспект, у иррационала — оценивающий.</p>\n</section><section id=\"quadras\">\n  <div class=\"kicker\">Язык · 5</div>\n  <h2>Квадры: четыре набора ценностей</h2>\n  <div class=\"intro\"><p><span class=\"lay l0\">ядро</span> Каждая квадра ценит два рациональных и два иррациональных аспекта. Выбор всего из двух пар: оценивать мерой и зажиганием (БЛ + ЧЭ) или КПД и гравитацией (ЧЛ + БЭ); воспринимать запас и самочувствие (ЧИ + БС) или вес и сюжет (ЧС + БИ).</p></div>\n  <div class=\"quads\"><div class=\"quad\"><h4>Альфа</h4><div class=\"qs\"><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><polygon points=\"0,-7.5 7.5,5.5 -7.5,5.5\" fill=\"var(--Ne)\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><rect x=\"-6.5\" y=\"-6.5\" width=\"13.0\" height=\"13.0\" fill=\"none\" stroke=\"var(--Ti)\" stroke-width=\"1.7\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><circle cx=\"0\" cy=\"0\" r=\"6.5\" fill=\"none\" stroke=\"var(--Si)\" stroke-width=\"1.7\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><path d=\"M-6.5 -6.5 H0 V0 H6.5 V6.5 H-6.5 Z\" fill=\"var(--Fe)\"/></svg></div><p>запас · мера · самочувствие · зажигание</p><p class=\"mut\">Дон Кихот, Дюма, Гюго, Робеспьер</p></div><div class=\"quad\"><h4>Бета</h4><div class=\"qs\"><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><rect x=\"-6.5\" y=\"-6.5\" width=\"13.0\" height=\"13.0\" fill=\"none\" stroke=\"var(--Ti)\" stroke-width=\"1.7\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><path d=\"M-6.5 -6.5 H0 V0 H6.5 V6.5 H-6.5 Z\" fill=\"var(--Fe)\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><circle cx=\"0\" cy=\"0\" r=\"6.5\" fill=\"var(--Se)\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><polygon points=\"0,-7.5 7.5,5.5 -7.5,5.5\" fill=\"none\" stroke=\"var(--Ni)\" stroke-width=\"1.7\"/></svg></div><p>мера · зажигание · вес · сюжет</p><p class=\"mut\">Гамлет, Максим, Жуков, Есенин</p></div><div class=\"quad\"><h4>Гамма</h4><div class=\"qs\"><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><circle cx=\"0\" cy=\"0\" r=\"6.5\" fill=\"var(--Se)\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><polygon points=\"0,-7.5 7.5,5.5 -7.5,5.5\" fill=\"none\" stroke=\"var(--Ni)\" stroke-width=\"1.7\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><path d=\"M-6.5 -6.5 H0 V0 H6.5 V6.5 H-6.5 Z\" fill=\"none\" stroke=\"var(--Fi)\" stroke-width=\"1.7\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><rect x=\"-6.5\" y=\"-6.5\" width=\"13.0\" height=\"13.0\" fill=\"var(--Te)\"/></svg></div><p>вес · гравитация · сюжет · КПД</p><p class=\"mut\">Наполеон, Бальзак, Джек Лондон, Драйзер</p></div><div class=\"quad\"><h4>Дельта</h4><div class=\"qs\"><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><polygon points=\"0,-7.5 7.5,5.5 -7.5,5.5\" fill=\"var(--Ne)\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><circle cx=\"0\" cy=\"0\" r=\"6.5\" fill=\"none\" stroke=\"var(--Si)\" stroke-width=\"1.7\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><path d=\"M-6.5 -6.5 H0 V0 H6.5 V6.5 H-6.5 Z\" fill=\"none\" stroke=\"var(--Fi)\" stroke-width=\"1.7\"/></svg><svg class=\"sym\" width=\"16\" height=\"16\" viewBox=\"-9 -9 18 18\" aria-hidden=\"true\"><rect x=\"-6.5\" y=\"-6.5\" width=\"13.0\" height=\"13.0\" fill=\"var(--Te)\"/></svg></div><p>запас · гравитация · самочувствие · КПД</p><p class=\"mut\">Штирлиц, Достоевский, Гексли, Габен</p></div></div>\n  <div class=\"docs\" style=\"margin-top:16px\" data-layer=\"3\"><a class=\"doc\" href=\"docs/cultures.html\"><span class=\"kind\">квадры</span><span class=\"dt\">Культуры через ценности квадр</span><span class=\"mut\">16 стр.</span></a></div>\n</section><section id=\"types\">\n  <div class=\"kicker\">Типы</div>\n  <h2>Шестнадцать типов</h2>\n  <div class=\"intro\"><p><span class=\"lay l0\">ядро</span> Выбери тип: модель А, квадра, рациональность, ключевые отношения. Модель и отношения рассчитаны по классическим правилам из ведущей и творческой функций. <span data-layer=\"1\"><span class=\"lay l1\">классика</span> Мерность мест и признаки Рейнина.</span></p></div>\n  <div class=\"explorer\">\n    <div class=\"tlist\" id=\"tlist\" role=\"group\" aria-label=\"Тип\"></div>\n    <div class=\"tcard\" id=\"tcard\" aria-live=\"polite\"></div>\n  </div>\n  <div class=\"docs\" style=\"margin-top:16px\"><a class=\"doc\" href=\"docs/polr.html\"><span class=\"kind\">памятка</span><span class=\"dt\">Болевые функции всех типов</span><span class=\"mut\">13 стр.</span></a></div>\n</section><section id=\"reinin\" data-layer=\"1\">\n  <div class=\"kicker\">Классика · признаки Рейнина</div>\n  <h2>Пятнадцать признаков</h2>\n  <div class=\"intro\"><p><span class=\"lay l1\">классика</span> Рейнин математически вывел из четырёх юнговских дихотомий ещё одиннадцать: каждая делит 16 типов пополам, и каждая — комбинация юнговских. Аугустинавичюте описывала их в отдельной работе. Принадлежность типа к полюсу выводится строго; описания смысла у разных авторов расходятся. Поэтому у каждого признака указано, насколько он объясняется самой моделью.</p></div>\n  <div class=\"rnwrap\">\n    <div class=\"rnlist\" id=\"rnlist\" role=\"group\" aria-label=\"Признак\"></div>\n    <div class=\"tcard\" id=\"rncard\" aria-live=\"polite\"></div>\n  </div>\n</section><section id=\"relations\">\n  <div class=\"kicker\">Отношения</div>\n  <h2>Что происходит, когда стыкуются две модели</h2>\n  <div class=\"intro\"><p data-layer=\"0\"><span class=\"lay l0\">ядро</span> Вид отношений следует из того, на какие места модели одного попадают функции другого. По Аугустинавичюте, дуализация повышает самоуважение: тебя ценят за самое естественное в тебе.</p><p data-layer=\"2\"><span class=\"lay l2\">линза</span> Модель описывает удобство обмена восприятием, а не судьбу пары: ценности, возраст и опыт решают не меньше. Разборы ниже написаны с использованием всех слоёв.</p></div>\n  <div class=\"rels-grid\"><div class=\"rel\"><h3>Дуальность</h3><p>Полное дополнение. Четыре канала: восполнение (ведущая → суггестивная), разгон (творческая → активационная), снятие роли (ограничительная → ролевая), прикрытие (демонстративная → болевая).</p><div class=\"docs\"><a class=\"doc\" href=\"docs/don_dyuma.html\"><span class=\"kind\">дуальность</span><span class=\"dt\">Дон Кихот и Дюма</span><span class=\"mut\">15 стр.</span></a><a class=\"doc\" href=\"docs/maxim_gamlet.html\"><span class=\"kind\">дуальность</span><span class=\"dt\">Максим и Гамлет</span><span class=\"mut\">15 стр.</span></a><a class=\"doc\" href=\"docs/napoleon_balzak.html\"><span class=\"kind\">дуальность</span><span class=\"dt\">Наполеон и Бальзак</span><span class=\"mut\">16 стр.</span></a></div></div><div class=\"rel\"><h3>Полудуальность</h3><p>Ведущие совпадают с суггестивными, но творческие не попадают в активационные. Восполнение есть, разгона нет: близко, но с недобором.</p><div class=\"docs\"><a class=\"doc\" href=\"docs/semidual.html\"><span class=\"kind\">полудуальность</span><span class=\"dt\">Дюма и Гексли</span><span class=\"mut\">14 стр.</span></a></div></div><div class=\"rel\"><h3>Ревизия</h3><p>Ведущая ревизора бьёт в болевую подревизного. Даже без умысла один живёт мерками, которые для другого самые уязвимые.</p><div class=\"docs\"><a class=\"doc\" href=\"docs/don_dost.html\"><span class=\"kind\">ревизия</span><span class=\"dt\">Дон Кихот и Достоевский</span><span class=\"mut\">15 стр.</span></a></div></div><div class=\"rel\"><h3>Активация</h3><p>Та же квадра, другая рациональность. Подзарядка через активационную, восполнение порциями; бодрит, но в больших дозах перегревает.</p><div class=\"docs\"><a class=\"doc\" href=\"docs/don_gugo.html\"><span class=\"kind\">активация</span><span class=\"dt\">Дон Кихот и Гюго</span><span class=\"mut\">15 стр.</span></a></div></div></div>\n</section><section id=\"beyond\" data-layer=\"3\">\n  <div class=\"kicker\">Вне типа</div>\n  <h2>Тип — рельеф, а не маршрут</h2>\n  <div class=\"intro\"><p><span class=\"lay l3\">гипотеза</span> Тип задаёт цену: какую информацию психике обрабатывать легко, а какую дорого, что ценно, где уязвимо. Куда человек идёт, решают ценности, опыт, возраст, среда; осознанность — это знание карты. Чем меньше ресурса и внешних подсказок, тем сильнее проступает тип. Главная ловушка: если любое несовпадение объяснять слоями, тип станет неопровержимым.</p></div>\n  <div class=\"docs\"><a class=\"doc\" href=\"docs/don_dum_layers.html\"><span class=\"kind\">слои</span><span class=\"dt\">Дон Кихот и Дюма: тип и всё остальное</span><span class=\"mut\">26 стр.</span></a><a class=\"doc\" href=\"docs/cultures.html\"><span class=\"kind\">квадры</span><span class=\"dt\">Культуры через ценности квадр</span><span class=\"mut\">16 стр.</span></a></div>\n</section><section id=\"rules\" data-layer=\"2\">\n  <span class=\"lay l2\">линза</span><div class=\"kicker\">Принципы серии</div>\n  <h2>Как здесь пишется о функциях</h2>\n  <div class=\"rules\">\n    <div><h4>Сначала просто, потом глубже</h4><p>Каждая функция: простая фраза, затем «Глубже, по параметрам» — опыт, нормы, ситуация, время, построчно.</p></div>\n    <div><h4>Объекты широко</h4><p>Вещи, пространство, звук, тело, идеи, процессы, дела. Люди — только один из объектов.</p></div>\n    <div><h4>Слабое так же подробно, как сильное</h4><p>Болевые и суггестивные описываются через то, чего именно не видно и что из этого следует.</p></div>\n    <div><h4>Термины остаются</h4><p>Термин, аббревиатура и короткий ярлык рядом: «Белая сенсорика · БС · самочувствие».</p></div>\n    <div><h4>Каждый разбор самостоятелен</h4><p>Документы не сравнивают пары между собой: каждый читается сам по себе.</p></div>\n    <div><h4>Вне соционики</h4><p>Каждый разбор заканчивается пределами модели и тем, что известно из проверяемой психологии.</p></div>\n  </div>\n  <p class=\"src\" style=\"margin-top:24px\"><b>Источники серии:</b> Аугустинавичюте А. «Дуальная природа человека», «Модель А», «Социон»; Букалов А. В. о размерности функций; «Интертипные отношения» (Академик / Википедия); Schwartz S. H., 2012; Roberts B. W. и др., 2006; Mischel W., Shoda Y., 1995; Montoya R. M. и др., 2008; From A. и др., 2025; Crocker J., Wolfe C. T., 2001; Hofstede G.; Inglehart R., Welzel C.</p>\n</section>";
+function basicsPage(){ return `<div class="hero"><div><div class="kicker">Соционика · основа</div><h1>Основы</h1><div class="lead">Из чего всё строится: аспекты, модель А, мерность, квадры, признаки Рейнина — и как здесь устроены слои.</div></div></div><div class="basics">${BASICS}</div>`; }
 // ---------- страница: тип и всё остальное (слои)
 const AREA = {Ne:'исследования, стартапы, изобретательство',Ti:'инженерия, аналитика, право',Se:'спорт, переговоры, руководство',Fi:'психология, педагогика, забота о людях',Si:'кулинария, дизайн среды, телесные практики',Fe:'сцена, ведение событий, команда',Ni:'планирование, стратегия, история',Te:'учёт, технологии, управление процессом'};
 const EXPG = {0:'Рост естественный: опыт ложится на ведущую и становится мировоззрением.',1:'Творческая: опыт делает инструмент виртуозным.',2:'Ролевая: научается по правилам; выглядит уверенно, но выматывает.',3:'Болевая: может стать профи на правилах и чек-листах, но каждый день стоит дорого, ошибки ранят.',4:'Суггестивная: держится на внешних системах и людях, сам сбивается.'};
@@ -1342,12 +1724,13 @@ function stageSheet(a){
   const I = TOY_INFO[a];
   const pos = D.posn.map((p,i) => `<button type="button" data-p="${i}" aria-pressed="${i===curPos}">${i+1} · ${p}<span>${D.dim[i]}D</span></button>`).join('');
   return `<section class="stage" data-layer="2" style="--c:var(--${a})">
-    <div class="stage-top"><div><div class="kicker">${D.colname[a]} · ${D.ab[a]} · попробуй руками</div><h2 style="margin:4px 0 0">${I[0]}</h2></div></div>
+    <div class="stage-top"><div><div class="kicker">${D.colname[a]} · ${D.ab[a]} · интерактивная визуализация</div><h2 style="margin:4px 0 0">${I[0]}</h2></div></div>
     <div class="possel" role="group" aria-label="Место функции">${pos}</div>
     <div class="stage-info" id="stinfo"></div>
     <div class="mood" id="mood" aria-live="polite"></div>
     <div class="toy big" id="toy"></div>
     <div class="stexp" id="stexp"></div>
+    <div class="pcmp" id="pcmp"></div>
     <p class="sm" style="margin:10px 0 0">${I[1]}</p>
     <div class="panel" style="margin-top:10px"><p style="margin:0"><b>Что ты сейчас сделал.</b> ${I[2]}</p></div>
     <div class="panel mindp" data-layer="3" style="margin-top:10px"><p style="margin:0">${lay(3)}<b>Как это отражается в голове.</b> ${MIND[a]}</p></div>
@@ -1392,20 +1775,31 @@ function stageExplain(a){
   const i = curPos, d = D.dim[i], P = PFX[a];
   const rows = ['Опыт','Нормы','Ситуация','Время'].map((n,k) => k < d ? `<li class="has"><b>${n}</b> есть — ${P[k][0]}.</li>` : `<li class="no"><b>${n}</b> нет — ${P[k][1]}.</li>`).join('');
   const val = [' Для человека это главное: через это он смотрит на мир.', ' Это его инструмент: применяет гибко, по ситуации.', ' Здесь человек держит лицо: делает «как положено», через усилие, и устаёт.', ' Это самое уязвимое место: промах ощущается как провал, критика ранит.', ' Здесь человек больше всего ждёт помощи: сам не производит, а подсказку принимает почти без проверки.', ' Здесь человек охотно учится: помощь бодрит.', ' Человек умеет, но сдерживает себя и не придаёт этому значения.', ' Работает на автомате, фоном; человек сам этого почти не замечает.'][i];
-  const lead = d === 4 ? `Работают все четыре параметра.${val}` : `На этом месте функция учитывает ${PARW[d-1]}.${val} Поэтому игрушка ведёт себя иначе, чем на ведущем месте:`;
+  const lead = d === 4 ? `Работают все четыре параметра.${val}` : `На этом месте функция учитывает ${PARW[d-1]}.${val} Поэтому визуализация ведёт себя иначе, чем на ведущем месте:`;
   return `<div class="kicker" style="margin-bottom:6px">Что сейчас происходит и почему</div><p style="margin:0 0 6px">${lead}</p><ul class="pfx">${rows}</ul>${d < 4 ? `<p class="sm mut" style="margin:6px 0 0"><b>На ведущем месте (4D):</b> ${LVL[a][3]}</p>` : ''}<div class="fin"><div class="kicker" style="margin-bottom:4px">Итог для этого места</div><p style="margin:0">${finale(a)}</p></div>`;
+}
+
+const PBLK = ['эго · сильно, ценно','эго · сильно, ценно','сверх-я · слабо, не ценно','сверх-я · слабо, не ценно','сверх-оно · слабо, ценно','сверх-оно · слабо, ценно','оно · сильно, не ценно','оно · сильно, не ценно'];
+function placeCompare(a){
+  const rows = D.posn.map((p,i) => { const d = D.dim[i], who = D.order.filter(k => T[k].m[i] === a).map(k => T[k].name).join(', ');
+    return `<tr class="${i === curPos ? 'on' : ''}"><td><button type="button" class="pcb" data-pp="${i}">${i+1} · ${p}</button><div class="sm mut">${PBLK[i]}</div></td><td><span class="dots">${[0,1,2,3].map(k => `<i class="${k < d ? 'on' : ''}"></i>`).join('')}</span> ${d}D</td><td class="sm">${LVL[a][d-1]}</td><td class="sm">${who}</td></tr>`; }).join('');
+  return `<details class="fold sub"><summary><span class="st" style="font-size:18px">Все восемь мест рядом</span><span class="sm mut">одинаковая мерность ≠ одинаковое поведение: решает блок</span></summary>
+    <div class="tw"><table class="ptab pcmpt"><tr><th>Место</th><th>Параметры</th><th>Что видно в визуализации</th><th>У кого ${D.ab[a]} здесь</th></tr>${rows}</table></div>
+    <p class="sm" style="margin-top:8px">${lay(0)}Пары мест с одной мерностью — болевая и суггестивная (1D), ролевая и активационная (2D), творческая и ограничительная (3D), ведущая и демонстративная (4D) — видят одинаково много, но ведут себя по-разному. ${lay(1)}Разницу задаёт блок: в эго функция сильная и ценная, в сверх-я — слабая и под оценкой, в сверх-оно — слабая, но желанная, в оно — сильная, но фоновая.</p></details>`;
 }
 function stageInfo(a){
   const i = curPos, d = LV();
   const v = VALUED[i], s = STRONG[i];
   const mood = ['Сильно и важно: так человек смотрит на мир.','Сильно и важно: инструмент, применяется по ситуации.','Слабо и не важно: здесь держат лицо через усилие.','Слабо и не важно: самое уязвимое место.','Слабо, но очень нужно: помощь принимается почти без проверки.','Слабо, но интересно: помощь бодрит, хочется учиться.','Сильно, но не важно: умеет и сдерживает себя.','Сильно, но не важно: работает на автомате, незаметно.'][i];
   const el = document.getElementById('stinfo'); if (!el) return;
-  el.innerHTML = `<div class="kicker" style="margin:8px 0 4px">Что даёт каждый параметр в этой игрушке</div>${pstrip(a)}
+  el.innerHTML = `<div class="kicker" style="margin:8px 0 4px">Что даёт каждый параметр в этой визуализации</div>${pstrip(a)}
     <p class="sm" style="margin:6px 0 0"><b>${D.posn[i]} · ${d}D.</b> ${LVL[a][d-1]} <span class="mut">${mood}</span></p>`;
   const ex = document.getElementById('stexp'); if (ex) ex.innerHTML = stageExplain(a);
+  const pc = document.getElementById('pcmp'); if (pc) pc.innerHTML = placeCompare(a);
 }
 function bindStage(a){
   const sel = document.querySelector('.possel'); if (!sel) return;
+  document.getElementById('pcmp')?.addEventListener('click', e => { const b = e.target.closest('[data-pp]'); if (!b) return; const t = sel.querySelector(`button[data-p="${b.dataset.pp}"]`); if (t) { t.click(); sel.scrollIntoView({block:'center'}); } });
   sel.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; curPos = +b.dataset.p; dimOverride = 0;
     sel.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); clearToys(); stageInfo(a); mountToy(a); });
   stageInfo(a);
@@ -1796,7 +2190,7 @@ function react(desc, good){
   m.innerHTML = `<div class="rx ${good ? 'g' : 'b'}"><div class="rd">${desc}</div><div class="ra">${ATT[curPos][good ? 0 : 1]} <span class="mb">${D.posn[curPos].toLowerCase()} · ${BLK8[curPos]}</span></div></div>`;
   if (!reduced) { m.firstElementChild.classList.add('pop'); }
 }
-function mountMood(){ const m = document.getElementById('mood'); if (m) m.innerHTML = `<div class="rx idle"><div class="rd mut">Сделай что-нибудь в игрушке — здесь появится, что произошло и как это ощущается на этом месте.</div></div>`; }
+function mountMood(){ const m = document.getElementById('mood'); if (m) m.innerHTML = `<div class="rx idle"><div class="rd mut">Сделай что-нибудь в визуализации — здесь появится, что произошло и как это ощущается на этом месте.</div></div>`; }
 const TOYS = {Ne:toyNe, Fe:toyFe, Se:toySe, Te:toyTe, Si:toySi, Ni:toyNi, Ti:toyTi, Fi:toyFi};
 function mountToy(a){ const el = document.getElementById('toy'); if (el && TOYS[a]) { el.innerHTML = ''; const n = el.cloneNode(false); el.replaceWith(n); TOYS[a](n); mountMood(); } }
 
@@ -1923,6 +2317,9 @@ function route(){
   else if ((m = h.match(/^aspect-([a-z]{2})$/)) && AORD.includes(m[1][0].toUpperCase()+m[1][1])) { html = aspectPage(m[1][0].toUpperCase()+m[1][1]); nav = 'fn'; }
   else if ((m = h.match(/^cmp-([a-z]{2})-([a-z]{3})-([a-z]{3})$/)) && AORD.includes(m[1][0].toUpperCase()+m[1][1]) && T[m[2].toUpperCase()] && T[m[3].toUpperCase()]) { html = cmpPage(m[1][0].toUpperCase()+m[1][1], m[2].toUpperCase(), m[3].toUpperCase()); nav = 'fn'; }
   else if ((m = h.match(/^layers(?:-([a-z]{3}))?$/))) { html = layersPage(m[1] ? m[1].toUpperCase() : null); nav = 'top'; }
+  else if ((m = h.match(/^paths(?:-([a-z]{3}))?$/))) { html = pathsPage(m[1] ? m[1].toUpperCase() : null); nav = 'top'; }
+  else if (h === 'basics') { html = basicsPage(); nav = 'bas'; }
+  else if (h === 'quadras') { html = quadrasPage(); nav = 'quad'; }
   else if (h === 'cultures') { html = culturesPage(); nav = 'top'; }
   else if (h === 'topics') { html = topicsPage(); nav = 'top'; }
   else if (h === 'polr' || /^polr-[a-z]{2}$/.test(h)) { html = polrPage(); nav = 'top'; if (h !== 'polr') openAnchor = h; }
@@ -1933,7 +2330,7 @@ function route(){
   clearToys(); hideTip && hideTip();
   app.innerHTML = html + `<footer>Авторская интерпретация, 2026. Ядро — по Аугустинавичюте; классика — Букалов, Рейнин; линза и гипотезы — мои. Соционика не прошла строгой научной проверки.</footer>`;
   document.getElementById('nav-home').toggleAttribute('aria-current', nav === 'home'); if (nav==='home') document.getElementById('nav-home').setAttribute('aria-current','page');
-  ['home','fn','rel','top'].forEach(n => { const el = document.getElementById('nav-'+n); el.removeAttribute('aria-current'); if (nav === n) el.setAttribute('aria-current','page'); });
+  ['home','fn','rel','quad','top','bas'].forEach(n => { const el = document.getElementById('nav-'+n); el.removeAttribute('aria-current'); if (nav === n) el.setAttribute('aria-current','page'); });
   bindPick(); bindMatrix(); bindCmp(); if (nav === 'fn') { const mm = h.match(/^aspect-([a-z]{2})$/); if (mm) { const A = mm[1][0].toUpperCase()+mm[1][1]; bindStage(A); mountToy(A); } mountBW(); } window.scrollTo(0, 0);
   if (openAnchor) { const el = document.getElementById(openAnchor); if (el) el.scrollIntoView({block:'start'}); }
   if (openV != null) { const b = document.querySelector(`#vals .vtab[data-v="${openV}"]`); if (b) { b.click(); openTo(document.getElementById('vals')); } }
