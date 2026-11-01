@@ -931,6 +931,14 @@ nav.main a[aria-current="page"]{background:var(--ink);color:var(--inkfg)}
 .glyph8 b{font-family:var(--display);font-weight:600;color:var(--c);font-size:17px;line-height:1.1}
 .glyph8 span:last-child{font-size:13.5px;color:var(--mut)}
 @media (max-width:560px){ .glyph8{gap:8px} .glyph8 a{padding:10px 12px;grid-template-columns:34px 1fr} .glyph8 .gg{width:34px;height:34px} }
+
+.qzh{font-family:var(--display);font-size:18px;margin:22px 0 2px}
+.qzsc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 16px}
+.qzsc div{background:var(--s2);border-radius:var(--r-md);padding:14px}
+.qzsc b{display:block;font-family:var(--display);font-size:28px;line-height:1.1}
+.qzsc span{font-size:14px;color:var(--mut)}
+.qzread{padding-left:1.1em} .qzread li{margin:.45em 0}
+.qzagain{display:inline-block;margin-bottom:8px;font-weight:600;color:var(--fg)}
 </style>
 
 <header class="top"><div class="in">
@@ -2626,6 +2634,7 @@ function route(){
   else if ((m = h.match(/^cmp-([a-z]{2})-([a-z]{3})-([a-z]{3})$/)) && AORD.includes(m[1][0].toUpperCase()+m[1][1]) && T[m[2].toUpperCase()] && T[m[3].toUpperCase()]) { html = cmpPage(m[1][0].toUpperCase()+m[1][1], m[2].toUpperCase(), m[3].toUpperCase()); nav = 'fn'; }
   else if ((m = h.match(/^layers(?:-([a-z]{3}))?$/))) { html = layersPage(m[1] ? m[1].toUpperCase() : null); nav = 'home'; }
   else if ((m = h.match(/^paths(?:-([a-z]{3}))?$/))) { html = pathsPage(m[1] ? m[1].toUpperCase() : null); nav = 'home'; }
+  else if (h === 'test') { html = home(); }
   else if (h === 'basics') { html = basicsPage(); nav = 'bas'; }
   else if (h === 'quadras') { html = quadrasPage(); nav = 'quad'; }
   else if (h === 'polr' || /^polr-[a-z]{2}$/.test(h)) { html = polrPage(); nav = 'fn'; if (h !== 'polr') openAnchor = h; }
@@ -2635,7 +2644,7 @@ function route(){
   else { html = home(); }
   clearToys(); hideTip && hideTip();
   { const dk = dictSheet(); if (dk) { const ci = html.indexOf('class="crumb"'); if (ci >= 0 && ci < 20) { const e2 = html.indexOf('</div>', ci) + 6; html = html.slice(0, e2) + dk + html.slice(e2); } else html = dk + html; } }
-  app.innerHTML = html + `<footer>Авторская интерпретация, 2026. Ядро — по Аугустинавичюте; классика — Букалов, Рейнин; линза и гипотезы — мои. Соционика не прошла строгой научной проверки.</footer>`;
+  app.innerHTML = html + `<footer><a href="#test" class="qzagain">Пройти тест ещё раз</a><br>Авторская интерпретация, 2026. Ядро — по Аугустинавичюте; классика — Букалов, Рейнин; линза и гипотезы — мои. Соционика не прошла строгой научной проверки.</footer>`;
   document.getElementById('nav-home').toggleAttribute('aria-current', nav === 'home'); if (nav==='home') document.getElementById('nav-home').setAttribute('aria-current','page');
   ['home','fn','rel','quad','bas'].forEach(n => { const el = document.getElementById('nav-'+n); el.removeAttribute('aria-current'); if (nav === n) el.setAttribute('aria-current','page'); });
   bindPick(); bindMatrix(); bindCmp(); if (nav === 'fn') { const mm = h.match(/^aspect-([a-z]{2})$/); if (mm) { const A = mm[1][0].toUpperCase()+mm[1][1]; bindStage(A); mountToy(A); } mountBW(); } window.scrollTo(0, 0);
@@ -2784,15 +2793,29 @@ const GLM = Object.fromEntries(GL.map(g => [g[0], g]));
 const POSW = {'ведущая':0,'творческая':1,'ролевая':2,'болевая':3,'суггестивная':4,'активационная':5,'ограничительная':6,'демонстративная':7};
 const LVN = ['новичок','знаю основы','глубоко'];
 let LEVEL = +ls.get('level', '-1');
+const QZA = [
+ ['Меняется ли личность человека с возрастом?', ['Нет, характер даётся раз и навсегда', 'Да, постепенно и не полностью: многое устойчиво, но черты сдвигаются всю жизнь', 'Да, полностью: человек — то, что из него сделала среда'], 1],
+ ['Человек на работе собранный и строгий, а дома мягкий и рассеянный. Как это понимать?', ['Где-то он притворяется', 'Поведение зависит и от черт человека, и от ситуации — это нормально', 'У него раздвоение личности'], 1],
+ ['Тест описал тебя «удивительно точно». О чём это говорит в первую очередь?', ['Тест научно точный', 'Возможно, сработал эффект Барнума: общие фразы кажутся написанными лично про тебя', 'Ты легко поддаёшься внушению'], 1],
+ ['Как связаны эмоции и мышление?', ['Влияют друг на друга и на тело; эмоции — тоже способ оценивать ситуацию', 'Эмоции только мешают думать, их лучше подавлять', 'Никак: это разные отделы мозга'], 0],
+ ['Человек не выспался и голоден. Что вероятнее всего?', ['На мысли это не влияет — только на тело', 'Он хуже оценит события и людей, станет раздражительнее и тревожнее', 'Он станет сосредоточеннее'], 1],
+ ['Почему родные братья, выросшие в одной семье, часто очень разные?', ['Только из-за разного воспитания', 'Только из-за генов', 'Сочетаются гены, личный опыт, случайности и то, что даже в одной семье у детей разная среда'], 2],
+ ['Ты уверен, что точно помнишь, как было. Что из этого следует?', ['Раз уверен — значит так и было', 'Память восстанавливает события заново и может искажать их даже при полной уверенности', 'Ошибаются только люди с плохой памятью'], 1],
+ ['Коллега опоздал — «безответственный», ты опоздал — «пробки». Как это называется?', ['Справедливая оценка', 'Типичное искажение: чужое поведение объясняем характером, своё — обстоятельствами', 'Особенность только эгоистичных людей'], 1]];
 const QZ = [
- ['Что в первую очередь описывает соционика?', ['Характер и поступки человека', 'Что психике даётся легко, а что дорого, когда она воспринимает мир', 'Судьбу и подходящую профессию'], 1],
  ['Два человека одного типа…', ['почти одинаковые', 'могут сильно отличаться: у них разный опыт, ценности, среда', 'обязательно хорошо ладят'], 1],
  ['Человек отлично раскладывает сложные расчёты, но после этого совсем без сил. Что это скорее значит?', ['Умение есть, но для его психики это дорого', 'Он просто ленится', 'На самом деле он этого не умеет'], 0],
  ['Что значит «самое слабое место» человека в этой системе?', ['То, чего он не умеет вообще', 'Черта характера, которую надо исправить', 'Где он опирается только на свой опыт и особенно остро реагирует на критику'], 2],
  ['Двоим людям рядом удивительно легко. Чаще всего это потому, что…', ['каждый без усилия даёт другому то, что тому даётся тяжелее всего', 'они очень похожи', 'у них общие увлечения'], 0],
- ['Умение чувствовать, что «своё», а что «чужое», человек применяет…', ['только к людям', 'к людям, местам, вещам, делам, идеям', 'только к вещам и местам'], 1],
  ['Что происходит с типом с возрастом?', ['Он меняется полностью', 'Он не меняется, но меняется то, на что человек больше опирается в жизни', 'Он «застывает» и больше ничего не меняется'], 1],
  ['Описание твоего типа совпало с тобой не во всём. Что это скорее значит?', ['Тип определён неверно', 'Это нормально: описание — «чистый» тип без опыта и ценностей; проверять стоит по тому, что даётся даром, а что дорого', 'Соционика не работает'], 1]];
+const QZALL = [...QZA.map(q => [...q, 'A']), ...QZ.map(q => [...q, 'B'])];
+const READ = [
+ ['Дэвид Майерс', '«Психология»', 'базовый учебник: как устроены восприятие, память, эмоции, мышление, личность — с данными исследований'],
+ ['Дэвид Майерс', '«Социальная психология»', 'почему поведение так сильно зависит от ситуации и других людей'],
+ ['Даниэль Канеман', '«Думай медленно… решай быстро»', 'как и почему мышление ошибается, даже когда мы уверены'],
+ ['Лиза Фельдман Барретт', '«Как рождаются эмоции»', 'эмоции — не помеха разуму, а способ мозга оценивать ситуацию'],
+ ['Роберт Сапольски', '«Психология стресса»', 'как тело, сон и стресс меняют настроение и мысли']];
 function glossTip(term){
   const g = GLM[term]; if (!g) return '';
   let tip = g[1] + (g[2] ? ' Пример: ' + g[2] : '');
@@ -2824,17 +2847,32 @@ function dictSheet(){
     <p class="sm mut" style="margin-top:10px">На уровне «новичок» скрыты таблицы модели А, признаки Рейнина, разновидности и гипотезы, а у функций — разбор по параметрам. Сменить уровень — в шапке.</p></details></div>`;
 }
 function quizHTML(){
-  return `<div class="qz" role="dialog" aria-modal="true" aria-label="Мини-тест"><div class="qzc"><div class="kicker">Восемь вопросов · одна минута</div><h2>Как ты понимаешь людей и их различия?</h2><p class="sm">Здесь не нужно знать термины — только здравый смысл. По ответам сайт подстроится: подробнее объяснит основы или сразу покажет глубину. Если не уверен, выбирай «не знаю».</p>
+  const q = (x,i) => `<div class="qzq"><b>${i+1}. ${x[0]}</b><div class="qzo">${x[1].map((o,j) => `<button type="button" data-qz="${i}" data-o="${j}">${o}</button>`).join('')}<button type="button" data-qz="${i}" data-o="9" class="qzno">не знаю</button></div></div>`;
+  return `<div class="qz" role="dialog" aria-modal="true" aria-label="Тест"><div class="qzc" id="qzc"><div class="kicker">Четырнадцать вопросов, около трёх минут</div><h2>Как ты понимаешь психику и людей?</h2>
+    <p class="sm">Здесь не нужны термины — только здравый смысл и то, что известно о психике. По ответам сайт подстроится под тебя. Если не уверен, выбирай «не знаю»: это честнее, чем угадывать.</p>
     <div class="qzpick"><div class="kicker">Не хочешь тест? Выбери уровень сам</div>
       <button type="button" data-pick="0"><b>Новичок</b><span>Словарь вверху страниц, подсказки к каждому термину, только самое понятное: без таблиц, признаков Рейнина и гипотез.</span></button>
       <button type="button" data-pick="1"><b>Знаю основы</b><span>Полные описания, параметры функций, модель А, пути. Без признаков Рейнина и авторских гипотез.</span></button>
       <button type="button" data-pick="2"><b>Глубоко</b><span>Всё: признаки Рейнина, разновидности по ценностям, гипотезы, развёрнутые определения у каждой функции.</span></button>
       <button type="button" class="qzskip" data-qzskip>Не проходить — показать как есть</button></div>
-    <div class="kicker" style="margin-top:20px">Или пройди тест — восемь вопросов</div>
-    ${QZ.map((q,i) => `<div class="qzq"><b>${i+1}. ${q[0]}</b><div class="qzo">${q[1].map((o,j) => `<button type="button" data-qz="${i}" data-o="${j}">${o}</button>`).join('')}<button type="button" data-qz="${i}" data-o="9" class="qzno">не знаю</button></div></div>`).join('')}
-    <div class="qzf"><button type="button" class="tbtn" data-qzdone disabled>Узнать мой уровень</button></div>
-
-    <p class="sm mut" style="margin-top:10px">Уровень всегда можно сменить в шапке.</p></div></div>`;
+    <h3 class="qzh">Часть 1. Как вообще работает психика</h3><p class="sm mut">Не про соционику — про то, что известно из исследований.</p>
+    ${QZA.map(q).join('')}
+    <h3 class="qzh">Часть 2. Люди и их различия</h3>
+    ${QZ.map((x,i) => q(x, i + QZA.length)).join('')}
+    <div class="qzf"><button type="button" class="tbtn" data-qzdone disabled>Узнать результат</button></div>
+    <p class="sm mut" style="margin-top:10px">Уровень всегда можно сменить в шапке, а тест пройти ещё раз — ссылка внизу любой страницы.</p></div></div>`;
+}
+function quizResult(a, b){
+  const nA = QZA.length, nB = QZ.length, weakA = a <= 4, lvl = weakA ? 0 : (b >= 5 ? 2 : b >= 3 ? 1 : 0);
+  const reads = READ.map(([w,t,d]) => `<li><b>${w}, ${t}</b> — ${d}.</li>`).join('');
+  return `<div class="kicker">Результат</div><h2>${weakA ? 'Сначала — основы психики' : lvl === 2 ? 'Ты хорошо ориентируешься' : lvl === 1 ? 'Хорошая база' : 'Начнём с простого'}</h2>
+    <div class="qzsc"><div><b>${a} из ${nA}</b><span>как работает психика</span></div><div><b>${b} из ${nB}</b><span>люди и их различия</span></div></div>
+    ${weakA ? `<p>Похоже, некоторые общие принципы психики ты понимаешь немного иначе, чем показывают исследования. Это нормально — этому обычно нигде не учат. Но с типологиями здесь есть риск: любая типология, и соционика тоже, легко подменяет понимание человека ярлыками. Если сначала не разобраться, как устроены память, эмоции, влияние ситуации и искажения мышления, типы скорее запутают, чем помогут.</p>
+      <p><b>С чего начать</b> — проверенные книги на русском:</p><ul class="qzread">${reads}</ul>
+      <p class="sm mut">Сайт можно смотреть и сейчас — включим уровень «новичок» с подсказками. Просто держи в голове: тип — это одна линза, а не объяснение всего человека.</p>`
+    : `<p>${lvl === 2 ? 'Основы психики и логику различий ты понимаешь — покажем всё, включая признаки Рейнина и авторские гипотезы.' : lvl === 1 ? 'Основы психики на месте. Покажем полные описания и модель, но без самых спорных частей — их можно включить в шапке.' : 'Основы психики на месте, а вот логику типологий покажем с самого начала: словарь, подсказки, только понятное.'}</p>
+      ${a < nA ? `<p class="sm mut">Если хочется глубже в саму психологию: ${READ.slice(0,3).map(r => r[1]).join(', ')}.</p>` : ''}`}
+    <div class="qzf"><button type="button" class="tbtn" data-qzgo="${lvl}">${weakA ? 'Понятно, смотреть сайт' : 'Перейти на сайт'}</button></div>`;
 }
 function levelUI(){
   const b = document.getElementById('lvsel'); if (b) b.value = String(LEVEL < 0 ? 1 : LEVEL);
@@ -2844,18 +2882,24 @@ function setLevel(n){ LEVEL = n; ls.set('level', n); document.querySelector('.qz
 const qzAns = {};
 document.addEventListener('click', e => {
   const o = e.target.closest('[data-qz]');
-  if (o) { qzAns[o.dataset.qz] = +o.dataset.o; o.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === o)); document.querySelector('[data-qzdone]').disabled = Object.keys(qzAns).length < QZ.length; return; }
-  if (e.target.closest('[data-qzdone]') || e.target.closest('[data-qzskip]')) {
-    const score = e.target.closest('[data-qzskip]') ? 0 : QZ.reduce((s,q,i) => s + (qzAns[i] === q[2] ? 1 : 0), 0);
-    if (e.target.closest('[data-qzskip]')) { setLevel(1); return; }
-    setLevel(score >= 7 ? 2 : score >= 4 ? 1 : 0); return; }
+  if (o) { qzAns[o.dataset.qz] = +o.dataset.o; o.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === o)); document.querySelector('[data-qzdone]').disabled = Object.keys(qzAns).length < QZALL.length; return; }
+  if (e.target.closest('[data-qzskip]')) { setLevel(1); return; }
+  if (e.target.closest('[data-qzdone]')) {
+    const a = QZA.reduce((s,q,i) => s + (qzAns[i] === q[2] ? 1 : 0), 0), b = QZ.reduce((s,q,i) => s + (qzAns[i + QZA.length] === q[2] ? 1 : 0), 0);
+    ls.set('psy', a); const c = document.getElementById('qzc'); c.innerHTML = quizResult(a, b); c.scrollTop = 0; return; }
+  const go = e.target.closest('[data-qzgo]'); if (go) { setLevel(+go.dataset.qzgo); if (location.hash === '#test') location.hash = 'home'; return; }
   const pl = e.target.closest('[data-pick]'); if (pl) { setLevel(+pl.dataset.pick); return; }
   const dsum = e.target.closest('.dict summary'); if (dsum) setTimeout(() => ls.set('dictOpen', dsum.parentElement.open ? '1' : '0'), 0);
 });
+function openQuiz(){ ls.set('qzv','3'); for (const k in qzAns) delete qzAns[k]; document.querySelector('.qz')?.remove(); document.body.insertAdjacentHTML('beforeend', quizHTML()); }
+window.addEventListener('hashchange', () => { if (location.hash === '#test') openQuiz(); });
 function levelInit(){
   const lay = document.querySelector('.layers'); if (lay && !document.getElementById('lvbtn')) { const b = document.createElement('select'); b.id = 'lvsel'; b.className = 'lvbtn'; b.setAttribute('aria-label', 'Уровень'); b.innerHTML = LVN.map((n,i) => `<option value="${i}">Уровень: ${n}</option>`).join(''); lay.appendChild(b); b.addEventListener('change', () => setLevel(+b.value)); }
   levelUI();
-  if (LEVEL < 0 || ls.get('qzv','1') !== '2') { if (LEVEL >= 0) { ls.set('qzv','2'); return; } ls.set('qzv','2'); document.body.dataset.level = 1; let qs = false; try { qs = navigator.webdriver; } catch(e){} if (!qs) document.body.insertAdjacentHTML('beforeend', quizHTML()); else { LEVEL = 2; levelUI(); } }
+  const first = LEVEL < 0 && ls.get('qzv','1') !== '3';
+  if (LEVEL >= 0 && ls.get('qzv','1') !== '3') ls.set('qzv','3');
+  let bot = false; try { bot = navigator.webdriver; } catch(e){}
+  if (location.hash === '#test' || (first && !bot)) openQuiz(); else if (first) { LEVEL = 1; levelUI(); }
 }
 window.addEventListener('hashchange', route);
 route();
