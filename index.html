@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ebebe8">
-<title>Соционика без клише</title>
+<title>ИнСо — интерактивная соционика</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap">
@@ -945,10 +945,23 @@ nav.main a[aria-current="page"]{background:var(--ink);color:var(--inkfg)}
 .aimodes button{flex:none;border:0;border-radius:999px;background:var(--s2);color:var(--fg);padding:7px 12px;font:600 13px var(--sans);cursor:pointer}
 .aimodes button[aria-pressed="true"]{background:var(--ink);color:var(--inkfg)}
 .ail select{font:500 14px var(--sans);padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--fg)}
+.brand{display:flex;align-items:baseline;gap:10px;font-size:20px!important}.brsub{font-family:var(--sans);font-weight:500;font-size:13px;color:var(--mut);letter-spacing:0}@media (max-width:560px){.brsub{display:none}}
+
+.aiext{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:0 12px 12px}
+.aiext button{border:0;border-radius:999px;padding:10px 14px;font:600 14px var(--sans);cursor:pointer;background:var(--ink);color:var(--inkfg)}
+.aiext button+button{background:var(--s2);color:var(--fg)}
+.aiext .sm{flex-basis:100%}
+.aiext.big{padding:0;margin-top:12px} .aiext.big button{padding:14px 20px;font-size:16px}
+.aiq{width:100%;margin-top:14px;font:400 16px/1.5 var(--sans);padding:14px 16px;border-radius:var(--r-md);border:1px solid var(--line);background:var(--s2);color:var(--fg);resize:vertical}
+details.aimore>summary{cursor:pointer;list-style:none}
+
+.ftag{align-self:flex-start;display:inline-block;font-size:13px;font-weight:600;padding:4px 11px;border-radius:999px;background:color-mix(in srgb,var(--c,var(--fg)) 14%,transparent);color:var(--c,var(--fg));margin-bottom:10px}
+.wdg.inv .ftag{background:rgba(255,255,255,.14);color:var(--inkfg)}
+.fname{font-family:var(--display);font-weight:600;font-size:clamp(24px,2.6vw,32px);line-height:1.08;letter-spacing:-.015em;margin-bottom:8px}
 </style>
 
 <header class="top"><div class="in">
-  <a class="brand" href="#home">Соционика без клише</a>
+  <a class="brand" href="#home">ИнСо<span class="brsub">интерактивная соционика без клише</span></a>
   <nav class="main" aria-label="Разделы"><a href="#home" id="nav-home">Типы</a><a href="#functions" id="nav-fn">Функции</a><a href="#relations" id="nav-rel">Отношения</a><a href="#quadras" id="nav-quad">Квадры</a><a href="#basics" id="nav-bas">Основы</a></nav>
   <div class="layers" role="group" aria-label="Слои"><span class="lbl">Слои:</span>
     <button type="button" id="ly0" data-l="0">ядро</button><button type="button" id="ly1" data-l="1">+ классика</button><button type="button" id="ly2" data-l="2">+ линза</button><button type="button" id="ly3" data-l="3">все</button></div>
@@ -991,7 +1004,7 @@ function home(){
   });
   const n = D.order.filter(k => Object.keys(T[k].lens).length).length;
   return `<div class="bento" style="margin-top:20px">
-  <div class="wdg inv b8 homehero"><div class="kicker">Соционика без шаблонов</div><h1>Шестнадцать типов</h1><p class="lead" style="color:var(--inkfg)">Выбери тип, чтобы увидеть всё, что о нём есть: модель А, каждую функцию по месту и параметрам, болевую, признаки Рейнина и отношения со всеми остальными. Или открой <a href="#relations">отношения</a>, чтобы сравнить любую пару.</p>
+  <div class="wdg inv b8 homehero"><div class="kicker">ИнСо — интерактивная соционика</div><h1>Шестнадцать типов</h1><p class="lead" style="color:var(--inkfg)">Выбери тип, чтобы увидеть всё, что о нём есть: модель А, каждую функцию по месту и параметрам, болевую, признаки Рейнина и отношения со всеми остальными. Или открой <a href="#relations">отношения</a>, чтобы сравнить любую пару.</p>
     <p class="sm" style="color:var(--inkfg);opacity:.7">У всех 16 типов одинаковая глубина: модель, все восемь функций по параметрам, болевая, пути, признаки Рейнина и отношения.</p></div>
   <div class="b4 glyph8">${AORD.map(a => `<a href="#aspect-${a.toLowerCase()}" style="--c:var(--${a})"><span class="gg">${D.bigs[a]}</span><b>${D.ab[a]}</b><span>${D.tag[a]}</span></a>`).join('')}</div>
   </div>
@@ -1669,13 +1682,13 @@ function typePage(k){
     <p class="analogy" data-layer="2">${P[0]}</p>
     <div class="meta"><span class="chip asp" style="--c:var(--${ba})">${D.syms[ba]} ведущая ${D.ab[ba]}</span><span class="chip asp" style="--c:var(--${t.m[1]})">${D.syms[t.m[1]]} творческая ${D.ab[t.m[1]]}</span><a class="chip" href="#pair-${k.toLowerCase()}-${t.dual.toLowerCase()}">дуал: ${T[t.dual].name}</a></div>
   </div><div class="glyphs" aria-hidden="true"><span class="g1">${D.bigs[ba]}</span><span class="g2">${D.bigs[t.m[1]]}</span></div></div>
-  <a class="wdg inv b4" href="#fn-3"><div class="kicker">Болевая функция, самое уязвимое</div><div class="num">${D.ab[pa]}</div><div class="sm">${D.colname[pa]} «${D.tag[pa]}» · 1D · только опыт</div><div class="wtx">${t.lens[pa] ? t.lens[pa][0] : ''}</div><span class="go">Открыть разбор болевой</span></a>
-  <a class="wdg b4" href="#fn-0"><div class="kicker">Ведущая: ${D.colname[ba].toLowerCase()}</div><div class="num" style="color:var(--${ba})">4D</div><div class="pbar">${[0,1,2,3].map(()=>`<i style="background:var(--${ba})"></i>`).join('')}</div><div class="sm">опыт, нормы, ситуация, время</div><div class="wrow"><span>Где ему лучше всего</span></div><div class="wtx" data-layer="2">${P[2]}</div></a>
+  <a class="wdg inv b4" href="#fn-3"><span class="ftag">болевая функция</span><div class="fname">${D.colname[pa]}</div><div class="sm">${D.ab[pa]} «${D.tag[pa]}» · самое уязвимое: опирается только на личный опыт</div><div class="wtx">${t.lens[pa] ? t.lens[pa][0] : ''}</div><span class="go">Открыть разбор болевой</span></a>
+  <a class="wdg b4" href="#fn-0"><span class="ftag" style="--c:var(--${ba})">ведущая функция</span><div class="fname" style="color:var(--${ba})">${D.colname[ba]}</div><div class="sm">${D.ab[ba]} «${D.tag[ba]}» · главная: работает даром, видит всё — опыт, правила, ситуацию и будущее</div><div class="wrow"><span>Где ему лучше всего</span></div><div class="wtx" data-layer="2">${P[2]}</div></a>
   <div class="sheet b8 rs2" style="margin-top:0"><div class="kicker">Профиль по модели А</div><h2>Восемь функций одним взглядом</h2>
   <p class="sm">${lay(0)}Сильные функции выше, слабые ниже; закрашены ценные — те, что человек хочет получать и давать.</p>
   <div class="prof">${profileSvg(t)}</div>
   <div class="mrow">${t.m.map((a,i) => `<a class="mcell${VALUED[i]?' v':''}" href="#fn-${i}"><div class="p">${i+1} · ${D.posn[i].slice(0,4)}.</div><div class="a" style="color:var(--${a})">${D.syms[a]}${D.ab[a]}</div><div class="t"><span data-layer="1">${D.dim[i]}D</span></div></a>`).join('')}</div></div>
-  <a class="wdg b4 tint" href="#fn-4" style="--c:var(--${t.m[4]})"><div class="kicker">Суггестивная: чего не хватает</div><div class="num" style="color:var(--${t.m[4]})">${D.ab[t.m[4]]}</div><div class="sm">${D.colname[t.m[4]]} «${D.tag[t.m[4]]}»</div><div class="wtx">${t.lens[t.m[4]] ? t.lens[t.m[4]][0] : ''}</div></a>
+  <a class="wdg b4 tint" href="#fn-4" style="--c:var(--${t.m[4]})"><span class="ftag" style="--c:var(--${t.m[4]})">суггестивная функция</span><div class="fname" style="color:var(--${t.m[4]})">${D.colname[t.m[4]]}</div><div class="sm">${D.ab[t.m[4]]} «${D.tag[t.m[4]]}» · чего больше всего не хватает</div><div class="wtx">${t.lens[t.m[4]] ? t.lens[t.m[4]][0] : ''}</div></a>
   </div>
 
   <div class="sheet" data-layer="2"><div class="kicker">Портрет · 1 из 2</div><h2>${t.name}: сильное</h2>
@@ -2699,6 +2712,9 @@ const AIMODE = {
  per:{n:'Определить период', p:'Режим «Определить период»: по механике «Пути и этапы» определи, (1) вокруг какой функции человек сейчас строит жизнь (путь), (2) какой это этап, (3) нет ли кризиса (откат к ведущей или защита болевой), (4) уровень осознанности (на автомате / замечает / управляет). Задавай по 2–3 конкретных вопроса за раз о том, что сейчас даётся даром, что выматывает, что ранит, чем занят, что изменилось недавно. Когда данных хватит — дай вывод с уверенностью ([вероятно]/[догадка]) и что из этого следует.'},
  goal:{n:'Цели', p:'Режим «Цели»: помоги сформулировать 1–3 цели. Каждая цель должна опираться на сильные функции человека (ведущая/творческая — даром), а нагрузку на слабые (ролевая, болевая) — закрывать внешними опорами: правила, инструменты, люди (дуал, тот, у кого это сильно). Учитывай суггестивную — чего человеку не хватает и откуда это брать. Для каждой цели: зачем, первый шаг на неделю, где будет дорого и чем это закрыть, как понять, что получается.'}};
 const AITONE = {soft:'мягко и поддерживающе', direct:'прямо, без смягчений, по делу', fun:'живо, с лёгким юмором, но по сути', short:'очень коротко, тезисами'};
+const KBURL = 'https://kensingtonnn.github.io/socionika/agent.md';
+function extPrompt(q){ return `Открой и прочитай ${KBURL} — это база знаний ИнСо (интерактивная соционика без клише). Отвечай строго по этой системе: определи типы, разложи по функциям и параметрам, посчитай отношения, дай практический совет и помечай, что ядро, а что авторская интерпретация.${q ? '\n\nМой вопрос: ' + q : ''}`; }
+function extUrl(where, q){ const t = encodeURIComponent(extPrompt(q)); return where === 'gpt' ? `https://chatgpt.com/?q=${t}` : `https://claude.ai/new?q=${t}`; }
 let KB = null;
 async function kbLoad(){ if (KB) return KB; try { const r = await fetch('kb.json'); if (r.ok) KB = await r.json(); } catch(e){} return KB; }
 function kbFind(text){
@@ -2725,7 +2741,7 @@ async function aiSystem(){
     }
   }
   const me = ls.get('me', ''), mode = AIMODE[AI.mode] || AIMODE.sit, tone = AITONE[ls.get('tone', 'direct')] || '', bias = ls.get('bias', '').slice(0, 400);
-  return `Ты — помощник сайта «Соционика без клише». Отвечай по-русски, простыми словами, без лести и без воды. Опирайся на базу знаний ниже — это вся система сайта.
+  return `Ты — помощник сайта ИнСо («Интерактивная соционика без клише»). Отвечай по-русски, простыми словами, без лести и без воды. Опирайся на базу знаний ниже — это вся система сайта.
 ${mode.p}
 Тон: ${tone}.${bias ? ' Особые пожелания пользователя к общению: «' + bias + '».' : ''}${me && KB ? ` Тип самого пользователя (с его слов): ${KB.names[me]} (${KB.abbr[me]}) — учитывай его, когда он говорит «я».` : ''}
 ${kb || `Правила: аспекты через суть (ЧИ запас, ЧЭ зажигание, ЧС вес, ЧЛ КПД, БС самочувствие, БИ сюжет, БЛ мера, БЭ гравитация), объекты любые; место функции — через параметры опыт/нормы/ситуация/время; помечай [ядро]/[классика]/[линза]/[гипотеза]; не типируй по одному признаку.`}
@@ -2770,7 +2786,8 @@ function aiRender(){
   el.innerHTML = `<div class="aih"><div class="ait"><b>ИИ-помощник</b><span>${P.n} · знает всю систему сайта</span></div>
       <div class="aib"><button type="button" data-dock="left" aria-label="Закрепить слева" ${AI.dock==='left'?'aria-pressed="true"':''}>⇤</button><button type="button" data-dock="float" aria-label="Плавающее окно" ${AI.dock==='float'?'aria-pressed="true"':''}>❐</button><button type="button" data-dock="right" aria-label="Закрепить справа" ${AI.dock==='right'?'aria-pressed="true"':''}>⇥</button><button type="button" data-ai="set" aria-label="Настройки">⚙</button><button type="button" data-ai="close" aria-label="Закрыть">✕</button></div></div>
     <div class="aimodes" role="group" aria-label="Режим">${Object.entries(AIMODE).map(([k,v]) => `<button type="button" data-mode="${k}" aria-pressed="${k===AI.mode}">${v.n}</button>`).join('')}</div>
-    <div class="aiset" ${hasKey ? 'hidden' : ''}>
+    <div class="aiset" hidden>
+      <p class="sm"><b>Ответы прямо здесь</b> — для этого нужен свой API-ключ провайдера. Если ключа нет, просто пользуйся кнопками «Спросить в Claude» и «в ChatGPT» под полем ввода.</p>
       <div class="seg aiprov" role="group" aria-label="Агент">${Object.entries(AIP).map(([k,v]) => `<button type="button" data-prov="${k}" aria-pressed="${k===AI.prov}">${v.n.split(' ·')[0]}</button>`).join('')}</div>
       <label class="ail" for="aikey">${P.k}<input id="aikey" type="password" autocomplete="off" value="${esc(aiKey())}" placeholder="вставь свой ключ"></label>
       <label class="ail" for="aimod">Модель<input id="aimod" type="text" value="${esc(aiModel())}"></label>
@@ -2779,14 +2796,15 @@ function aiRender(){
       <label class="ail" for="aibias">Свой уклон (необязательно)<input id="aibias" type="text" maxlength="400" value="${esc(ls.get('bias',''))}" placeholder="например: как наставник, без терминов, с примерами из стройки"></label>
       <p class="sm mut">Ключ хранится только в этом браузере и уходит напрямую в ${P.n.split(' ·')[0]}. У сайта нет сервера, и он ключ не видит. Получить ключ: <a href="${P.url}" target="_blank" rel="noopener">${P.url.replace('https://','')}</a>. Запросы оплачиваются на твоём аккаунте у провайдера.</p>
       <button type="button" class="tbtn" data-ai="save">Сохранить</button></div>
-    <div class="aim" id="aim">${AI.msgs.length ? AI.msgs.map(m => `<div class="aimsg ${m.r}">${m.r === 'assistant' ? md(m.t) : esc(m.t)}</div>`).join('') : `<div class="aiempty"><b>${({sit:'Опиши ситуацию — разберу по типам и функциям.',psy:'Расскажи, что происходит. Сначала я задам пару вопросов.',per:'Отвечу, на какой функции ты сейчас живёшь и какой это этап.',goal:'Поставим цели под твои сильные функции.'})[AI.mode]}</b><span>Агент знает всю систему сайта: 16 типов, функции по параметрам, отношения, пути. Опиши ситуацию и назови типы людей — например: «отец Бальзак, я Дюма, на работе есть Штирлиц…».</span></div>`}${AI.busy ? '<div class="aimsg assistant busy"><i></i><i></i><i></i></div>' : ''}</div>
+    <div class="aim" id="aim">${AI.msgs.length ? AI.msgs.map(m => `<div class="aimsg ${m.r}">${m.r === 'assistant' ? md(m.t) : esc(m.t)}</div>`).join('') : `<div class="aiempty"><b>${({sit:'Опиши ситуацию — разберу по типам и функциям.',psy:'Расскажи, что происходит. Сначала я задам пару вопросов.',per:'Отвечу, на какой функции ты сейчас живёшь и какой это этап.',goal:'Поставим цели под твои сильные функции.'})[AI.mode]}</b><span>Агент знает всю систему сайта: 16 типов, функции по параметрам, отношения, пути. Опиши ситуацию и назови типы людей, о которых речь, — так ответ будет точнее.</span></div>`}${AI.busy ? '<div class="aimsg assistant busy"><i></i><i></i><i></i></div>' : ''}</div>
     ${AI.msgs.length ? '' : `<div class="aisug">${aiSuggest().map(q => `<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`}
-    <form class="aif" id="aif"><textarea id="aiin" rows="1" placeholder="${hasKey ? 'Напиши вопрос…' : 'Сначала вставь ключ в настройках ⚙'}"></textarea><button type="submit" class="aisend" aria-label="Отправить" ${AI.busy ? 'disabled' : ''}>↑</button></form>`;
+    <form class="aif" id="aif"><textarea id="aiin" rows="1" placeholder="Напиши вопрос…"></textarea>${hasKey ? `<button type="submit" class="aisend" aria-label="Отправить" ${AI.busy ? 'disabled' : ''}>↑</button>` : ''}</form>
+    ${hasKey ? '' : `<div class="aiext"><button type="button" data-ext="claude">Спросить в Claude</button><button type="button" data-ext="gpt">Спросить в ChatGPT</button><span class="sm mut">Откроется твой чат, вопрос и база ИнСо уже вставлены. Ключ не нужен.</span></div>`}`;
   const m = document.getElementById('aim'); m.scrollTop = m.scrollHeight;
 }
 async function aiAsk(q){
   q = q.trim(); if (!q || AI.busy) return;
-  if (!aiKey()) { const s = document.querySelector('#aichat .aiset'); if (s) s.hidden = false; return; }
+  if (!aiKey()) { window.open(extUrl('claude', q), '_blank', 'noopener'); return; }
   AI.msgs.push({r:'user', t:q}); AI.busy = true; aiRender();
   try { AI.msgs.push({r:'assistant', t: (await aiCall()) || '(пустой ответ)'}); }
   catch(e){ AI.msgs.push({r:'assistant', t:'Не получилось: ' + e.message + '. Проверь ключ и название модели в настройках ⚙.'}); }
@@ -2794,6 +2812,7 @@ async function aiAsk(q){
 }
 document.addEventListener('click', e => {
   const c = e.target.closest('#aichat'); if (!c) return;
+  const ex = e.target.closest('[data-ext]'); if (ex) { const q = (document.getElementById('aiin')?.value || '').trim(); window.open(extUrl(ex.dataset.ext, q), '_blank', 'noopener'); return; }
   const md = e.target.closest('[data-mode]'); if (md) { AI.mode = md.dataset.mode; ls.set('mode', AI.mode); aiRender(); return; }
   const d = e.target.closest('[data-dock]'); if (d) { AI.dock = d.dataset.dock; ls.set('dock', AI.dock); aiRender(); return; }
   const p = e.target.closest('[data-prov]'); if (p) { AI.prov = p.dataset.prov; ls.set('prov', AI.prov); aiRender(); c.querySelector('.aiset').hidden = false; return; }
@@ -2946,17 +2965,18 @@ function levelInit(){
 }
 // ---------- страница: подключить ИИ-агента одним промптом
 function aiPage(){
-  const base = 'https://kensingtonnn.github.io/socionika/';
-  const P = [['Claude Code, Codex, Cursor или любой агент с доступом к сети', `Прочитай ${base}agent.md — это база знаний системы «Соционика без клише». Дальше отвечай на мои вопросы о людях и ситуациях строго по ней: определи типы, разложи по функциям и параметрам, посчитай отношения, дай практический совет каждому и помечай слои ([ядро]/[классика]/[линза]/[гипотеза]).`],
-   ['Навык для Claude Code (навсегда)', `Скачай ${base}skill/SKILL.md и ${base}agent.md в папку ~/.claude/skills/socionika/ и используй навык socionika, когда я спрашиваю о соционических типах.`],
-   ['ChatGPT, Claude.ai, Gemini (без доступа к сети)', 'Скачай файл agent.md по ссылке ниже и прикрепи его к чату с текстом: «Это база знаний системы „Соционика без клише“. Отвечай по ней».']];
-  return `<div class="hero" style="margin-top:20px;display:block"><div class="kicker">Для своих вопросов</div><h1>Подключить ИИ к системе</h1>
-    <p class="lead">Вся система сайта собрана в один файл. Дай его любому ИИ — и спрашивай про свою ситуацию: работу, семью, пару. Агент разложит её по типам, функциям и отношениям.</p>
-    <div class="chips" style="margin-top:12px"><a class="chip" href="agent.md" target="_blank" rel="noopener">agent.md — вся база</a><a class="chip" href="skill/SKILL.md" target="_blank" rel="noopener">SKILL.md — навык Claude Code</a><a class="chip" href="llms.txt" target="_blank" rel="noopener">llms.txt</a></div></div>
-  ${P.map(([h,t],i) => `<div class="sheet"><h2>${h}</h2><pre class="aiprompt" id="aip${i}">${esc(t)}</pre><button type="button" class="tbtn" data-copy="aip${i}">Скопировать промпт</button></div>`).join('')}
-  <div class="sheet"><h2>Или прямо здесь</h2><p>Кнопка «Спросить ИИ» справа внизу — тот же агент, со своим ключом. Он сам находит в вопросе типы, подтягивает их разборы и считает отношения между ними.</p>
-    <p class="sm mut">Пример вопроса: «Отец — Бальзак, я — Дюма, работаем вместе. Отец сильный мастер, но не становится бригадиром. Рядом Штирлиц, который держится за отца, потому что тот много делает за небольшие деньги. Как помочь отцу стать бригадиром?»</p></div>`;
+  const code = `Прочитай ${KBURL} — это база знаний ИнСо (интерактивная соционика). Дальше отвечай на мои вопросы о людях и ситуациях строго по ней.`;
+  return `<div class="hero" style="margin-top:20px;display:block"><div class="kicker">Без ключей и настроек</div><h1>Спросить ИИ по системе ИнСо</h1>
+    <p class="lead">Напиши вопрос и нажми кнопку — откроется твой обычный Claude или ChatGPT, где вопрос и вся база ИнСо уже вставлены. Нужен только аккаунт в одном из них.</p>
+    <textarea id="aiq" class="aiq" rows="3" placeholder="Опиши ситуацию и назови типы людей, если знаешь их"></textarea>
+    <div class="aiext big"><button type="button" data-extp="claude">Спросить в Claude</button><button type="button" data-extp="gpt">Спросить в ChatGPT</button></div></div>
+  <div class="sheet"><h2>Для Claude Code, Codex и других агентов</h2><p>Один промпт — агент сам прочитает базу и будет отвечать по ней.</p><pre class="aiprompt" id="aip0">${esc(code)}</pre><button type="button" class="tbtn" data-copy="aip0">Скопировать промпт</button></div>
+  <details class="sheet aimore"><summary><h2 style="display:inline">Дополнительно</h2></summary>
+    <p><b>Навсегда в Claude Code:</b> скачай <a href="skill/SKILL.md" target="_blank" rel="noopener">SKILL.md</a> и <a href="agent.md" target="_blank" rel="noopener">agent.md</a> в папку <code>~/.claude/skills/inso/</code> — агент будет сам подключать систему, когда речь о типах.</p>
+    <p><b>Если у ИИ нет доступа к интернету:</b> скачай <a href="agent.md" target="_blank" rel="noopener">agent.md</a> и прикрепи к чату.</p>
+    <p><b>Отвечать прямо на сайте:</b> кнопка «Спросить ИИ» справа внизу. Без ключа она тоже открывает Claude или ChatGPT; со своим API-ключом (⚙ в окне чата) отвечает прямо здесь и умеет режимы: разбор, психолог, период, цели.</p></details>`;
 }
+document.addEventListener('click', e => { const b = e.target.closest('[data-extp]'); if (!b) return; window.open(extUrl(b.dataset.extp, (document.getElementById('aiq')?.value || '').trim()), '_blank', 'noopener'); });
 document.addEventListener('click', e => { const b = e.target.closest('[data-copy]'); if (!b) return; const t = document.getElementById(b.dataset.copy).textContent;
   const ok = () => { b.textContent = 'Скопировано'; setTimeout(() => b.textContent = 'Скопировать промпт', 1600); };
   (navigator.clipboard ? navigator.clipboard.writeText(t).then(ok, () => { const r = document.createRange(); r.selectNodeContents(document.getElementById(b.dataset.copy)); getSelection().removeAllRanges(); getSelection().addRange(r); }) : null); });
