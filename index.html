@@ -1011,6 +1011,29 @@ h1,h2{overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto}
 .glyph8 .gname{font-weight:600;font-size:15px;color:var(--fg)}
 .glyph8 .gtag{font-size:13.5px;color:var(--mut)}
 @media (max-width:760px){ .glyph8{grid-template-columns:repeat(2,minmax(0,1fr))!important} .glyph8 .gill{height:48px} }
+
+.s2wrap{display:flex;flex-direction:column;gap:10px}
+.s2svg{width:100%;max-width:420px;height:auto;display:block;margin:0 auto}
+.s2row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.s2row .tbtn[aria-pressed="true"]{background:var(--ink);color:var(--inkfg)}
+.s2meter{position:relative;height:12px;border-radius:99px;background:var(--card);margin:6px 0 22px;box-shadow:inset 0 0 0 1px var(--line)}
+.s2fill{height:100%;border-radius:99px;background:var(--Fe)}
+.s2meter i{position:absolute;top:-3px;width:2px;height:18px;background:var(--fg)} .s2meter i.hot{background:var(--hard)}
+.s2meter i em{position:absolute;top:20px;left:50%;transform:translateX(-50%);font-style:normal;font-size:11px;color:var(--mut);white-space:nowrap}
+.s2out{min-height:24px} .s2out .tb{display:grid;grid-template-columns:70px 1fr auto;gap:8px;align-items:center;margin:4px 0}
+.s2out .bar{height:10px;border-radius:99px;background:var(--card);overflow:hidden} .s2out .bar i{display:block;height:100%}
+.s2fc{margin:0;font-size:14.5px}
+.s2line{display:flex;gap:6px;flex-wrap:wrap}
+.s2st{padding:6px 12px;border-radius:999px;background:var(--card);font-size:14px;min-width:28px;text-align:center}
+.s2st.on{background:var(--Ni);color:#fff;font-weight:700} .s2st.hid{opacity:.25}
+.s2big{min-width:56px;font-size:20px!important;font-family:var(--display)}
+.s2ok{background:color-mix(in srgb,var(--good) 25%,var(--card))!important} .s2bad{background:color-mix(in srgb,var(--hard) 25%,var(--card))!important}
+.s2row .chipb{background:var(--card);border-radius:999px;padding:4px 10px}
+
+table.mx th.c{vertical-align:bottom;height:120px;padding:0 0 6px}
+table.mx .mxv{display:inline-block;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;font-size:12px}
+table.mx th b{color:var(--fg);margin-right:4px}
+table.mx th.r{font-size:12.5px}
 </style>
 
 <header class="top"><div class="in">
@@ -1875,9 +1898,9 @@ function pairPage(a, b){
 
 function relColor(r){ return `var(${RTONE[r]})`; }
 function matrix(){
-  let h = '<table class="mx"><tr><th></th>' + D.order.map(k => `<th title="${T[k].name}">${T[k].ru}</th>`).join('') + '</tr>';
+  let h = '<table class="mx"><tr><th></th>' + D.order.map(k => `<th class="c"><span class="mxv"><b>${T[k].ru}</b> ${T[k].name}</span></th>`).join('') + '</tr>';
   D.order.forEach(a => {
-    h += `<tr><th class="r">${T[a].name}</th>` + D.order.map(b => { const r = T[a].rel[b]; return `<td style="background:${relColor(r)}" title="${T[a].name} → ${T[b].name}: ${D.rel[r][0]}" data-a="${a}" data-b="${b}" tabindex="0">${RSHORT[r]}</td>`; }).join('') + '</tr>';
+    h += `<tr><th class="r"><b>${T[a].ru}</b> ${T[a].name}</th>` + D.order.map(b => { const r = T[a].rel[b]; return `<td style="background:${relColor(r)}" title="${T[a].name} → ${T[b].name}: ${D.rel[r][0]}" data-a="${a}" data-b="${b}" tabindex="0">${RSHORT[r]}</td>`; }).join('') + '</tr>';
   });
   return h + '</table>';
 }
@@ -2577,6 +2600,151 @@ function react(desc, good){
 }
 function mountMood(){ const m = document.getElementById('mood'); if (m) m.innerHTML = `<div class="rx idle"><div class="rd mut">Сделай что-нибудь в визуализации — здесь появится, что произошло и как это ощущается на этом месте.</div></div>`; }
 const TOYS = {Ne:toyNe, Fe:toyFe, Se:toySe, Te:toyTe, Si:toySi, Ni:toyNi, Ti:toyTi, Fi:toyFi};
+/* ---------- простые визуализации (по образцу ЧИ): один объект, одно действие, результат сразу видно ---------- */
+const sBtns = (arr, attr) => arr.map(([v, t]) => `<button type="button" class="tbtn ghost" data-${attr}="${v}">${t}</button>`).join('');
+/* ЧЭ: подкинуть искру — пламя растёт и гаснет */
+function toyFe2(el){
+  const L = LV(); let v = .1, lastZone = 0, fired = 0;
+  el.innerHTML = `<div class="s2wrap"><svg viewBox="0 0 300 200" class="s2svg" aria-label="Пламя"><ellipse cx="150" cy="182" rx="70" ry="10" fill="var(--line)"/><path id="feFl" fill="var(--Fe)"/><path id="feIn" fill="#fff" opacity=".55"/></svg>
+    ${L >= 2 ? `<div class="s2meter"><div class="s2fill" id="feM" style="${L >= 3 ? '' : 'display:none'}"></div><i style="left:35%"><em>обычно «началось»</em></i><i class="hot" style="left:85%"><em>перебор</em></i></div>` : absent(1, 'шкалы нет — о накале узнаёшь только потом')}
+    ${L === 2 ? absent(2, 'текущего накала не видно — только отметки') : ''}${L < 4 ? absent(3, 'не видно, когда погаснет или перегреется') : ''}
+    <p class="s2fc" id="feFc"></p><div class="toybar"><button type="button" class="tbtn" style="--c:var(--Fe)" data-fe>Подкинуть</button></div></div>`;
+  const q = s => el.querySelector(s);
+  el.querySelector('[data-fe]').onclick = () => { v = Math.min(1.25, v + .17); fired++; };
+  const flame = (h, w) => `M150 182 C ${150 - w} 170, ${150 - w * .9} ${182 - h * .55}, 150 ${182 - h} C ${150 + w * .9} ${182 - h * .55}, ${150 + w} 170, 150 182 Z`;
+  function frame(){
+    v = Math.max(0, v - (reduced ? .006 : .0025));
+    const h = 20 + v * 140, w = 18 + v * 40;
+    q('#feFl').setAttribute('d', flame(h, w)); q('#feIn').setAttribute('d', flame(h * .5, w * .45));
+    if (L >= 3 && q('#feM')) q('#feM').style.width = Math.min(100, v / 1.2 * 100) + '%';
+    const zone = v > 1 ? 2 : v > .42 ? 1 : 0;
+    if (zone !== lastZone && fired) { const z = zone; setTimeout(() => react(z === 2 ? 'Перегрел: ещё немного — и всё гаснет от усталости.' : z === 1 ? 'Началось — момент перешёл из «может быть» в «идёт».' : 'Погасло: без подпитки накал уходит сам.', z === 1), L === 1 ? 1400 : 0); lastZone = zone; }
+    if (L === 4) q('#feFc').innerHTML = `<span class="ptag">время</span> ${v > 1 ? 'если подкинуть ещё раз — перегреется' : v > .42 ? `продержится ещё ~${Math.max(1, Math.ceil((v - .42) / (reduced ? .006 : .0025) / 60))} с без подпитки` : `до «началось» — ${Math.max(1, Math.ceil((.42 - v) / .17))} нажатия`}`;
+    toyTimers.push(requestAnimationFrame(frame));
+  }
+  frame();
+}
+/* ЧС: положить гирю — качели наклоняются */
+function toySe2(el){
+  const L = LV(); const S = {l:[], r:[]};
+  el.innerHTML = `<div class="s2wrap"><svg viewBox="0 -10 320 200" class="s2svg" aria-label="Качели"><polygon points="160,150 145,170 175,170" fill="var(--fg)"/><g id="seB"><rect x="30" y="140" width="260" height="8" rx="4" fill="var(--fg)"/><g id="seW"></g></g>${L >= 2 ? '<text x="160" y="20" text-anchor="middle" font-size="11" fill="var(--mut)">как принято: тяжёлое ставят ближе к опоре</text>' : ''}<g id="seC"></g></svg>
+    <div class="s2row"><span class="sm mut">Слева:</span>${sBtns([[1,'1'],[2,'2'],[3,'3'],[5,'5']], 'sel')}</div>
+    <div class="s2row"><span class="sm mut">Справа:</span>${sBtns([[1,'1'],[2,'2'],[3,'3'],[5,'5']], 'ser')}<button type="button" class="tbtn ghost" data-sex>убрать всё</button></div>
+    ${L < 3 ? absent(2, 'центр силы не виден — перекос замечаешь, когда уже перевесило') : ''}${L < 4 ? absent(3, 'не видно, что будет после следующей гири') : ''}<p class="s2fc" id="seFc"></p></div>`;
+  const q = s => el.querySelector(s); let shown = 0, tmr = 0;
+  const sum = a => a.reduce((x, y) => x + y, 0);
+  function draw(){
+    const d = sum(S.r) - sum(S.l), ang = Math.max(-14, Math.min(14, d * 2.2));
+    const apply = () => { q('#seB').setAttribute('transform', `rotate(${ang} 160 144)`); };
+    if (L === 1) { clearTimeout(tmr); tmr = setTimeout(apply, 900); } else apply();
+    q('#seW').innerHTML = [...S.l.map((w, i) => [w, 140 - i * 24]), ...S.r.map((w, i) => [w, 180 + i * 24])].map(([w, x]) => `<rect x="${x - 9 - w}" y="${140 - 14 - w * 3}" width="${18 + w * 2}" height="${14 + w * 3}" rx="3" fill="var(--Se)" opacity="${.45 + w * .1}"/>`).join('');
+    if (L >= 3) q('#seC').innerHTML = `<text x="160" y="${L >= 2 ? 38 : 20}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--Se)">слева ${sum(S.l)} · справа ${sum(S.r)} ${d ? (d > 0 ? '→ перевешивает справа' : '← перевешивает слева') : '— равновесие'}</text>`;
+    if (L === 4) { const need = Math.abs(d); q('#seFc').innerHTML = `<span class="ptag">время</span> ${need ? `чтобы выровнять, положи ${need} ${d > 0 ? 'слева' : 'справа'}` : 'следующая гиря перевесит ту сторону, куда её положишь'}`; }
+  }
+  el.addEventListener('click', e => { const b = e.target.closest('[data-sel],[data-ser],[data-sex]'); if (!b) return;
+    if (b.dataset.sex != null) { S.l = []; S.r = []; draw(); return; }
+    const side = b.dataset.sel ? 'l' : 'r', w = +(b.dataset.sel || b.dataset.ser); if (S[side].length >= 4) return; S[side].push(w); draw();
+    const d = sum(S.r) - sum(S.l); react(d === 0 ? 'Выровнял: силы уравновешены.' : Math.abs(d) > 4 ? 'Сильно перевесило — конструкция уже не держит.' : 'Чуть перекосило в одну сторону.', d === 0); });
+  draw();
+}
+/* ЧЛ: выбрать способ — сразу видно, во что ушли силы */
+function toyTe2(el){
+  const L = LV();
+  const M = {one:['по одной коробке', 12, 9, 'вымотался: 12 ходок по лестнице'], three:['по три в руках', 4, 6, 'быстрее, но одну уронил и разбил'], cart:['на тележке и лифте', 2, 2, 'почти без сил: две поездки']};
+  el.innerHTML = `<div class="s2wrap"><p><b>Задача:</b> поднять 12 коробок на третий этаж.</p>
+    <div class="s2row">${Object.entries(M).map(([k, m]) => `<button type="button" class="tbtn ghost" data-te="${k}">${m[0]}${L >= 2 && k === 'cart' ? ' <small class="mut">· обычно так</small>' : ''}</button>`).join('')}</div>
+    ${L < 2 ? absent(1, 'не знаешь, как это обычно делают') : ''}${L < 3 ? absent(2, 'не видно, сколько сил ушло и куда — только итог') : ''}${L < 4 ? absent(3, 'не видно, как потери копятся, если делать так часто') : ''}
+    <div id="teOut" class="s2out"></div></div>`;
+  el.addEventListener('click', e => { const b = e.target.closest('[data-te]'); if (!b) return; const m = M[b.dataset.te];
+    el.querySelectorAll('[data-te]').forEach(x => x.setAttribute('aria-pressed', x === b));
+    const out = L >= 3 ? `<div class="tb"><span>усилие</span><div class="bar"><i style="width:${m[1] / 12 * 100}%;background:var(--Te)"></i></div><b>${m[1]} ходок</b></div><div class="tb"><span>потери</span><div class="bar"><i style="width:${m[2] / 10 * 100}%;background:var(--hard)"></i></div><b>${m[2]}/10</b></div><p class="sm">${CAP(m[3])}.</p>` : `<p>${m[2] > 5 ? 'Устал. Почему так тяжело — непонятно.' : 'Нормально, сил осталось.'}</p>`;
+    el.querySelector('#teOut').innerHTML = out + (L === 4 ? `<p class="sm"><span class="ptag">время</span> если таскать так каждый день — за месяц ${m[1] * 30} ходок. ${b.dataset.te === 'cart' ? 'Тележка окупилась с первого раза.' : 'Выгоднее один раз найти тележку.'}</p>` : '');
+    react(b.dataset.te === 'cart' ? 'Нашёл способ с наименьшими потерями.' : 'Дошёл до результата, но много сил ушло в потери.', b.dataset.te === 'cart'); });
+}
+/* БС: три переключателя — лицо показывает самочувствие */
+function toySi2(el){
+  const L = LV(); const st = {win:0, light:0, snack:0};
+  const NORM = {win:'обычно проветривают раз в час', light:'для чтения обычно включают яркий', snack:'обычно перекусывают, если не ел 4 часа'};
+  el.innerHTML = `<div class="s2wrap"><p><b>Ситуация:</b> вечер, ты третий час читаешь в комнате.</p>
+    <svg viewBox="0 0 300 150" class="s2svg" aria-label="Комната"><rect width="300" height="150" fill="var(--s2)"/><rect id="siWin" x="20" y="20" width="60" height="70" fill="var(--card)" stroke="var(--fg)" stroke-width="2"/><circle id="siLamp" cx="150" cy="22" r="12"/><g transform="translate(200,60)"><circle r="34" cx="34" cy="34" fill="var(--card)" stroke="var(--fg)" stroke-width="2"/><circle cx="24" cy="28" r="3"/><circle cx="44" cy="28" r="3"/><path id="siMouth" fill="none" stroke="var(--fg)" stroke-width="2.5"/></g></svg>
+    <div class="s2row">${[['win','Окно'],['light','Свет'],['snack','Перекус']].map(([k, n]) => `<button type="button" class="tbtn ghost" data-si="${k}">${n}: <b id="si-${k}"></b></button>`).join('')}</div>
+    ${L >= 2 ? `<div class="s2row sm mut">${Object.values(NORM).map(t => `<span class="chipb">${t}</span>`).join('')}</div>` : absent(1, 'не знаешь, как обычно делают, чтобы было хорошо')}
+    ${L < 3 ? absent(2, 'не видно, что именно портит самочувствие') : ''}${L < 4 ? absent(3, 'не видно, что будет через час') : ''}<div id="siOut" class="s2out"></div></div>`;
+  const q = s => el.querySelector(s); let tmr = 0, drawn = 0;
+  function draw(){
+    q('#si-win').textContent = st.win ? 'открыто' : 'закрыто'; q('#si-light').textContent = st.light ? 'яркий' : 'тусклый'; q('#si-snack').textContent = st.snack ? 'съел' : 'не ел';
+    q('#siWin').setAttribute('fill', st.win ? 'var(--ni-tint, #e0eef6)' : 'var(--card)'); q('#siLamp').setAttribute('fill', st.light ? '#ffd76a' : '#7a6a40');
+    const good = st.win + st.light + st.snack, apply = () => { q('#siMouth').setAttribute('d', good === 3 ? 'M22 46 Q34 56 46 46' : good === 2 ? 'M22 49 L46 49' : 'M22 52 Q34 42 46 52');
+      const bad = [!st.win && 'душно — голова тяжелеет', !st.light && 'тусклый свет — глаза устают', !st.snack && 'голодно — раздражает всё подряд'].filter(Boolean);
+      q('#siOut').innerHTML = (L >= 3 ? (bad.length ? `<div class="s2row">${bad.map(b => `<span class="chipb">${b}</span>`).join('')}</div>` : '<p>Всё сложилось — читать приятно.</p>') : `<p>${good === 3 ? 'Хорошо.' : good === 2 ? 'Нормально, но что-то не то.' : 'Плохо — а почему, непонятно.'}</p>`) + (L === 4 ? `<p class="sm"><span class="ptag">время</span> ${!st.win ? 'через час заболит голова' : !st.snack ? 'через час захочется есть так, что читать станет невозможно' : 'через час захочется размяться — тело затечёт'}</p>` : ''); };
+    if (L === 1 && drawn) { clearTimeout(tmr); tmr = setTimeout(apply, 1500); } else apply(); drawn = 1;
+  }
+  el.addEventListener('click', e => { const b = e.target.closest('[data-si]'); if (!b) return; st[b.dataset.si] ^= 1; draw(); const good = st.win + st.light + st.snack; react(good === 3 ? 'Всё совпало — и тело, и голова в порядке.' : 'Что-то одно ещё мешает.', good === 3); });
+  draw();
+}
+/* БИ: «что дальше?» — процесс открывается по стадиям */
+function toyNi2(el){
+  const L = LV();
+  const P = [['семечко','ничего не видно, но всё уже заложено'],['росток','появились первые листья'],['бутон','набирается сила, вот-вот раскроется'],['цветок','пик — самое яркое'],['плод','отдаёт то, ради чего рос'],['увядание','уходит, оставляя семена — новый круг']];
+  let i = 0;
+  el.innerHTML = `<div class="s2wrap"><p><b>Процесс:</b> растение за сезон. Так же разворачиваются дружба, проект, мода.</p><div id="niLine" class="s2line"></div><div id="niNow" class="s2out"></div>
+    ${L < 2 ? absent(1, 'названий стадий не знаешь — только «к хорошему / к плохому»') : ''}${L < 3 ? absent(2, 'не видно, по какому признаку стадия именно эта') : ''}${L < 4 ? absent(3, 'не видно, что было до и что будет после') : ''}
+    <div class="toybar"><button type="button" class="tbtn" style="--c:var(--Ni)" data-ni>Что дальше?</button></div></div>`;
+  const q = s => el.querySelector(s);
+  function draw(){
+    q('#niLine').innerHTML = P.map((p, j) => `<span class="s2st${j === i ? ' on' : ''}${L < 4 && j !== i ? ' hid' : ''}">${L >= 2 || j === i ? (L >= 2 ? p[0] : '•') : ''}</span>`).join('');
+    q('#niNow').innerHTML = L >= 2 ? `<p><b>${CAP(P[i][0])}.</b>${L >= 3 ? ' Видно по тому, что ' + P[i][1] + '.' : ''}</p>` : `<p>${i < 3 ? 'Кажется, к хорошему.' : i < 5 ? 'Хорошо, но что-то уже меняется.' : 'Кажется, к плохому.'}</p>`;
+  }
+  q('[data-ni]').onclick = () => { i = (i + 1) % P.length; draw(); react(i === 0 ? 'Круг замкнулся: из конца выросло начало.' : `Процесс перешёл в стадию «${P[i][0]}».`, i !== 5); };
+  draw();
+}
+/* БЛ: расставь по весу — сходится или нет */
+function toyTi2(el){
+  const L = LV(); const RULES = ['А тяжелее Б', 'Б тяжелее Г', 'Г тяжелее В'], RIGHT = ['А','Б','Г','В'];
+  let pick = [];
+  el.innerHTML = `<div class="s2wrap"><p><b>Известно:</b> ${RULES.join('; ')}.</p><p>Нажимай на гири от самой тяжёлой к самой лёгкой.</p>
+    <div class="s2row">${['Б','В','А','Г'].map(n => `<button type="button" class="tbtn ghost s2big" data-ti="${n}">${n}</button>`).join('')}</div>
+    ${L >= 2 ? `<p class="sm"><span class="ptag">нормы</span> Правило: если А тяжелее Б, а Б тяжелее Г, то А тяжелее Г.</p>` : absent(1, 'правила построения не знаешь — расставляешь по ощущению')}
+    ${L < 3 ? absent(2, 'ошибка видна только в конце') : ''}${L < 4 ? absent(3, 'не видно, что ещё следует из системы') : ''}
+    <div id="tiOut" class="s2out"></div><div class="toybar"><button type="button" class="tbtn ghost" data-tir>сначала</button></div></div>`;
+  const q = s => el.querySelector(s);
+  el.addEventListener('click', e => {
+    if (e.target.closest('[data-tir]')) { pick = []; el.querySelectorAll('[data-ti]').forEach(b => { b.disabled = false; b.className = 'tbtn ghost s2big'; }); q('#tiOut').innerHTML = ''; return; }
+    const b = e.target.closest('[data-ti]'); if (!b || b.disabled) return; pick.push(b.dataset.ti); b.disabled = true;
+    const ok = RIGHT[pick.length - 1] === b.dataset.ti; if (L >= 3) b.classList.add(ok ? 's2ok' : 's2bad');
+    q('#tiOut').innerHTML = `<p>Порядок: <b>${pick.join(' → ')}</b></p>`;
+    if (pick.length === 4) { const all = pick.join() === RIGHT.join();
+      q('#tiOut').innerHTML += L === 1 ? `<p>${all ? 'Сошлось.' : 'Не сошлось — а где ошибка, непонятно.'}</p>` : `<p>${all ? 'Сошлось: все три утверждения выполняются.' : 'Не сошлось: нарушено «' + RULES.find(r => { const [x,,y] = r.split(' '); return pick.indexOf(x) > pick.indexOf(y); }) + '».'}</p>` + (L === 4 && all ? '<p class="sm"><span class="ptag">время</span> Отсюда следует то, чего прямо не сказано: А тяжелее В и Б тяжелее В.</p>' : '');
+      react(all ? 'Система сошлась без противоречий.' : 'В системе противоречие.', all); }
+  });
+}
+Object.assign(TOYS, {Fe: toyFe2, Se: toySe2, Te: toyTe2, Si: toySi2, Ni: toyNi2, Ti: toyTi2});
+Object.assign(TOY_INFO, {
+ Fe:['Пламя','Нажимай «Подкинуть». Без подпитки пламя гаснет само.','Ты ловил момент, когда «может быть» переходит в «началось», и видел, что накал можно перегреть. ЧЭ замечает это в событии, тексте, деле, месте. По Аугустинавичюте — переход энергии в движение.'],
+ Se:['Качели','Клади гири слева и справа.','Ты искал, где центр силы и что перевешивает. ЧС чувствует массу и форму: сколько что весит и куда надавить — у вещей, решений, пространства, тела. По Аугустинавичюте — кинетическая энергия.'],
+ Te:['Двенадцать коробок','Выбери, как нести.','Результат один — коробки наверху. Менялось только, сколько сил ушло в потери. ЧЛ видит, во что превращается усилие. По Аугустинавичюте — использование энергии.'],
+ Si:['Вечер с книгой','Переключай окно, свет и перекус.','Ни один переключатель сам по себе не делает хорошо: важно, как всё сочетается. БС чувствует, как свет, воздух, тело и голод складываются в одно самочувствие — сейчас и через час. По Аугустинавичюте — пространство и самочувствие в нём.'],
+ Ni:['Сезон растения','Нажимай «Что дальше?».','Ты видел, как процесс проходит стадии и из конца рождается начало. БИ видит не момент, а его место в сюжете — в дружбе, деле, моде, болезни. По Аугустинавичюте — связь событий во времени.'],
+ Ti:['Четыре гири','Нажимай на гири от тяжёлой к лёгкой.','Ты собирал из отдельных утверждений одну непротиворечивую систему. Это и есть БЛ: держать мир в пропорции и замечать противоречие — в правилах, планах, механизмах, рассуждениях. По Аугустинавичюте — объективная мера одного объекта другим.']});
+Object.assign(LVL, {
+ Fe:['Шкалы не видно. Узнаёшь только потом: «задело» или нет.','Видишь отметки «как обычно»: где начинается и где перебор.','Видишь накал прямо сейчас.','Видишь и прогноз: когда погаснет или перегреется.'],
+ Se:['Видишь только, что перекосило, и с опозданием.','Есть правило «как принято»: тяжёлое ближе к опоре.','Видишь, где центр силы и что перевешивает.','Видишь и что выровняет или перевесит дальше.'],
+ Te:['Видишь только итог: устал или нет.','Знаешь, как обычно делают.','Видишь усилие и потери сразу.','Видишь, как потери копятся за много раз.'],
+ Si:['«Хорошо / плохо» приходит поздно, причин не видно.','Знаешь, как обычно делают, чтобы было хорошо.','Видишь, что именно портит самочувствие.','Видишь, что будет через час.'],
+ Ni:['Стадий не видно — только «к хорошему / к плохому».','Знаешь названия типовых стадий.','Видишь, по какому признаку стадия именно эта.','Видишь всю линию: что было и что будет.'],
+ Ti:['Расставляешь по ощущению; сошлось или нет — узнаёшь в конце.','Знаешь правило построения.','Ошибку видно сразу, на каждом шаге.','Видишь и следствия системы.']});
+Object.assign(PSHORT, {
+ Fe:['«задело / нет» — потом','отметки «как обычно»','накал сейчас','прогноз накала'], Se:['перекос — с опозданием','правило «тяжёлое к опоре»','центр силы','что выровняет'],
+ Te:['итог: устал или нет','«как обычно делают»','усилие и потери','потери за месяц'], Si:['«хорошо / плохо» — поздно','как обычно делают','что мешает','прогноз на час'],
+ Ni:['«к добру / к худу»','названия стадий','признак стадии','вся линия'], Ti:['«сошлось / нет» в конце','правило построения','ошибка сразу','следствия']});
+Object.assign(PFX, {
+ Fe:[['чувствуешь, задело или нет, — но с опозданием'],['видишь отметки «обычно началось» и «перебор»','отметок нет: о накале узнаёшь только потом'],['видишь накал прямо сейчас','текущего накала не видишь — только отметки'],['видишь, когда погаснет или перегреется','не знаешь, сколько продержится']],
+ Se:[['замечаешь перекос, но с опозданием'],['знаешь правило «тяжёлое ближе к опоре»','правила нет: кладёшь наугад'],['видишь центр силы и что перевешивает','перекос видно, только когда уже перевесило'],['видишь, что выровняет','не видишь, что будет после следующей гири']],
+ Te:[['чувствуешь итог: устал или нет'],['знаешь, как обычно делают','подсказок «как обычно» нет'],['видишь усилие и потери','видишь только итог, без причин'],['видишь потери за много повторов','не видишь, как потери копятся']],
+ Si:[['чувствуешь «хорошо / плохо», но поздно'],['знаешь, как обычно делают','не знаешь правил, чтобы было хорошо'],['видишь, что именно мешает','причин не видно'],['видишь, что будет через час','не видишь, что будет дальше']],
+ Ni:[['чувствуешь «к хорошему / к плохому»'],['знаешь названия стадий','стадий не знаешь'],['видишь признак стадии','не видишь, чем стадия отличается от соседней'],['видишь всю линию','не видишь, что было до и будет после']],
+ Ti:[['расставляешь по ощущению'],['знаешь правило построения','правила нет'],['ошибку видно сразу','ошибка видна только в конце'],['видишь следствия системы','не видишь, что следует дальше']]});
+
 const BLKMODE = [
  ['свободно','Эго: сильно и ценно. Видно всё, что даёт мерность, и это приятно делать.',''],
  ['свободно','Эго: сильно и ценно, но как инструмент — ради цели ведущей.',''],
