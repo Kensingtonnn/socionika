@@ -940,6 +940,11 @@ nav.main a[aria-current="page"]{background:var(--ink);color:var(--inkfg)}
 .qzread{padding-left:1.1em} .qzread li{margin:.45em 0}
 .qzagain{display:inline-block;margin-bottom:8px;font-weight:600;color:var(--fg)}
 .aiprompt{white-space:pre-wrap;background:var(--s2);border-radius:var(--r-md);padding:14px 16px;font:400 14.5px/1.55 var(--sans);margin:8px 0 12px}
+
+.aimodes{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);scrollbar-width:none;flex:none}
+.aimodes button{flex:none;border:0;border-radius:999px;background:var(--s2);color:var(--fg);padding:7px 12px;font:600 13px var(--sans);cursor:pointer}
+.aimodes button[aria-pressed="true"]{background:var(--ink);color:var(--inkfg)}
+.ail select{font:500 14px var(--sans);padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--fg)}
 </style>
 
 <header class="top"><div class="in">
@@ -2683,11 +2688,17 @@ const AIP = {
  gemini:{n:'Gemini', m:'gemini-3-flash-preview', k:'ключ Google AI Studio', url:'https://aistudio.google.com/apikey'},
  openrouter:{n:'OpenRouter · любые модели', m:'openrouter/auto', k:'ключ OpenRouter (sk-or-…)', url:'https://openrouter.ai/keys'}};
 const ls = {get(k, d){ try { const v = localStorage.getItem('ai.' + k); return v == null ? d : v; } catch(e){ return d; } }, set(k, v){ try { localStorage.setItem('ai.' + k, v); } catch(e){} }};
-const AI = {prov: ls.get('prov', 'claude'), dock: ls.get('dock', 'float'), open: false, busy: false, msgs: []};
+const AI = {prov: ls.get('prov', 'claude'), dock: ls.get('dock', 'float'), mode: ls.get('mode', 'sit'), open: false, busy: false, msgs: []};
 const aiModel = () => ls.get('model.' + AI.prov, AIP[AI.prov].m);
 const aiKey = () => ls.get('key.' + AI.prov, '');
 const esc = t => t.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const md = t => esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/^#{1,4}\s*(.+)$/gm, '<b>$1</b>').replace(/^[-•]\s+(.+)$\n?/gm, '<span class="li">$1</span>').replace(/\n/g, '<br>');
+const AIMODE = {
+ sit:{n:'Разбор ситуации', p:'Режим «Разбор ситуации»: определи типы участников, разложи ситуацию по функциям и параметрам, посчитай отношения и каналы, дай практический совет каждому участнику. Структура ответа: суть в двух фразах → почему так (функции и параметры) → что делать каждому → что проверить, если тип определён неверно.'},
+ psy:{n:'Как психолог', p:'Режим «Как психолог»: веди бережный разговор. Сначала уточни и отрази, что человек чувствует и чего хочет (1–3 коротких вопроса), не спеши с выводами и советами. Соционику используй как одну из линз, а не как объяснение всего; говори о человеке, а не о типе. Ты не психотерапевт и не ставишь диагнозов. Если звучат признаки тяжёлого состояния, насилия или мыслей о самоповреждении — мягко и прямо посоветуй обратиться к специалисту или близким, а при угрозе жизни — звонить 112.'},
+ per:{n:'Определить период', p:'Режим «Определить период»: по механике «Пути и этапы» определи, (1) вокруг какой функции человек сейчас строит жизнь (путь), (2) какой это этап, (3) нет ли кризиса (откат к ведущей или защита болевой), (4) уровень осознанности (на автомате / замечает / управляет). Задавай по 2–3 конкретных вопроса за раз о том, что сейчас даётся даром, что выматывает, что ранит, чем занят, что изменилось недавно. Когда данных хватит — дай вывод с уверенностью ([вероятно]/[догадка]) и что из этого следует.'},
+ goal:{n:'Цели', p:'Режим «Цели»: помоги сформулировать 1–3 цели. Каждая цель должна опираться на сильные функции человека (ведущая/творческая — даром), а нагрузку на слабые (ролевая, болевая) — закрывать внешними опорами: правила, инструменты, люди (дуал, тот, у кого это сильно). Учитывай суггестивную — чего человеку не хватает и откуда это брать. Для каждой цели: зачем, первый шаг на неделю, где будет дорого и чем это закрыть, как понять, что получается.'}};
+const AITONE = {soft:'мягко и поддерживающе', direct:'прямо, без смягчений, по делу', fun:'живо, с лёгким юмором, но по сути', short:'очень коротко, тезисами'};
 let KB = null;
 async function kbLoad(){ if (KB) return KB; try { const r = await fetch('kb.json'); if (r.ok) KB = await r.json(); } catch(e){} return KB; }
 function kbFind(text){
@@ -2701,7 +2712,7 @@ async function aiSystem(){
   const page = (document.getElementById('app')?.innerText || '').replace(/\n{3,}/g, '\n\n').slice(0, KB ? 5000 : 14000);
   const conv = AI.msgs.map(m => m.t).join('\n');
   const here = (location.hash.match(/^#(?:type|pair)-([a-z]{3})(?:-([a-z]{3}))?/) || []).slice(1).filter(Boolean).map(x => x.toUpperCase());
-  const ks = [...new Set([...kbFind(conv), ...here])].slice(0, 6);
+  const meK = ls.get('me', ''); const ks = [...new Set([...(meK ? [meK] : []), ...kbFind(conv), ...here])].slice(0, 6);
   let kb = '';
   if (KB) {
     kb = KB.core + '\n\n# Типы из разговора\n\n' + (ks.length ? ks.map(k => KB.types[k]).join('\n\n') : '(типы не названы — если нужно, спроси пользователя, о ком речь, или дай общий ответ по системе)');
@@ -2713,7 +2724,10 @@ async function aiSystem(){
       kb += '\n\n# Отношения между ними (рассчитано по модели А)\n' + rels.join('\n') + (pairs.length ? '\n\n' + pairs.join('\n\n') : '');
     }
   }
-  return `Ты — помощник сайта «Соционика без клише». Отвечай по-русски, по делу, простыми словами, без лести и без воды. Опирайся на базу знаний ниже — это вся система сайта.
+  const me = ls.get('me', ''), mode = AIMODE[AI.mode] || AIMODE.sit, tone = AITONE[ls.get('tone', 'direct')] || '', bias = ls.get('bias', '').slice(0, 400);
+  return `Ты — помощник сайта «Соционика без клише». Отвечай по-русски, простыми словами, без лести и без воды. Опирайся на базу знаний ниже — это вся система сайта.
+${mode.p}
+Тон: ${tone}.${bias ? ' Особые пожелания пользователя к общению: «' + bias + '».' : ''}${me && KB ? ` Тип самого пользователя (с его слов): ${KB.names[me]} (${KB.abbr[me]}) — учитывай его, когда он говорит «я».` : ''}
 ${kb || `Правила: аспекты через суть (ЧИ запас, ЧЭ зажигание, ЧС вес, ЧЛ КПД, БС самочувствие, БИ сюжет, БЛ мера, БЭ гравитация), объекты любые; место функции — через параметры опыт/нормы/ситуация/время; помечай [ядро]/[классика]/[линза]/[гипотеза]; не типируй по одному признаку.`}
 
 Пользователь сейчас на странице «${document.title}» (#${location.hash.slice(1) || 'home'}). Её текст — дополнительный контекст:
@@ -2734,6 +2748,9 @@ async function aiCall(){
   const j = await r.json(); if (!r.ok) throw new Error(j.error?.message || r.status); return j.choices?.[0]?.message?.content || '';
 }
 function aiSuggest(){
+  if (AI.mode === 'psy') return ['Мне тяжело, хочу разобраться, что со мной', 'Постоянно ссоримся с близким человеком', 'Не понимаю, чего хочу'];
+  if (AI.mode === 'per') return ['Определи, на какой функции я сейчас живу', 'Похоже, у меня кризис — так ли это?', 'Почему раньше было легко, а сейчас нет?'];
+  if (AI.mode === 'goal') return ['Помоги поставить цели на полгода', 'Хочу сменить работу — куда с моим типом?', 'Как добиться цели, которая требует моей болевой?'];
   const h = location.hash.slice(1), m = h.match(/^type-([a-z]{3})/), p = h.match(/^pair-([a-z]{3})-([a-z]{3})/), a = h.match(/^aspect-([a-z]{2})/);
   if (m) { const t = T[m[1].toUpperCase()]; return [`Объясни ${G(t)} в трёх предложениях`, `Как у ${G(t)} болит ${D.ab[t.m[3]]} в обычный день?`, `Чем ${t.name} отличается от того, с кем его путают?`]; }
   if (p) { const A = T[p[1].toUpperCase()], B = T[p[2].toUpperCase()]; return [`Как ${A.name} и ${B.name} могут поссориться?`, `Что каждый даёт другому в паре ${A.name} — ${B.name}?`, 'Объясни эти отношения проще']; }
@@ -2752,13 +2769,17 @@ function aiRender(){
   const P = AIP[AI.prov], hasKey = !!aiKey();
   el.innerHTML = `<div class="aih"><div class="ait"><b>ИИ-помощник</b><span>${P.n} · знает всю систему сайта</span></div>
       <div class="aib"><button type="button" data-dock="left" aria-label="Закрепить слева" ${AI.dock==='left'?'aria-pressed="true"':''}>⇤</button><button type="button" data-dock="float" aria-label="Плавающее окно" ${AI.dock==='float'?'aria-pressed="true"':''}>❐</button><button type="button" data-dock="right" aria-label="Закрепить справа" ${AI.dock==='right'?'aria-pressed="true"':''}>⇥</button><button type="button" data-ai="set" aria-label="Настройки">⚙</button><button type="button" data-ai="close" aria-label="Закрыть">✕</button></div></div>
+    <div class="aimodes" role="group" aria-label="Режим">${Object.entries(AIMODE).map(([k,v]) => `<button type="button" data-mode="${k}" aria-pressed="${k===AI.mode}">${v.n}</button>`).join('')}</div>
     <div class="aiset" ${hasKey ? 'hidden' : ''}>
       <div class="seg aiprov" role="group" aria-label="Агент">${Object.entries(AIP).map(([k,v]) => `<button type="button" data-prov="${k}" aria-pressed="${k===AI.prov}">${v.n.split(' ·')[0]}</button>`).join('')}</div>
       <label class="ail" for="aikey">${P.k}<input id="aikey" type="password" autocomplete="off" value="${esc(aiKey())}" placeholder="вставь свой ключ"></label>
       <label class="ail" for="aimod">Модель<input id="aimod" type="text" value="${esc(aiModel())}"></label>
+      <label class="ail" for="aime">Мой тип<select id="aime"><option value="">не указан</option>${D.order.map(k => `<option value="${k}"${ls.get('me','')===k?' selected':''}>${T[k].name} (${T[k].ru})</option>`).join('')}</select></label>
+      <label class="ail" for="aitone">Как общаться<select id="aitone">${Object.entries({soft:'мягко',direct:'прямо',fun:'с юмором',short:'коротко'}).map(([k,v]) => `<option value="${k}"${ls.get('tone','direct')===k?' selected':''}>${v}</option>`).join('')}</select></label>
+      <label class="ail" for="aibias">Свой уклон (необязательно)<input id="aibias" type="text" maxlength="400" value="${esc(ls.get('bias',''))}" placeholder="например: как наставник, без терминов, с примерами из стройки"></label>
       <p class="sm mut">Ключ хранится только в этом браузере и уходит напрямую в ${P.n.split(' ·')[0]}. У сайта нет сервера, и он ключ не видит. Получить ключ: <a href="${P.url}" target="_blank" rel="noopener">${P.url.replace('https://','')}</a>. Запросы оплачиваются на твоём аккаунте у провайдера.</p>
       <button type="button" class="tbtn" data-ai="save">Сохранить</button></div>
-    <div class="aim" id="aim">${AI.msgs.length ? AI.msgs.map(m => `<div class="aimsg ${m.r}">${m.r === 'assistant' ? md(m.t) : esc(m.t)}</div>`).join('') : `<div class="aiempty"><b>Спроси про то, что сейчас на экране.</b><span>Агент знает всю систему сайта: 16 типов, функции по параметрам, отношения, пути. Опиши ситуацию и назови типы людей — например: «отец Бальзак, я Дюма, на работе есть Штирлиц…».</span></div>`}${AI.busy ? '<div class="aimsg assistant busy"><i></i><i></i><i></i></div>' : ''}</div>
+    <div class="aim" id="aim">${AI.msgs.length ? AI.msgs.map(m => `<div class="aimsg ${m.r}">${m.r === 'assistant' ? md(m.t) : esc(m.t)}</div>`).join('') : `<div class="aiempty"><b>${({sit:'Опиши ситуацию — разберу по типам и функциям.',psy:'Расскажи, что происходит. Сначала я задам пару вопросов.',per:'Отвечу, на какой функции ты сейчас живёшь и какой это этап.',goal:'Поставим цели под твои сильные функции.'})[AI.mode]}</b><span>Агент знает всю систему сайта: 16 типов, функции по параметрам, отношения, пути. Опиши ситуацию и назови типы людей — например: «отец Бальзак, я Дюма, на работе есть Штирлиц…».</span></div>`}${AI.busy ? '<div class="aimsg assistant busy"><i></i><i></i><i></i></div>' : ''}</div>
     ${AI.msgs.length ? '' : `<div class="aisug">${aiSuggest().map(q => `<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`}
     <form class="aif" id="aif"><textarea id="aiin" rows="1" placeholder="${hasKey ? 'Напиши вопрос…' : 'Сначала вставь ключ в настройках ⚙'}"></textarea><button type="submit" class="aisend" aria-label="Отправить" ${AI.busy ? 'disabled' : ''}>↑</button></form>`;
   const m = document.getElementById('aim'); m.scrollTop = m.scrollHeight;
@@ -2773,13 +2794,14 @@ async function aiAsk(q){
 }
 document.addEventListener('click', e => {
   const c = e.target.closest('#aichat'); if (!c) return;
+  const md = e.target.closest('[data-mode]'); if (md) { AI.mode = md.dataset.mode; ls.set('mode', AI.mode); aiRender(); return; }
   const d = e.target.closest('[data-dock]'); if (d) { AI.dock = d.dataset.dock; ls.set('dock', AI.dock); aiRender(); return; }
   const p = e.target.closest('[data-prov]'); if (p) { AI.prov = p.dataset.prov; ls.set('prov', AI.prov); aiRender(); c.querySelector('.aiset').hidden = false; return; }
   const q = e.target.closest('[data-q]'); if (q) { aiAsk(q.dataset.q); return; }
   const a = e.target.closest('[data-ai]'); if (!a) return;
   if (a.dataset.ai === 'close') { AI.open = false; aiRender(); }
   if (a.dataset.ai === 'set') { const s = c.querySelector('.aiset'); s.hidden = !s.hidden; }
-  if (a.dataset.ai === 'save') { ls.set('key.' + AI.prov, document.getElementById('aikey').value.trim()); ls.set('model.' + AI.prov, document.getElementById('aimod').value.trim() || AIP[AI.prov].m); aiRender(); }
+  if (a.dataset.ai === 'save') { ls.set('me', document.getElementById('aime').value); ls.set('tone', document.getElementById('aitone').value); ls.set('bias', document.getElementById('aibias').value.trim()); ls.set('key.' + AI.prov, document.getElementById('aikey').value.trim()); ls.set('model.' + AI.prov, document.getElementById('aimod').value.trim() || AIP[AI.prov].m); aiRender(); }
 });
 document.addEventListener('submit', e => { if (e.target.id !== 'aif') return; e.preventDefault(); const i = document.getElementById('aiin'); const v = i.value; i.value = ''; aiAsk(v); });
 document.addEventListener('keydown', e => { if (e.target.id === 'aiin' && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.getElementById('aif').requestSubmit(); } });
