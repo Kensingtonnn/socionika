@@ -1034,6 +1034,14 @@ table.mx th.c{vertical-align:bottom;height:120px;padding:0 0 6px}
 table.mx .mxv{display:inline-block;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;font-size:12px}
 table.mx th b{color:var(--fg);margin-right:4px}
 table.mx th.r{font-size:12.5px}
+
+.aiguide{display:flex;flex-direction:column;gap:4px;background:var(--card);border-radius:var(--r-md);padding:12px 14px}
+.aisteps{margin:0;padding-left:1.3em;font-size:14.5px;line-height:1.5} .aisteps li{margin:.3em 0}
+.aiset .kicker{margin:4px 0 0!important;font-weight:700!important;color:var(--fg)!important}
+.aiprov small{font-weight:500;opacity:.7}
+#aichat.nokey>.aim,#aichat.nokey>.aisug,#aichat.nokey>.aimodes,#aichat.nokey .aiext .sm{display:none}
+#aichat.nokey>.aiset{flex:1 1 auto;max-height:none;min-height:0}
+#aichat>.aih{position:relative;z-index:2;background:var(--card)}
 </style>
 
 <header class="top"><div class="in">
@@ -2951,8 +2959,13 @@ const AIP = {
  openai:{n:'ChatGPT', m:'gpt-5', k:'ключ OpenAI (sk-…)', url:'https://platform.openai.com/api-keys'},
  gemini:{n:'Gemini', m:'gemini-3-flash-preview', k:'ключ Google AI Studio', url:'https://aistudio.google.com/apikey'},
  openrouter:{n:'OpenRouter · любые модели', m:'openrouter/auto', k:'ключ OpenRouter (sk-or-…)', url:'https://openrouter.ai/keys'}};
+const AISTEPS = {
+ gemini:['Открой <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> и войди своим Google-аккаунтом.','Нажми «Create API key» (Создать ключ). Если спросит проект — выбери любой или создай новый.','Скопируй появившуюся длинную строку — это и есть ключ.','Вставь её в поле ниже и нажми «Сохранить». Готово — пиши вопрос.'],
+ claude:['Открой <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a> и зарегистрируйся (это не то же самое, что claude.ai).','Зайди в Billing и пополни баланс — от 5 $. Без этого ключ не заработает.','В разделе API Keys нажми «Create Key», скопируй строку, начинающуюся с sk-ant-.','Вставь её в поле ниже и нажми «Сохранить».'],
+ openai:['Открой <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a> и войди (это не то же самое, что подписка ChatGPT Plus).','В Billing пополни баланс — от 5 $.','Нажми «Create new secret key», скопируй строку, начинающуюся с sk-.','Вставь её в поле ниже и нажми «Сохранить».'],
+ openrouter:['Открой <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a> и войди (можно через Google).','Пополни баланс в Credits — можно немного. Есть и бесплатные модели.','Нажми «Create Key», скопируй строку sk-or-….','Вставь её в поле ниже и нажми «Сохранить».']};
 const ls = {get(k, d){ try { const v = localStorage.getItem('ai.' + k); return v == null ? d : v; } catch(e){ return d; } }, set(k, v){ try { localStorage.setItem('ai.' + k, v); } catch(e){} }};
-const AI = {prov: ls.get('prov', 'claude'), dock: ls.get('dock', 'float'), mode: ls.get('mode', 'sit'), open: false, busy: false, msgs: []};
+const AI = {prov: ls.get('prov', 'gemini'), dock: ls.get('dock', 'float'), mode: ls.get('mode', 'sit'), open: false, busy: false, msgs: []};
 const aiModel = () => ls.get('model.' + AI.prov, AIP[AI.prov].m);
 const aiKey = () => ls.get('key.' + AI.prov, '');
 const esc = t => t.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
@@ -3032,14 +3045,19 @@ function aiRender(){
     fab.onclick = () => { AI.open = true; aiRender(); setTimeout(() => document.getElementById('aiin')?.focus(), 50); }; document.body.appendChild(fab); }
   document.body.classList.toggle('ai-dockL', AI.open && AI.dock === 'left'); document.body.classList.toggle('ai-dockR', AI.open && AI.dock === 'right');
   document.getElementById('aifab').hidden = AI.open;
-  el.hidden = !AI.open; el.className = 'ai-' + AI.dock; if (!AI.open) return;
+  el.hidden = !AI.open; el.className = 'ai-' + AI.dock + (aiKey() ? '' : ' nokey'); if (!AI.open) return;
   const P = AIP[AI.prov], hasKey = !!aiKey();
   el.innerHTML = `<div class="aih"><div class="ait"><b>ИИ-помощник</b><span>${P.n} · знает всю систему сайта</span></div>
       <div class="aib"><button type="button" data-dock="left" aria-label="Закрепить слева" ${AI.dock==='left'?'aria-pressed="true"':''}>⇤</button><button type="button" data-dock="float" aria-label="Плавающее окно" ${AI.dock==='float'?'aria-pressed="true"':''}>❐</button><button type="button" data-dock="right" aria-label="Закрепить справа" ${AI.dock==='right'?'aria-pressed="true"':''}>⇥</button><button type="button" data-ai="set" aria-label="Настройки">⚙</button><button type="button" data-ai="close" aria-label="Закрыть">✕</button></div></div>
     <div class="aimodes" role="group" aria-label="Режим">${Object.entries(AIMODE).map(([k,v]) => `<button type="button" data-mode="${k}" aria-pressed="${k===AI.mode}">${v.n}</button>`).join('')}</div>
-    <div class="aiset" hidden>
-      <p class="sm"><b>Ответы прямо здесь</b> — нужен свой API-ключ провайдера. Что это и где взять — <a href="#ai" data-ai="close">пошаговая памятка</a>. Без ключа просто пользуйся кнопками «Спросить в Claude» и «в ChatGPT» под полем ввода.</p>
-      <div class="seg aiprov" role="group" aria-label="Агент">${Object.entries(AIP).map(([k,v]) => `<button type="button" data-prov="${k}" aria-pressed="${k===AI.prov}">${v.n.split(' ·')[0]}</button>`).join('')}</div>
+    <div class="aiset" ${hasKey ? 'hidden' : ''}>
+      <div class="aiguide"><b>Чтобы ИИ отвечал прямо здесь, нужен ключ</b><span class="sm">Ключ — это длинный пароль, по которому сайт обращается к ИИ от твоего имени. Получить его — 2 минуты.</span></div>
+      <div class="kicker">1. Где взять ключ</div>
+      <div class="seg aiprov" role="group" aria-label="Агент">${Object.entries(AIP).map(([k,v]) => `<button type="button" data-prov="${k}" aria-pressed="${k===AI.prov}">${v.n.split(' ·')[0]}${k === 'gemini' ? ' <small>бесплатно</small>' : ''}</button>`).join('')}</div>
+      <div class="kicker">2. Как получить — ${P.n.split(' ·')[0]}</div>
+      <ol class="aisteps">${(AISTEPS[AI.prov] || []).map(x => `<li>${x}</li>`).join('')}</ol>
+      ${AI.prov === 'gemini' ? '' : '<p class="sm mut">Нет карты или не хочешь платить — выбери Gemini: у Google есть бесплатный лимит.</p>'}
+      <div class="kicker">3. Вставь ключ</div>
       <label class="ail" for="aikey">${P.k}<input id="aikey" type="password" autocomplete="off" value="${esc(aiKey())}" placeholder="вставь свой ключ"></label>
       <label class="ail" for="aimod">Модель<input id="aimod" type="text" value="${esc(aiModel())}"></label>
       <label class="ail" for="aime">Мой тип<select id="aime"><option value="">не указан</option>${D.order.map(k => `<option value="${k}"${ls.get('me','')===k?' selected':''}>${T[k].name} (${T[k].ru})</option>`).join('')}</select></label>
@@ -3066,7 +3084,7 @@ document.addEventListener('click', e => {
   const ex = e.target.closest('[data-ext]'); if (ex) { const q = (document.getElementById('aiin')?.value || '').trim(); window.open(extUrl(ex.dataset.ext, q), '_blank', 'noopener'); return; }
   const md = e.target.closest('[data-mode]'); if (md) { AI.mode = md.dataset.mode; ls.set('mode', AI.mode); aiRender(); return; }
   const d = e.target.closest('[data-dock]'); if (d) { AI.dock = d.dataset.dock; ls.set('dock', AI.dock); aiRender(); return; }
-  const p = e.target.closest('[data-prov]'); if (p) { AI.prov = p.dataset.prov; ls.set('prov', AI.prov); aiRender(); c.querySelector('.aiset').hidden = false; return; }
+  const p = e.target.closest('[data-prov]'); if (p) { AI.prov = p.dataset.prov; ls.set('prov', AI.prov); aiRender(); const st = document.querySelector('#aichat .aiset'); if (st) st.hidden = false; return; }
   const q = e.target.closest('[data-q]'); if (q) { aiAsk(q.dataset.q); return; }
   const a = e.target.closest('[data-ai]'); if (!a) return;
   if (a.dataset.ai === 'close') { AI.open = false; aiRender(); }
