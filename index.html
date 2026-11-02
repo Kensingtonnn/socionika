@@ -958,6 +958,13 @@ details.aimore>summary{cursor:pointer;list-style:none}
 .ftag{align-self:flex-start;display:inline-block;font-size:13px;font-weight:600;padding:4px 11px;border-radius:999px;background:color-mix(in srgb,var(--c,var(--fg)) 14%,transparent);color:var(--c,var(--fg));margin-bottom:10px}
 .wdg.inv .ftag{background:rgba(255,255,255,.14);color:var(--inkfg)}
 .fname{font-family:var(--display);font-weight:600;font-size:clamp(24px,2.6vw,32px);line-height:1.08;letter-spacing:-.015em;margin-bottom:8px}
+
+.howto{display:grid;gap:12px;margin-top:12px}
+.hw{background:var(--s2);border-radius:var(--r-md);padding:16px 18px}
+.hwh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:6px}
+.hwh b{font-size:17px}
+.hw ol{margin:6px 0 8px;padding-left:1.3em} .hw li{margin:.35em 0}
+.hw code{font-size:.92em;background:var(--card);padding:1px 6px;border-radius:6px}
 </style>
 
 <header class="top"><div class="in">
@@ -2787,7 +2794,7 @@ function aiRender(){
       <div class="aib"><button type="button" data-dock="left" aria-label="Закрепить слева" ${AI.dock==='left'?'aria-pressed="true"':''}>⇤</button><button type="button" data-dock="float" aria-label="Плавающее окно" ${AI.dock==='float'?'aria-pressed="true"':''}>❐</button><button type="button" data-dock="right" aria-label="Закрепить справа" ${AI.dock==='right'?'aria-pressed="true"':''}>⇥</button><button type="button" data-ai="set" aria-label="Настройки">⚙</button><button type="button" data-ai="close" aria-label="Закрыть">✕</button></div></div>
     <div class="aimodes" role="group" aria-label="Режим">${Object.entries(AIMODE).map(([k,v]) => `<button type="button" data-mode="${k}" aria-pressed="${k===AI.mode}">${v.n}</button>`).join('')}</div>
     <div class="aiset" hidden>
-      <p class="sm"><b>Ответы прямо здесь</b> — для этого нужен свой API-ключ провайдера. Если ключа нет, просто пользуйся кнопками «Спросить в Claude» и «в ChatGPT» под полем ввода.</p>
+      <p class="sm"><b>Ответы прямо здесь</b> — нужен свой API-ключ провайдера. Что это и где взять — <a href="#ai" data-ai="close">пошаговая памятка</a>. Без ключа просто пользуйся кнопками «Спросить в Claude» и «в ChatGPT» под полем ввода.</p>
       <div class="seg aiprov" role="group" aria-label="Агент">${Object.entries(AIP).map(([k,v]) => `<button type="button" data-prov="${k}" aria-pressed="${k===AI.prov}">${v.n.split(' ·')[0]}</button>`).join('')}</div>
       <label class="ail" for="aikey">${P.k}<input id="aikey" type="password" autocomplete="off" value="${esc(aiKey())}" placeholder="вставь свой ключ"></label>
       <label class="ail" for="aimod">Модель<input id="aimod" type="text" value="${esc(aiModel())}"></label>
@@ -2799,7 +2806,7 @@ function aiRender(){
     <div class="aim" id="aim">${AI.msgs.length ? AI.msgs.map(m => `<div class="aimsg ${m.r}">${m.r === 'assistant' ? md(m.t) : esc(m.t)}</div>`).join('') : `<div class="aiempty"><b>${({sit:'Опиши ситуацию — разберу по типам и функциям.',psy:'Расскажи, что происходит. Сначала я задам пару вопросов.',per:'Отвечу, на какой функции ты сейчас живёшь и какой это этап.',goal:'Поставим цели под твои сильные функции.'})[AI.mode]}</b><span>Агент знает всю систему сайта: 16 типов, функции по параметрам, отношения, пути. Опиши ситуацию и назови типы людей, о которых речь, — так ответ будет точнее.</span></div>`}${AI.busy ? '<div class="aimsg assistant busy"><i></i><i></i><i></i></div>' : ''}</div>
     ${AI.msgs.length ? '' : `<div class="aisug">${aiSuggest().map(q => `<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`}
     <form class="aif" id="aif"><textarea id="aiin" rows="1" placeholder="Напиши вопрос…"></textarea>${hasKey ? `<button type="submit" class="aisend" aria-label="Отправить" ${AI.busy ? 'disabled' : ''}>↑</button>` : ''}</form>
-    ${hasKey ? '' : `<div class="aiext"><button type="button" data-ext="claude">Спросить в Claude</button><button type="button" data-ext="gpt">Спросить в ChatGPT</button><span class="sm mut">Откроется твой чат, вопрос и база ИнСо уже вставлены. Ключ не нужен.</span></div>`}`;
+    ${hasKey ? '' : `<div class="aiext"><button type="button" data-ext="claude">Спросить в Claude</button><button type="button" data-ext="gpt">Спросить в ChatGPT</button><span class="sm mut">Откроется твой чат, вопрос и база ИнСо уже вставлены. Ключ не нужен. <a href="#howto">Как это работает</a></span></div>`}`;
   const m = document.getElementById('aim'); m.scrollTop = m.scrollHeight;
 }
 async function aiAsk(q){
@@ -2971,10 +2978,26 @@ function aiPage(){
     <textarea id="aiq" class="aiq" rows="3" placeholder="Опиши ситуацию и назови типы людей, если знаешь их"></textarea>
     <div class="aiext big"><button type="button" data-extp="claude">Спросить в Claude</button><button type="button" data-extp="gpt">Спросить в ChatGPT</button></div></div>
   <div class="sheet"><h2>Для Claude Code, Codex и других агентов</h2><p>Один промпт — агент сам прочитает базу и будет отвечать по ней.</p><pre class="aiprompt" id="aip0">${esc(code)}</pre><button type="button" class="tbtn" data-copy="aip0">Скопировать промпт</button></div>
-  <details class="sheet aimore"><summary><h2 style="display:inline">Дополнительно</h2></summary>
-    <p><b>Навсегда в Claude Code:</b> скачай <a href="skill/SKILL.md" target="_blank" rel="noopener">SKILL.md</a> и <a href="agent.md" target="_blank" rel="noopener">agent.md</a> в папку <code>~/.claude/skills/inso/</code> — агент будет сам подключать систему, когда речь о типах.</p>
-    <p><b>Если у ИИ нет доступа к интернету:</b> скачай <a href="agent.md" target="_blank" rel="noopener">agent.md</a> и прикрепи к чату.</p>
-    <p><b>Отвечать прямо на сайте:</b> кнопка «Спросить ИИ» справа внизу. Без ключа она тоже открывает Claude или ChatGPT; со своим API-ключом (⚙ в окне чата) отвечает прямо здесь и умеет режимы: разбор, психолог, период, цели.</p></details>`;
+  <div class="sheet" id="howto"><h2>Памятка: как подключить ИИ</h2>
+    <p>Три способа — от самого простого к самому гибкому. Для большинства хватит первого.</p>
+    <div class="howto">
+      <div class="hw"><div class="hwh"><b>Способ 1. Без ключа — через свой Claude или ChatGPT</b><span class="ftag">проще всего</span></div>
+        <ol><li>Зайди в свой аккаунт на <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> или <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a> (бесплатного тоже хватит).</li>
+          <li>Вернись сюда и напиши вопрос в поле вверху этой страницы.</li>
+          <li>Нажми «Спросить в Claude» или «Спросить в ChatGPT» — откроется новая вкладка, где вопрос и ссылка на базу ИнСо уже вставлены.</li>
+          <li>Нажми Enter в этой вкладке. Дальше просто переписывайся там, как обычно.</li></ol>
+        <p class="sm mut">Если ответ звучит так, будто ИИ не открыл базу, — напиши ему «сначала открой ссылку из сообщения».</p></div>
+      <div class="hw"><div class="hwh"><b>Способ 2. Claude Code, Codex, Cursor</b><span class="ftag">для тех, кто ими пользуется</span></div>
+        <ol><li>Открой своего агента.</li><li>Скопируй промпт из блока выше и отправь его первым сообщением.</li><li>Задавай вопросы — агент отвечает по базе ИнСо.</li></ol>
+        <p class="sm mut">Чтобы не вставлять промпт каждый раз в Claude Code: скачай <a href="skill/SKILL.md" target="_blank" rel="noopener">SKILL.md</a> и <a href="agent.md" target="_blank" rel="noopener">agent.md</a> в папку <code>~/.claude/skills/inso/</code>. Если у ИИ нет доступа к интернету — скачай <a href="agent.md" target="_blank" rel="noopener">agent.md</a> и прикрепи его к чату файлом.</p></div>
+      <div class="hw"><div class="hwh"><b>Способ 3. Ответы прямо на сайте — нужен API-ключ</b><span class="ftag">для продвинутых</span></div>
+        <p><b>Что такое ключ.</b> Это длинный пароль, по которому программа (здесь — сайт в твоём браузере) обращается к ИИ от твоего имени. Его выдаёт сам провайдер в «кабинете разработчика». Это не логин от claude.ai и не подписка Pro: ключ оплачивается отдельно, по факту использования (один ответ — обычно меньше рубля–пары рублей).</p>
+        <ol><li>Зайди на <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a> (для Claude) — или на <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com</a> (ChatGPT), <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com</a> (Gemini, есть бесплатный лимит), <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai</a> (много моделей одним ключом).</li>
+          <li>Пополни баланс, если сервис просит (обычно от 5 $).</li>
+          <li>Нажми «Create key» и скопируй ключ — длинную строку вроде <code>sk-ant-…</code>. Сохрани её: второй раз её не покажут.</li>
+          <li>На этом сайте нажми «Спросить ИИ» справа внизу → значок ⚙ → выбери провайдера → вставь ключ в поле → «Сохранить».</li>
+          <li>Теперь ИИ отвечает прямо в окне на сайте и умеет режимы: разбор ситуации, психолог, период, цели.</li></ol>
+        <p class="sm mut">Ключ хранится только в твоём браузере и отправляется напрямую провайдеру — у сайта нет сервера, он ключ не видит. Не пересылай ключ другим: по нему тратится твой баланс.</p></div></div></div>`;
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-extp]'); if (!b) return; window.open(extUrl(b.dataset.extp, (document.getElementById('aiq')?.value || '').trim()), '_blank', 'noopener'); });
 document.addEventListener('click', e => { const b = e.target.closest('[data-copy]'); if (!b) return; const t = document.getElementById(b.dataset.copy).textContent;
