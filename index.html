@@ -989,6 +989,18 @@ h1,h2{overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto}
 .ptrb>summary::-webkit-details-marker{display:none}
 .ptrb p{margin:0 0 14px;max-width:72ch;line-height:1.75}
 .ptrb .tchip,.rnb .tchip{padding:0 9px;line-height:1.5}
+
+.only0{display:none} body[data-level="0"] .only0{display:block}
+.simple4{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.s4{background:color-mix(in srgb,var(--c) 10%,var(--card));border-radius:var(--r-md);padding:16px}
+.s4 b{display:block;font-family:var(--display);font-weight:600;font-size:18px;color:var(--c);margin-bottom:6px}
+.s4 p{margin:0;font-size:16px;line-height:1.55} .s4 a{color:var(--fg);font-weight:700}
+.lvup{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.lvup b{font-family:var(--display);font-size:20px} .lvup p{margin:4px 0 0}
+.lvup .tbtn,#lvtoast .tbtn:not(.ghost){background:var(--ink);color:var(--inkfg)}
+#lvtoast{position:fixed;left:50%;transform:translateX(-50%);bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:44;background:var(--card);color:var(--fg);border-radius:20px;padding:14px 16px;width:min(520px,calc(100% - 32px));box-shadow:0 0 0 1px var(--line),0 18px 50px rgba(27,30,36,.2)}
+#lvtoast p{margin:0 0 10px} #lvtoast div{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:560px){ .simple4{grid-template-columns:1fr} #lvtoast{bottom:max(84px,env(safe-area-inset-bottom,0px))} }
 </style>
 
 <header class="top"><div class="in">
@@ -1714,14 +1726,20 @@ function typePage(k){
     <p class="analogy portrait">${PRT ? PRT.p : P[0]}</p>
     <div class="meta"><span class="chip asp" style="--c:var(--${ba})">${D.syms[ba]} ведущая ${D.ab[ba]}</span><span class="chip asp" style="--c:var(--${t.m[1]})">${D.syms[t.m[1]]} творческая ${D.ab[t.m[1]]}</span><a class="chip" href="#pair-${k.toLowerCase()}-${t.dual.toLowerCase()}">дуал: ${T[t.dual].name}</a></div>
   </div><div class="glyphs" aria-hidden="true"><span class="g1">${D.bigs[ba]}</span><span class="g2">${D.bigs[t.m[1]]}</span></div></div>
-  <a class="wdg inv b4" href="#fn-3"><span class="ftag">болевая функция</span><div class="fname">${D.colname[pa]}</div><div class="sm">${D.ab[pa]} «${D.tag[pa]}» · самое уязвимое: опирается только на личный опыт</div><div class="wtx">${t.lens[pa] ? t.lens[pa][0] : ''}</div><span class="go">Открыть разбор болевой</span></a>
-  <a class="wdg b4" href="#fn-0"><span class="ftag" style="--c:var(--${ba})">ведущая функция</span><div class="fname" style="color:var(--${ba})">${D.colname[ba]}</div><div class="sm">${D.ab[ba]} «${D.tag[ba]}» · главная: работает даром, видит всё — опыт, правила, ситуацию и будущее</div><div class="wrow"><span>Где ему лучше всего</span></div><div class="wtx" data-layer="2">${P[2]}</div></a>
-  <div class="sheet b8 rs2" style="margin-top:0"><div class="kicker">Профиль по модели А</div><h2>Восемь функций одним взглядом</h2>
+  <a class="wdg inv b4" data-lvl="1" href="#fn-3"><span class="ftag">болевая функция</span><div class="fname">${D.colname[pa]}</div><div class="sm">${D.ab[pa]} «${D.tag[pa]}» · самое уязвимое: опирается только на личный опыт</div><div class="wtx">${t.lens[pa] ? t.lens[pa][0] : ''}</div><span class="go">Открыть разбор болевой</span></a>
+  <a class="wdg b4" data-lvl="1" href="#fn-0"><span class="ftag" style="--c:var(--${ba})">ведущая функция</span><div class="fname" style="color:var(--${ba})">${D.colname[ba]}</div><div class="sm">${D.ab[ba]} «${D.tag[ba]}» · главная: работает даром, видит всё — опыт, правила, ситуацию и будущее</div><div class="wrow"><span>Где ему лучше всего</span></div><div class="wtx" data-layer="2">${P[2]}</div></a>
+  <div class="sheet b8 rs2" data-lvl="1" style="margin-top:0"><div class="kicker">Профиль по модели А</div><h2>Восемь функций одним взглядом</h2>
   <p class="sm">${lay(0)}Сильные функции выше, слабые ниже; закрашены ценные — те, что человек хочет получать и давать.</p>
   <div class="prof">${profileSvg(t)}</div>
   <div class="mrow">${t.m.map((a,i) => `<a class="mcell${VALUED[i]?' v':''}" href="#fn-${i}"><div class="p">${i+1} · ${D.posn[i].slice(0,4)}.</div><div class="a" style="color:var(--${a})">${D.syms[a]}${D.ab[a]}</div><div class="t"><span data-layer="1">${D.dim[i]}D</span></div></a>`).join('')}</div></div>
-  <a class="wdg b4 tint" href="#fn-4" style="--c:var(--${t.m[4]})"><span class="ftag" style="--c:var(--${t.m[4]})">суггестивная функция</span><div class="fname" style="color:var(--${t.m[4]})">${D.colname[t.m[4]]}</div><div class="sm">${D.ab[t.m[4]]} «${D.tag[t.m[4]]}» · чего больше всего не хватает</div><div class="wtx">${t.lens[t.m[4]] ? t.lens[t.m[4]][0] : ''}</div></a>
+  <a class="wdg b4 tint" data-lvl="1" href="#fn-4" style="--c:var(--${t.m[4]})"><span class="ftag" style="--c:var(--${t.m[4]})">суггестивная функция</span><div class="fname" style="color:var(--${t.m[4]})">${D.colname[t.m[4]]}</div><div class="sm">${D.ab[t.m[4]]} «${D.tag[t.m[4]]}» · чего больше всего не хватает</div><div class="wtx">${t.lens[t.m[4]] ? t.lens[t.m[4]][0] : ''}</div></a>
   </div>
+  <div class="sheet only0"><h2>Коротко о главном</h2><div class="simple4">
+    <div class="s4" style="--c:var(--${ba})"><b>Что даётся даром</b><p>${(t.lens[ba]||[''])[0]} ${(t.lens[t.m[1]]||[''])[0]}</p></div>
+    <div class="s4" style="--c:var(--${pa})"><b>Где ему тяжело</b><p>${(t.lens[pa]||[''])[0]} Здесь любая критика ранит сильнее, чем кажется со стороны.</p></div>
+    <div class="s4" style="--c:var(--${t.m[4]})"><b>Чего ему не хватает</b><p>${(t.lens[t.m[4]]||[''])[0]} Тот, кто даёт это без усилия, кажется ему почти спасением.</p></div>
+    <div class="s4" style="--c:var(--${T[t.dual].m[0]})"><b>С кем легче всего</b><p>С <a href="#type-${t.dual.toLowerCase()}">${T[t.dual].name}</a>: тот без усилия делает то, что ${t.name} даётся тяжелее всего, — и наоборот. Рядом с ним ничего не нужно изображать.</p></div>
+  </div></div>
 
   ${PRT ? `<div class="sheet ptr"><div class="kicker">Портрет целиком</div><h2>Каким бывает ${t.name}</h2>
     <div class="ptrg">
@@ -1731,14 +1749,14 @@ function typePage(k){
       <details class="ptrb" data-lvl="1"><summary>Рядом с другими</summary><p>${PRT.near}</p></details>
       <details class="ptrb" data-lvl="2"><summary>Как думает и говорит</summary><p>${rnx(PRT.think)}</p></details>
     </div></div>` : ''}
-  <div class="sheet" data-layer="2"><div class="kicker">Портрет · 1 из 2</div><h2>${t.name}: сильное</h2>
+  <div class="sheet" data-layer="2" data-lvl="1"><div class="kicker">Портрет · 1 из 2</div><h2>${t.name}: сильное</h2>
   <div class="cards">${cards([0,1], false)}</div></div>
-  <div class="sheet" data-layer="2"><div class="kicker">Портрет · 2 из 2</div><h2>${t.name}: слабые места</h2>
+  <div class="sheet" data-layer="2" data-lvl="1"><div class="kicker">Портрет · 2 из 2</div><h2>${t.name}: слабые места</h2>
   <p>Суггестивная функция — то, чего не хватает и что человек жадно принимает извне. Болевая — самое уязвимое: здесь он опирается только на личный опыт, и критика ранит сильнее всего.</p>
   <div class="cards" style="grid-template-columns:1fr">${cards([2,3], true)}</div></div>
 
-  <div class="kicker" style="margin:28px 0 0">Дальше — подробно. Каждый раздел раскрывается по нажатию.</div>
-  ${foldify(dualTypeSheet(k), 'кто дополняет и как работают четыре канала')}
+  <div class="kicker" data-lvl="1" style="margin:28px 0 0">Дальше — подробно. Каждый раздел раскрывается по нажатию.</div>
+  ${foldify(dualTypeSheet(k), 'кто дополняет и как работают четыре канала', 0, 1)}
   ${foldify(variantsSheet(k), 'семь путей одного типа', 0, 1)}
   ${foldify(valuesSheet(k), 'восемь ценностей и какой дуал подходит каждой', 0, 2)}
 
@@ -1748,9 +1766,9 @@ function typePage(k){
 
   ${foldify(`<div class="sheet"><div class="kicker">Функция за функцией</div><h2>Все восемь функций развёрнуто</h2>
   <p class="sm">${lay(0)}Что означает аспект и что означает место. <span data-layer="2">${lay(2)}Как это проявляется у этого типа: сначала просто, потом по параметрам. Параметра нет — серая строка с тем, что из этого следует.</span></p>
-  ${fns}</div>`, 'аспект, место и как это у этого типа — по параметрам')}
+  ${fns}</div>`, 'аспект, место и как это у этого типа — по параметрам', 0, 1)}
 
-  ${foldify(polrDeepSheet(k), 'что это такое, почему так больно, кто задевает и кто прикрывает')}
+  ${foldify(polrDeepSheet(k), 'что это такое, почему так больно, кто задевает и кто прикрывает', 0, 1)}
 
   ${foldify(reininSheet(k), '15 признаков: полюс этого типа и что он значит', 0, 2)}
 
@@ -2705,6 +2723,7 @@ function route(){
   else { html = home(); }
   clearToys(); hideTip && hideTip();
   { const dk = dictSheet(); if (dk) { const ci = html.indexOf('class="crumb"'); if (ci >= 0 && ci < 20) { const e2 = html.indexOf('</div>', ci) + 6; html = html.slice(0, e2) + dk + html.slice(e2); } else html = dk + html; } }
+  if (typeof lvlNext === 'function' && h !== 'test' && h !== 'ai') html += lvlNext();
   app.innerHTML = html + `<footer><a href="#test" class="qzagain">Пройти тест ещё раз</a> · <a href="#ai" class="qzagain">Подключить ИИ к системе</a><br>Авторская интерпретация, 2026. Ядро — по Аугустинавичюте; классика — Букалов, Рейнин; линза и гипотезы — мои. Соционика не прошла строгой научной проверки.</footer>`;
   document.getElementById('nav-home').toggleAttribute('aria-current', nav === 'home'); if (nav==='home') document.getElementById('nav-home').setAttribute('aria-current','page');
   ['home','fn','rel','quad','bas'].forEach(n => { const el = document.getElementById('nav-'+n); el.removeAttribute('aria-current'); if (nav === n) el.setAttribute('aria-current','page'); });
@@ -2713,6 +2732,7 @@ function route(){
   if (openV != null) { const b = document.querySelector(`#vals .vtab[data-v="${openV}"]`); if (b) { b.click(); openTo(document.getElementById('vals')); } }
   if (typeof glossify === 'function') glossify();
   if (LEVEL === 2) document.querySelectorAll('details.fnmore').forEach(d => d.open = true);
+  if (typeof lvlNudge === 'function') setTimeout(lvlNudge, 1500);
 }
 const openTo = el => { el.querySelectorAll(':scope > details.fold').forEach(d => d.open = true); let p = el; while (p) { if (p.tagName === 'DETAILS') p.open = true; p = p.parentElement; } el.scrollIntoView({block:'start'}); };
 app.addEventListener('click', e => { const a = e.target.closest('a[href^="#fn-"],a[href^="#pos-"]'); if (a) { e.preventDefault(); const el = document.getElementById(a.getAttribute('href').slice(1)); if (el) openTo(el); } });
@@ -2945,7 +2965,7 @@ function dictSheet(){
   const h = location.hash.slice(1); if (!/^(type-|pair-|aspect-|home|functions|$)/.test(h || 'home')) return '';
   const m = h.match(/^type-([a-z]{3})/), t = m ? T[m[1].toUpperCase()] : null;
   const pos = Object.keys(POSW).map(p => `<div class="dct"><b>${p}${t ? ` · <span style="color:var(--${t.m[POSW[p]]})">${D.ab[t.m[POSW[p]]]}</span>` : ''}</b><span>${GLM[p][1]}</span></div>`).join('');
-  return `<div class="sheet dict"><details class="fold"${ls.get('dictOpen','1') === '1' ? ' open' : ''}><summary><span class="kicker">Для новичка</span><span class="st">Словарь в двух словах${t ? ` — на примере ${G(t)}` : ''}</span><span class="sm mut">восемь мест модели, мерность и цена; наведи на подчёркнутое слово — будет пример</span></summary>
+  return `<div class="sheet dict"><details class="fold"${ls.get('dictOpen','0') === '1' ? ' open' : ''}><summary><span class="kicker">Для новичка</span><span class="st">Словарь в двух словах${t ? ` — на примере ${G(t)}` : ''}</span><span class="sm mut">восемь мест модели, мерность и цена; наведи на подчёркнутое слово — будет пример</span></summary>
     <div class="dgrid">${pos}<div class="dct"><b>мерность · 1D–4D</b><span>${GLM['мерность'][1]}</span></div><div class="dct"><b>цена</b><span>${GLM['цена'][1]}</span></div></div>
     <p class="sm mut" style="margin-top:10px">На уровне «новичок» скрыты таблицы модели А, признаки Рейнина, разновидности и гипотезы, а у функций — разбор по параметрам. Сменить уровень — в шапке.</p></details></div>`;
 }
@@ -3004,6 +3024,23 @@ function levelInit(){
   let bot = false; try { bot = navigator.webdriver; } catch(e){}
   if (location.hash === '#test' || (first && !bot)) openQuiz(); else if (first) { LEVEL = 1; levelUI(); }
 }
+// ---------- переход между уровнями по ходу чтения
+function lvlNext(){
+  const n = LEVEL < 0 ? 1 : LEVEL; if (n >= 2) return '';
+  return `<div class="sheet lvup"><div><b>${n === 0 ? 'Хочешь понять глубже?' : 'Хочешь видеть всё?'}</b><p class="sm">${n === 0 ? 'Включи уровень «знаю основы»: появятся все восемь функций, разбор самого уязвимого места, модель и отношения подробно.' : 'Включи уровень «глубоко»: признаки Рейнина, разновидности по ценностям, авторские гипотезы и развёрнутые определения.'}</p></div><button type="button" class="tbtn" data-lvup="${n + 1}">Включить «${LVN[n + 1]}»</button></div>`;
+}
+function lvlNudge(){
+  const n = LEVEL < 0 ? 1 : LEVEL; if (n >= 2 || document.querySelector('.qz') || document.getElementById('lvtoast')) return;
+  const v = +ls.get('visits', '0') + 1; ls.set('visits', v);
+  const need = n === 0 ? 5 : 14; if (v < need || ls.get('nudge' + n, '') === 'no') return;
+  const el = document.createElement('div'); el.id = 'lvtoast'; el.setAttribute('role', 'status');
+  el.innerHTML = `<p><b>Похоже, ты освоился.</b> ${n === 0 ? 'Показать больше деталей — функции, модель, отношения?' : 'Показать всё — признаки, гипотезы, разновидности?'}</p><div><button type="button" class="tbtn" data-lvup="${n + 1}">Да, уровень «${LVN[n + 1]}»</button><button type="button" class="tbtn ghost" data-lvno="${n}">Пока нет</button></div>`;
+  document.body.appendChild(el);
+}
+document.addEventListener('click', e => {
+  const u = e.target.closest('[data-lvup]'); if (u) { document.getElementById('lvtoast')?.remove(); setLevel(+u.dataset.lvup); return; }
+  const no = e.target.closest('[data-lvno]'); if (no) { ls.set('nudge' + no.dataset.lvno, 'no'); document.getElementById('lvtoast')?.remove(); }
+});
 // ---------- признаки Рейнина и дихотомии Юнга: отдельные страницы и кнопки-ссылки
 function rnFind(word){ const w = (word || '').toLowerCase().replace(/ё/g,'е'); return D.rnfull.findIndex(r => [r.p, r.m].some(x => { const a = x.toLowerCase().replace(/ё/g,'е'); return a === w || a.startsWith(w.slice(0, Math.max(5, w.length - 2))); })); }
 function rnChip(word, label){ const i = rnFind(word); return i < 0 ? (label || word) : `<a class="tchip" href="#rn-${i}">${label || word}</a>`; }
